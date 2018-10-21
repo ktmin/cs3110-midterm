@@ -9,3 +9,7 @@ type t
 
 (** The type of location identifiers. *)
 type location_id = int
+
+(** [from_json j] is the adventure that [j] represents.
+    Requires: [j] is a valid JSON monopoly board representation. *)
+val from_json : Yojson.Basic.json -> t
