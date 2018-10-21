@@ -1,0 +1,23 @@
+{
+  "locations": [
+    {
+      "id": 0,
+      "name": "Go",
+      "color": "",
+      "price": 0
+    },
+    {
+      "id": 1,
+      "name": "Mediterranean Avenue",
+      "color": "purple",
+      "price": 60
+    },
+    {
+      "id": 2,
+      "name": "Baltic Avenue",
+      "color": "purple",
+      "price": 60
+    }
+  ],
+  "start": 0
+}
