@@ -1,0 +1,23 @@
+{
+  "spells": [
+    {
+      "name": "Confringo",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Blasting Charm; causes items the charm comes in contact with to burst into flames."
+    },
+    {
+      "name": "Confundo",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Confundus Charm; causes the victim to become confused and disoriented."
+    },
+    {
+      "name": "Episky",
+      "damage": -5,
+      "target": "self",
+      "description": "Used to heal minor injuries."
+    },
+  ],
+  "starting spell": 0
+}
