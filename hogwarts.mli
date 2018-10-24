@@ -5,9 +5,7 @@
 *)
 
 (** The abstract type of values representing hogwarts. *)
-<<<<<<< HEAD
 type t
-
 
 (** The type of a spell name *)
 type spell_name = string
@@ -21,34 +19,18 @@ type target = string
 (** The type of description *)
 type description = string
 
-(** The type of spell  *)
-type spell = {
-  name: spell_name;
-  damage: spell_damage;
-  target: target;
-  description: description;
-}
+(** The abstract type of spell  *)
+type spell 
 
 (** Raised when an unknown spell is encountered *)
 exception UnknownSpell of spell
-=======
-type spell_name
-
-type spell_damage
-
-type target
-
-type description 
-
-type spell
->>>>>>> 1058c9be4853ea00dbb98e68dd78f7c9c006d76c
 
 (** [from_json j] is the organized spells that [j] represents.
     Requires: [j] is a valid JSON spell representation. *)
+val from_json : Yojson.Basic.json -> t
 
-(** [search spells spell] looks for the [spell] and returns it.
-    Raises: UnknownSpell if [spell] is not found in [spells]  *)
-val search : spell list -> spell_name -> spell
+(** [shuffle t] shuffles the spells of howarts [t] *)
+val shuffle : t -> t
 
-(**  *)
-
+(** [add_spell t s] adds the spell [s] to hogwarts [t]  *)
+val add_spell : t -> spell -> t
