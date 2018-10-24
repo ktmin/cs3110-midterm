@@ -5,6 +5,7 @@
    cause the state to change.
 *)
 
+(**  *)
 type t
 
 type player_name = string
@@ -29,7 +30,8 @@ val init_enemy: Hogwarts.t -> t
 
 val get_hp: t -> int
 
-val cast : Hogwarts.t -> Hogwarts.spell_name -> t -> 
-  Hogwarts.damage * Hogwarts.spell_info list
+val update : Hogwarts.t -> Hogwarts.spell_name -> t -> t
 
-val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player
+val cast : Hogwarts.t -> Hogwarts.spell_info -> t -> t -> t
+
+(* val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player *)

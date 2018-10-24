@@ -12,13 +12,11 @@ type hand = Hogwarts.spell_info list
 
 type deck = Hogwarts.spell_info list
 
-type player_state = {
+type t = {
   player: player;
   hand: hand;
   deck: deck;
 }
-
-type t = player_state
 
 let get_hp player = 
   player.player.hp
@@ -33,26 +31,34 @@ let init_enemy hogwarts =
     returns a tuple 
     of updated hand and 
     deck*)
-let draw (pl:player_state) =
+let draw (pl:t) =
   match pl.deck with
   | [] -> pl
   | h::t -> {pl with hand=(h::pl.hand); deck=t}
 
-let get_hand (pl:player_state) : hand =
+let get_hand (pl:t) : hand =
   pl.hand
 
-let get_deck (pl:player_state) : deck =
+let get_deck (pl:t) : deck =
   pl.deck
 
-let cast hogwarts chosen st =    
-  let spell = Hogwarts.search hogwarts chosen in 
-  (Hogwarts.spell_damage hogwarts chosen , 
-   List.filter (fun x -> x <> spell) st.hand)
+let update hogwarts spell st = 
+  let spell' = Hogwarts.search hogwarts spell in 
+  let damage = st.player.hp - (Hogwarts.spell_damage hogwarts spell) in
+  let updated_hand = List.filter (fun x -> x <> spell') st.hand in 
+  let updated_player = {st.player with hp = damage} in 
+  {st with player = updated_player; hand = updated_hand }
+
+let cast hogwarts spell st1 st2 =
+  let spell_name = Hogwarts.spell_name spell in 
+  if Hogwarts.spell_target spell = "self" then update hogwarts spell_name st1 
+  else update hogwarts spell_name st2
+
 
 (** returns hp after the spell is casted*)
-let casted hogwarts spell st = 
-  let new_hp = st.hp - Hogwarts.spell_damage hogwarts spell in 
-  {st with hp= new_hp }
+(* let casted hogwarts spell st = 
+   let new_hp = st.hp - Hogwarts.spell_damage hogwarts spell in 
+   {st with hp= new_hp } *)
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =

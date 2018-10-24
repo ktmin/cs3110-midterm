@@ -33,6 +33,9 @@ let from_json j =
     spells = (j |> member "spells" |> to_list |> List.map create_spell)
   }
 
+let get_spells hogwarts =
+  hogwarts.spells
+
 (** [search_helper spells spell] is a helper to search for [spell] in [spells] 
     Raies UnknownSpell if [spell] is not found in [spells] *)
 let rec search_helper spells spell = 
@@ -44,18 +47,17 @@ let rec search_helper spells spell =
 (** [search hogwarts spell] looks for the [spell] and returns it.
     Raises: UnknownSpell if [spell] is not found in [hogwarts]  *)
 let search hogwarts spell = 
-  let spells = hogwarts.spells in 
+  let spells = get_spells hogwarts in 
   search_helper spells spell
 
 let shuffle hogwarts = 
-  let spells = hogwarts.spells in 
+  let spells = get_spells hogwarts in 
   {
     spells = QCheck.Gen.(generate1 (shuffle_l spells))
   }
 
 let add_spell hogwarts spell = 
-  let spells = hogwarts.spells in {spells = spell::spells}
-
+  let spells = get_spells hogwarts in {spells = spell::spells}
 
 let spell_description hogwarts spell = 
   let spell' = search hogwarts spell in spell'.description
@@ -66,5 +68,5 @@ let spell_damage hogwarts spell =
 let spell_name sp =
   sp.name
 
-let get_spells hogwarts =
-  hogwarts.spells
+let spell_target spell = 
+  spell.target
