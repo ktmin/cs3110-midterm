@@ -1,11 +1,6 @@
-open Hogwarts
-open Command
-open State
-open Yojson.Basic.Util
-
 type end_state = Win | Loss | Continue
 
-let enemy_turn (enemy:player) (player:player) = ()
+let enemy_turn (enemy:State.player) (player:State.player) = ()
 (* let enemy_hand = get_hand enemy in () *)
 
 let check_conditions (player:State.t) (enemy:State.t) : end_state =
@@ -18,14 +13,14 @@ let check_conditions (player:State.t) (enemy:State.t) : end_state =
 
 (** [list_cards spells house] prints the names of all [spells] in the colour
     of [house]*)
-let rec list_cards (spells:spell_info list) (house:ANSITerminal.style) =
+let rec list_cards (spells:Hogwarts.spell_info list) (house:ANSITerminal.style)=
   match spells with
   | [] -> (
-      ANSITerminal.(print_string [house] "\n\nEnter: Describe spell_name to see 
-    spell description.")
+      ANSITerminal.(print_string [house] "\n\nEnter: Describe spell_name 
+      to see spell description.")
     )
   | h::t -> (
-      ANSITerminal.(print_string [house] ((Hogwarts.spell_name h) ^ " "));
+      ANSITerminal.(print_string [magenta] ((Hogwarts.spell_name h) ^ " "));
       list_cards t house
     )
 (** [play player enemy house name] is the main game loop that takes in [player]
@@ -33,10 +28,10 @@ let rec list_cards (spells:spell_info list) (house:ANSITerminal.style) =
     progresses based on player inputs until a win/loss condition is fulfilled.*)
 let rec play (player:State.t) (enemy:State.t)
     (house: ANSITerminal.style) (name: Hogwarts.t)  =
-  ANSITerminal.print_string [house] "Enter an action to perform > ";
+  ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
   let cmd = read_line () in
   try (
-    match parse cmd with
+    match Command.parse cmd with
     | Draw -> (
         let drawn = State.draw player in
         let chosen_card = List.hd(State.to_list_hand drawn) in
@@ -71,11 +66,20 @@ let rec play (player:State.t) (enemy:State.t)
     - Winner is the person who makes the other reach 0 or less health");
                       play player enemy house name)
     | Forfeit -> (ANSITerminal.(print_string [house] "Turns out you weren't so 
-    tough and brave..."); exit 0))
-  with Invalidcommand ->
+    tough and brave...\n"); exit 0)
+    | Help -> raise Command.Invalidcommand
+    | Status -> ANSITerminal.(print_string [house] "Your health:\n");
+      ANSITerminal.(print_string [magenta] (string_of_int 
+                                              (State.get_hp player)));
+      ANSITerminal.(print_string [house] "\nEnemy's health:\n");
+      ANSITerminal.(print_string [magenta] (string_of_int 
+                                              (State.get_hp enemy)));)
+
+
+  with Command.Invalidcommand ->
     (ANSITerminal.(print_string [house] "Invalid command. Possible commands: \n
-    Draw, cast [card name], describe [card name], view, instruction,
-    forfeit"); play player enemy house name )
+    Draw, cast [card name], describe [card name], view, instruction, help, 
+    status, forfeit"); play player enemy house name )
 
 (** [choose_house h] returns the colour representing the respective Harry Potter
     house as specified by [h]. If the house name is invalid 

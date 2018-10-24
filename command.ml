@@ -7,6 +7,8 @@ type command =
   | View 
   | Instruction  
   | Forfeit
+  | Status 
+  | Help
 
 
 exception Invalidcommand

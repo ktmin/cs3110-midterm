@@ -1,5 +1,4 @@
-open Yojson.Basic.Util
-open Hogwarts
+(* open Hogwarts *)
 
 type player_name = string
 
@@ -9,9 +8,9 @@ type player = {
   hp: int;
 }
 
-type hand = spell_info list
+type hand = Hogwarts.spell_info list
 
-type deck = spell_info list
+type deck = Hogwarts.spell_info list
 
 type player_state = {
   player: player;
@@ -47,8 +46,9 @@ let get_deck (pl:player_state) : deck =
 
 (**returns new hand after a spell is casted*)
 let cast hogwarts chosen st =    
-  let new_hand = List.filter (fun x -> x <> chosen) st.hand in
-  {st with hand = new_hand}
+  let spell = Hogwarts.search hogwarts chosen in 
+  (Hogwarts.spell_damage hogwarts chosen , 
+   List.filter (fun x -> x <> spell) st.hand)
 
 (** returns hp after the spell is casted*)
 let casted hogwarts spell st = 
@@ -56,8 +56,10 @@ let casted hogwarts spell st =
   {st with hp= new_hp }
 
 (*TODO: remove this*)
-let to_list_hand pl : spell_info list =
+let to_list_hand pl : Hogwarts.spell_info list =
   pl.hand
+
+
 (*Keeping this for later when we return to module method*)
 (* module type Command = sig
    type player_name

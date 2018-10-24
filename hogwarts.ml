@@ -22,7 +22,7 @@ type t = {spells: spell_info list}
 (** [create_spell j] extracts the spell information from [j]  *)
 let create_spell j = 
   {
-    name = j |> member "name" |> to_string;
+    name = j |> member "name" |> to_string |> String.lowercase_ascii;
     damage = j |> member "damage" |> to_int;
     target = j |> member "target" |> to_string;
     description = j |> member "description" |> to_string
