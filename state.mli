@@ -24,5 +24,5 @@ val get_hand: hand -> Hogwarts.spell_info list
 val draw: Hogwarts.spell_info list ->
   hand -> deck -> Hogwarts.spell_info list * Hogwarts.spell_info list
 
-val cast : Hogwarts.damage -> Hogwarts.spell_info -> hand -> 
+val cast : Hogwarts.t -> Hogwarts.spell_name -> hand -> 
   Hogwarts.damage * Hogwarts.spell_info list

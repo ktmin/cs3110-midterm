@@ -30,6 +30,10 @@ exception UnknownSpell of spell_name
     Requires: [j] is a valid JSON spell representation. *)
 val from_json : Yojson.Basic.json -> t
 
+(** [search hogwarts spell] looks for the [spell] and returns it.
+    Raises: UnknownSpell if [spell] is not found in [hogwarts]  *)
+val search : t -> spell_name -> spell_info
+
 (** [shuffle t] shuffles the spells of howarts [t] *)
 val shuffle : t -> t
 

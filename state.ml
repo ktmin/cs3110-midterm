@@ -38,12 +38,15 @@ let draw chosen st1 st2=
    | h :: t -> t  
   ) 
 
-let cast damage chosen st =    
-  (damage, List.filter (fun x -> x <> chosen) st.hand)
+let cast hogwarts chosen st =    
+  let spell = Hogwarts.search hogwarts chosen in 
+  (Hogwarts.spell_damage hogwarts chosen , 
+   List.filter (fun x -> x <> spell) st.hand)
 
 (** returns hp after the spell is casted*)
-let casted damage st = 
-  st.hp - damage  
+let casted hogwarts spell st = 
+  let new_hp = st.hp - Hogwarts.spell_damage hogwarts spell in 
+  {st with hp= new_hp }
 
 
 
