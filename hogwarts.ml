@@ -13,8 +13,6 @@ type spell = {
   description: description;
 }
 
-type spls = {spls: spell list}
-
 
 let create_spell j = 
   {
@@ -24,8 +22,7 @@ let create_spell j =
     description = j |> member "description" |> to_string
   }
 
-let from_json j = 
-  {
-    spls = (j |> member "spells" |> to_list |> List.map create_spell)
-  }
+
+
+
 

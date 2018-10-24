@@ -17,5 +17,5 @@ type spls
     Requires: [j] is a valid JSON spell representation. *)
 val from_json : Yojson.Basic.json -> t
 
-val create_spell : Yojson.Basic.json -> spell_name
+val create_spell : Yojson.Basic.json -> spell
 
