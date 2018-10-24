@@ -16,22 +16,22 @@ type hand
 
 type deck
 
-val draw: t -> t
+val draw : t -> t
 
-val get_hand: t -> hand
+val get_hand : t -> hand
 
-val get_deck: t -> deck
+val get_deck : t -> deck
 
-val to_list_hand: t -> Hogwarts.spell_info list
+val to_list_hand : t -> Hogwarts.spell_info list
 
-val init_player: Hogwarts.t -> string -> t
+val init_player : Hogwarts.t -> string -> t
 
-val init_enemy: Hogwarts.t -> t
+val init_enemy : Hogwarts.t -> t
 
-val get_hp: t -> int
+val get_hp : t -> int
 
-val update : Hogwarts.t -> Hogwarts.spell_name -> t -> t
+val update : t -> Hogwarts.spell_info -> t
 
-val cast : Hogwarts.t -> Hogwarts.spell_info -> t -> t -> t
+val cast : Hogwarts.spell_info -> t -> t -> t
 
 (* val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player *)
