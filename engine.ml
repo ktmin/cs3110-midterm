@@ -7,13 +7,13 @@ type end_state = Win | Loss | Continue
 let enemy_turn (enemy:player) (player:player) = ()
 (* let enemy_hand = get_hand enemy in () *)
 
-let check_conditions (player:player) (enemy:player) : end_state =
-  if State.get_hp enemy <= 0 then
+(* let check_conditions (player:player) (enemy:player) : end_state =
+   if State.get_hp enemy <= 0 then
     Win
-  else if State.get_hp player <= 0 then
+   else if State.get_hp player <= 0 then
     Loss
-  else
-    Continue
+   else
+    Continue *)
 (** [list_cards spells house] prints the names of all [spells] in the colour
     of [house]*)
 let rec list_cards (spells:spell_info list) (house:ANSITerminal.style) =
@@ -80,11 +80,12 @@ let choose_house (h: string): ANSITerminal.style option =
   | _ -> None
 
 
-let play f player house = 
+let play_init f player house = 
   let json = Yojson.Basic.from_file f in
   let hogwarts = Hogwarts.from_json json in 
   let player_state = State.init_player hogwarts player in
-  let enemy_state = State.init_enemy hogwarts
+  let enemy_state = State.init_enemy hogwarts in
+  play player_state enemy_state house hogwarts
 
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 
@@ -104,7 +105,7 @@ let rec name house =
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play "spells.json" player_name house 
+     play_init "spells.json" player_name house 
 
      (* play (State.init_player Hogwarts player_name) (State.init_enemy Hogwarts)
         house Hogwarts *)
