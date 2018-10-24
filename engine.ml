@@ -1,2 +1,48 @@
-let roll_dice : int =
-  QCheck.Gen.(generate1 (oneofl [1;2;3;4;5;6]))
+let play game =
+  ()
+
+let choose_house (h: string): ANSITerminal.style option =
+  match String.lowercase_ascii h with
+  | "gryffindor" -> Some ANSITerminal.red
+  | "slytherin" -> Some ANSITerminal.green
+  | "ravenclaw" -> Some ANSITerminal.blue
+  | "hufflepuff" -> Some ANSITerminal.yellow
+  | _ -> None
+
+let rec name house =
+  ANSITerminal.(
+    print_string [magenta] "Now, your name. Let's keep it simple, 
+  no numbers or symbols. Just letters. Please.\n\n";
+    print_string [magenta] "Enter your name > "
+  );
+
+  let reg = Str.regexp "^[A-Za-z]+$" in
+  let player_name = read_line () in
+  if Str.string_match reg player_name 0 then
+    ANSITerminal.(
+      print_string [house] ("Welcome " ^ player_name ^ "!")
+    ) else (ANSITerminal.(
+      print_string [magenta] "Simple stuff, 
+      I wonder how you will fare in Hogwarts if you struggle at even this... 
+      Try again\n"
+    ); name house)
+
+let rec house () =
+  ANSITerminal.(
+    print_string [magenta] "\nWelcome to ";
+    print_string [red] "Ho"; print_string [green] "gw";
+    print_string [yellow] "ar"; print_string [blue] "ts";
+    print_string [magenta] 
+      "!\nThe sorting hat is at lunch so you'll have to choose your own house.\n
+    In case you forgot, the choices are:\n";
+    print_string [red] "Gryffindor "; print_string [green] "Slytherin ";
+    print_string [yellow] "Hufflepuff "; print_string [blue] "Ravenclaw";
+    print_string [magenta] "\n\nEnter house name > ";
+  );
+  match choose_house (read_line ()) with
+  | Some x -> name x
+  | None -> ANSITerminal.(print_string [magenta] "... That isn't a house. 
+    They are literally in front of you. Let's try this again.\n"); house ()
+
+
+let () = house ()
