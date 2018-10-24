@@ -3,7 +3,7 @@ OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
-MAIN=main.byte
+MAIN=engine.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -15,3 +15,6 @@ build:
 clean:
 	ocamlbuild -clean
 	
+
+play:
+		$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
