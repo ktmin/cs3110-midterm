@@ -19,7 +19,7 @@ let rec no_blank_elem list =
       h :: no_blank_elem t
 
 
-let rec parse_list list = 
+let parse_list list = 
   match list with
   | [] -> raise Invalidcommand
   | [""] -> raise Invalidcommand 
@@ -37,7 +37,7 @@ let rec parse_list list =
     if ((h = "forfeit") && (t = [])) then Forfeit else
       raise Invalidcommand 
 
-let rec parse str = 
+let parse str = 
   let trim_str = String.trim str in 
   let string = String.lowercase_ascii(trim_str) in   
   let split_list = String.split_on_char ' ' string in
