@@ -18,6 +18,12 @@
       "target": "self",
       "description": "Used to heal minor injuries."
     },
+    {
+      "name": "Confringo",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Blasting Charm; causes items the charm comes in contact with to burst into flames."
+    }
   ],
   "starting spell": 0
 }
