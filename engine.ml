@@ -9,7 +9,7 @@ let rec play player enemy (house: ANSITerminal.style) (name: string)  =
   let cmd = read_line () in
   try (
     match parse cmd with
-    | Draw lst -> ()
+    | Draw -> ()
     | Cast lst -> ()
     | Describe lst -> ()
     | View -> ()
@@ -17,7 +17,7 @@ let rec play player enemy (house: ANSITerminal.style) (name: string)  =
     | Forfeit -> () )
   with Invalidcommand ->
     ANSITerminal.(print_string [house] "Invalid command. Possible commands: \n
-    Draw [card name], cast [card name], describe [card name], view, instruction,
+    Draw, cast [card name], describe [card name], view, instruction,
     forfeit"); play player enemy house name 
 
 (** [choose_house h] returns the colour representing the respective Harry Potter
