@@ -19,10 +19,58 @@
       "description": "Used to heal minor injuries."
     },
     {
-      "name": "Confringo",
-      "damage": 5,
+      "name": "Damage Potion",
+      "damage": 10,
       "target": "enemy",
-      "description": "Blasting Charm; causes items the charm comes in contact with to burst into flames."
+      "description": "Give 10 damage to your opponent."
+    },
+    {
+      "name": "Heal Potion",
+      "damage": -10,
+      "target": "self",
+      "description": "Gain 10 hp"
+    },
+    {
+      "name": "Venom",
+      "damage": 20,
+      "target": "enemy",
+      "description": "Give 20 damage to your opponent"
+    },
+    {
+      "name": "Fountain of Youth",
+      "damage": -20,
+      "target": "self",
+      "description": "Gain 20 hp"
+    },
+    {
+      "name": "Love",
+      "damage": -10,
+      "target": "enemy",
+      "description": "Give 10 hp for your opponent"
+    },
+    {
+      "name": "Water",
+      "damage": 10,
+      "target": "self",
+      "description": "Gain 10 hp"
+    },
+    {
+      "name": "Attack",
+      "damage": 10,
+      "target": "self",
+      "description": "Give 10 damage to your opponent"
+    },
+    {
+      "name": "Upper cut",
+      "damage": 15,
+      "target": "self",
+      "description": "Give 15 damage to your opponent"
+    },
+    {
+      "name": "Annoy",
+      "damage": 0,
+      "target": "self",
+      "description": "Annoy your opponent"
     }
   ],
   "starting spell": 0
