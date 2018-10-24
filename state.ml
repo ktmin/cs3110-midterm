@@ -10,6 +10,10 @@ type player = {
   health: player_health;
 }
 
+type hand = {
+  hand : spell list;
+}
+
 type deck = {
   deck : spell list;
 }
@@ -32,15 +36,33 @@ let get_health st =
 let get_hand st =
   st.hand
 
-
 (** update hand and deck
-    return updated hand*)
-let draw st1 st2=
+    returns a tuple 
+    of updated hand and 
+    deck*)
+let draw chosen st1 st2=
+  (st1.hand @ chosen, 
+  match st2.deck with
+  | [] -> []
+  | h :: t -> t  
+  )  
+
+(**from stack overflow. plan to write my own code*)
+let rec shuffle lst =
+let nd = List.map (fun c -> (Random.bits (), c)) lst in
+    let sond = List.sort compare nd in
+    List.map snd sond
 
 
 
+let rec cast chosen st =
+  List.filter (fun x -> x <> chosen) st.hand
+  
 
-  let cast st =
+let rec casted damage st =
+  st.health - damage   
+
+
 
 
 
