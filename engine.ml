@@ -1,6 +1,24 @@
+open Hogwarts
+open Command
+open State
+
 (**[play game] TODO:*)
-let play game =
-  ()
+let rec play player enemy (house: ANSITerminal.style) (name: string)  =
+  (*TODO: print desc once State.t is realized*)
+  ANSITerminal.print_string [house] "Enter an action to perform > ";
+  let cmd = read_line () in
+  try (
+    match parse cmd with
+    | Draw lst -> ()
+    | Cast lst -> ()
+    | Describe lst -> ()
+    | View -> ()
+    | Instruction -> ()
+    | Forfeit -> () )
+  with Invalidcommand ->
+    ANSITerminal.(print_string [house] "Invalid command. Possible commands: \n
+    Draw [card name], cast [card name], describe [card name], view, instruction,
+    forfeit"); play player enemy house name 
 
 (** [choose_house h] returns the colour representing the respective Harry Potter
     house as specified by [h]. If the house name is invalid 
