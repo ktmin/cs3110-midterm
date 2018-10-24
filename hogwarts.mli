@@ -24,7 +24,7 @@ type description = string
 type spell_info 
 
 (** Raised when an unknown spell is encountered *)
-exception UnknownSpell of spell_info
+exception UnknownSpell of spell_name
 
 (** [from_json j] is the organized spells that [j] represents.
     Requires: [j] is a valid JSON spell representation. *)

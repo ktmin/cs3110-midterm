@@ -4,7 +4,7 @@ type spell_name = string
 type damage = int 
 type target = string
 type description = string
-exception UnknownSpell of spell_name
+
 
 (** [spell] stores each spell as a record with fields name as a string, damage 
     as an int, target as a string, and description as a string  *)
@@ -14,6 +14,8 @@ type spell_info = {
   target: target;
   description: description;
 }
+
+exception UnknownSpell of spell_name
 
 type t = {spells: spell_info list}
 
