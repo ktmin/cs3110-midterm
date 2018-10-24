@@ -29,7 +29,7 @@ val init_enemy: Hogwarts.t -> t
 
 val get_hp: t -> int
 
-(* val cast : Hogwarts.spell_name -> 
-   Hogwarts.damage * t
+val cast : Hogwarts.t -> Hogwarts.spell_name -> t -> 
+  Hogwarts.damage * Hogwarts.spell_info list
 
-   val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player *)
+val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player

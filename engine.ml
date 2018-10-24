@@ -1,6 +1,7 @@
 open Hogwarts
 open Command
 open State
+open Yojson.Basic.Util
 
 type end_state = Win | Loss | Continue
 
