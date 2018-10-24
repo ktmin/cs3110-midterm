@@ -1,6 +1,7 @@
 open Yojson.Basic.Util
 open Hogwarts
 
+module Make 
 module type Command = sig
   type player_hp
   type player
@@ -17,7 +18,6 @@ end
 
 module Command: Command = struct  
   type player_hp = int
-
 
   type player = {
     hp: player_hp;
@@ -63,6 +63,11 @@ module Command: Command = struct
     st.hp - damage  
 
 end 
+
+
+
+
+
 
 
 
