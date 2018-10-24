@@ -3,7 +3,7 @@
 *)
 
 type command = 
-  | Draw of string list
+  | Draw
   | Cast of string list 
   | Describe of string list
   | View 
