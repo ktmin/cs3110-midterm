@@ -13,6 +13,7 @@ type spell = {
   description: description;
 }
 
+
 let create_spell j = 
   {
     name = j |> member "name" |> to_string;

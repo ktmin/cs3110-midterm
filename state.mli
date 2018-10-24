@@ -1,6 +1,35 @@
-(** 
-   Representation of dynamic monopoly state.
-   This module represents the state of a monopoly game as it is being played,
-   including the player's current positon, current balance, and functions that 
-   cause the state to change.
+
+
+
+
+
+
+
+
+
+(**
+   type player_name
+
+   type player_hp
+
+   type player
+
+   type hand
+
+   type deck
+
+   val get_name: player -> player_name
+
+   val get_hp: player -> player_hp 
+
+   val get_hand: player -> Hogwarts.spell list
+
+   val draw: Hogwarts.spell list ->
+   hand -> deck -> Hogwarts.spell list * Hogwarts.spell list
+
+   val cast: Hogwarts.spell -> hand -> Hogwarts.spell list * 'a
+
 *)
+
+
+
