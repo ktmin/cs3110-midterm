@@ -63,6 +63,14 @@ let choose_house (h: string): ANSITerminal.style option =
   | "hufflepuff" -> Some ANSITerminal.yellow
   | _ -> None
 
+
+let play f player house = 
+  let json = Yojson.Basic.from_file f in
+  let hogwarts = Hogwarts.from_json json in 
+  let player_state = State.init_player hogwarts player in
+  let enemy_state = State.init_enemy hogwarts
+
+
 (** [name house] takes in the ANSITerminal colour [house] and records the 
     player's name to be used in gameplay. 
     The name specified should be regular ASCII alphabet with no numbers 
@@ -80,8 +88,10 @@ let rec name house =
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play (State.init_player Hogwarts player_name) (State.init_enemy Hogwarts)
-       house Hogwarts
+     play "spells.json" player_name house 
+
+     (* play (State.init_player Hogwarts player_name) (State.init_enemy Hogwarts)
+        house Hogwarts *)
     ) else (ANSITerminal.(
       print_string [magenta] "Simple stuff, 
       I wonder how you will fare in Hogwarts if you struggle at even this... 
