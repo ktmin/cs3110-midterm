@@ -13,9 +13,5 @@ build:
 	$(OCAMLBUILD) $(OBJECTS)
 
 clean:
-<<<<<<< HEAD
-	ocamlbuild -clean
-=======
 	ocamlbuild -clean
 	
->>>>>>> master
