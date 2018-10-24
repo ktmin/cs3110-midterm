@@ -1,6 +1,10 @@
+(**[play game] TODO:*)
 let play game =
   ()
 
+(** [choose_house h] returns the colour representing the respective Harry Potter
+    house as specified by [h]. If the house name is invalid 
+    (name does not exist), None will be returned.*)
 let choose_house (h: string): ANSITerminal.style option =
   match String.lowercase_ascii h with
   | "gryffindor" -> Some ANSITerminal.red
@@ -9,6 +13,10 @@ let choose_house (h: string): ANSITerminal.style option =
   | "hufflepuff" -> Some ANSITerminal.yellow
   | _ -> None
 
+(** [name house] takes in the ANSITerminal colour [house] and records the 
+    player's name to be used in gameplay. 
+    The name specified should be regular ASCII alphabet with no numbers 
+    or special characters. Method will repeat until a valid input is received.*)
 let rec name house =
   ANSITerminal.(
     print_string [magenta] "Now, your name. Let's keep it simple, 
@@ -27,6 +35,9 @@ let rec name house =
       Try again\n"
     ); name house)
 
+(** [house] begins the game by asking the player for their chose Harry Potter
+    house. It will progress to name and gameplay if a valid name is provided
+    (case-insensitive) or repeat until a valid one is inputted.*)
 let rec house () =
   ANSITerminal.(
     print_string [magenta] "\nWelcome to ";
@@ -44,5 +55,5 @@ let rec house () =
   | None -> ANSITerminal.(print_string [magenta] "... That isn't a house. 
     They are literally in front of you. Let's try this again.\n"); house ()
 
-
+(**/**)
 let () = house ()
