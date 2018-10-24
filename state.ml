@@ -16,12 +16,12 @@ module type Command = sig
 
   val get_hp: player -> player_hp 
 
-  val get_hand: hand -> Hogwarts.spell list
+  val get_hand: hand -> Hogwarts.spell_info list
 
-  val draw: Hogwarts.spell list ->
-    hand -> deck -> Hogwarts.spell list * Hogwarts.spell list
+  val draw: Hogwarts.spell_info list ->
+    hand -> deck -> Hogwarts.spell_info list * Hogwarts.spell_info list
 
-  val cast : 'a -> Hogwarts.spell -> hand -> 'a * Hogwarts.spell list
+  val cast : 'a -> Hogwarts.spell_info -> hand -> 'a * Hogwarts.spell_info list
 
 end 
 
@@ -36,11 +36,11 @@ module Command: Command = struct
   }
 
   type hand = {
-    hand : spell list;
+    hand : spell_info list;
   }
 
   type deck = {
-    deck : spell list;
+    deck : spell_info list;
   }
 
   let get_name st =
