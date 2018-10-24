@@ -22,6 +22,12 @@ type player_state = {
 
 type t = player_state
 
+let init_player hogwarts name =
+  {player={name=name; hp=100}; hand=[]; deck=(Hogwarts.get_spells hogwarts)}
+
+let init_enemy hogwarts =
+  {player={name="Malfoy"; hp=100}; hand=[]; deck=(Hogwarts.get_spells hogwarts)}
+
 (** update hand and deck
     returns a tuple 
     of updated hand and 

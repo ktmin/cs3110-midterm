@@ -24,6 +24,11 @@ val get_hand: t -> hand
 val get_deck: t -> deck
 
 val to_list_hand: t -> Hogwarts.spell_info list
+
+val init_player: Hogwarts.t -> string -> t
+
+val init_enemy: Hogwarts.t -> t
+
 (* val cast : Hogwarts.spell_name -> 
    Hogwarts.damage * t
 

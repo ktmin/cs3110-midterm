@@ -65,3 +65,6 @@ let spell_damage hogwarts spell =
 
 let spell_name sp =
   sp.name
+
+let get_spells hogwarts =
+  hogwarts.spells

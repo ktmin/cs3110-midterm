@@ -49,3 +49,5 @@ val spell_description: t -> spell_name -> description
 val spell_damage: t -> spell_name -> damage
 
 val spell_name: spell_info -> spell_name
+
+val get_spells: t -> spell_info list

@@ -80,7 +80,9 @@ let rec name house =
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play ) else (ANSITerminal.(
+     play (State.init_player Hogwarts player_name) (State.init_enemy Hogwarts)
+       house Hogwarts
+    ) else (ANSITerminal.(
       print_string [magenta] "Simple stuff, 
       I wonder how you will fare in Hogwarts if you struggle at even this... 
       Try again\n"
