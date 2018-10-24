@@ -1,7 +1,7 @@
 open Hogwarts
 
 type command = 
-  | Draw of string list
+  | Draw 
   | Cast of string list 
   | Describe of string list
   | View 
@@ -24,7 +24,7 @@ let parse_list list =
   | [] -> raise Invalidcommand
   | [""] -> raise Invalidcommand 
   | h::t ->
-    if ((h="draw") && (t != [])) then Draw (no_blank_elem t) else
+    if ((h="draw") && (t = [])) then Draw else
 
     if ((h ="cast") && (t != [])) then Cast (no_blank_elem t) else
 
