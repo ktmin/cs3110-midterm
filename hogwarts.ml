@@ -1,21 +1,23 @@
 open Yojson.Basic.Util
 
 type spell_name = string
-type spell_damage = int 
+type damage = int 
 type target = string
 type description = string
-exception UnknownSpell of spell_name
+
 
 (** [spell] stores each spell as a record with fields name as a string, damage 
     as an int, target as a string, and description as a string  *)
-type spell = {
+type spell_info = {
   name: spell_name;
-  damage: spell_damage;
+  damage: damage;
   target: target;
   description: description;
 }
 
-type t = {spells: spell list}
+exception UnknownSpell of spell_name
+
+type t = {spells: spell_info list}
 
 (** [create_spell j] extracts the spell information from [j]  *)
 let create_spell j = 
@@ -55,6 +57,14 @@ let add_spell hogwarts spell =
   let spells = hogwarts.spells in {spells = spell::spells}
 
 
+let spell_description hogwarts spell = 
+  let spell' = search hogwarts spell in spell'.description
 
+let spell_damage hogwarts spell = 
+  let spell' = search hogwarts spell in spell'.damage
 
+let spell_name sp =
+  sp.name
 
+let get_spells hogwarts =
+  hogwarts.spells

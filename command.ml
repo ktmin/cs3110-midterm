@@ -11,13 +11,13 @@ type command =
 
 exception Invalidcommand
 
+(**removes all blanks from a list*)
 let rec no_blank_elem list = 
   match list with 
   | [] -> []
   | h :: t -> if ((h = "")) then 
       no_blank_elem t else 
       h :: no_blank_elem t
-
 
 let parse_list list = 
   match list with
@@ -37,6 +37,8 @@ let parse_list list =
     if ((h = "forfeit") && (t = [])) then Forfeit else
       raise Invalidcommand 
 
+(**prase a string and outputs its corresponding command.
+   Outputs an exception Invalidcommand if a command is malfored*)
 let parse str = 
   let trim_str = String.trim str in 
   let string = String.lowercase_ascii(trim_str) in   
