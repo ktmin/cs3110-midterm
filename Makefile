@@ -14,6 +14,13 @@ build:
 
 clean:
 	ocamlbuild -clean
+
+play:
+	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
+ 
+test:
+	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
+
 	
 
 play:
