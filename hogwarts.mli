@@ -4,6 +4,7 @@
    spells. 
 *)
 
+
 (** The abstract type of values representing hogwarts. *)
 type t
 
@@ -11,3 +12,5 @@ type t
     Requires: [j] is a valid JSON spell representation. *)
 val from_json : Yojson.Basic.json -> t
 
+(** [search s] looks for the spell [s] and returns the spell.
+    Raises: UnknownSpellError  *)
