@@ -9,8 +9,6 @@ type t
 
 type player_name = string
 
-type player_hp = int
-
 type player
 
 type hand
@@ -28,6 +26,8 @@ val to_list_hand: t -> Hogwarts.spell_info list
 val init_player: Hogwarts.t -> string -> t
 
 val init_enemy: Hogwarts.t -> t
+
+val get_hp: t -> int
 
 (* val cast : Hogwarts.spell_name -> 
    Hogwarts.damage * t

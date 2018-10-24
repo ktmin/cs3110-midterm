@@ -2,12 +2,11 @@ open Yojson.Basic.Util
 open Hogwarts
 
 type player_name = string
-type player_hp = int
 
 
 type player = {
   name : player_name;
-  hp: player_hp;
+  hp: int;
 }
 
 type hand = spell_info list
@@ -21,6 +20,9 @@ type player_state = {
 }
 
 type t = player_state
+
+let get_hp player = 
+  player.player.hp
 
 let init_player hogwarts name =
   {player={name=name; hp=100}; hand=[]; deck=(Hogwarts.get_spells hogwarts)}

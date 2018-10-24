@@ -2,9 +2,18 @@ open Hogwarts
 open Command
 open State
 
+type end_state = Win | Loss | Continue
+
 let enemy_turn (enemy:player) (player:player) = ()
 (* let enemy_hand = get_hand enemy in () *)
 
+let check_conditions (player:player) (enemy:player) : end_state =
+  if State.get_hp enemy <= 0 then
+    Win
+  else if State.get_hp player <= 0 then
+    Loss
+  else
+    Continue
 (** [list_cards spells house] prints the names of all [spells] in the colour
     of [house]*)
 let rec list_cards (spells:spell_info list) (house:ANSITerminal.style) =
@@ -17,15 +26,22 @@ let rec list_cards (spells:spell_info list) (house:ANSITerminal.style) =
       ANSITerminal.(print_string [house] ((Hogwarts.spell_name h) ^ " "));
       list_cards t house
     )
-(**[play game] TODO:*)
+(** [play player enemy house name] is the main game loop that takes in [player]
+    and [enemy] states, [house] text color and [name] hogwarts game state and 
+    progresses based on player inputs until a win/loss condition is fulfilled.*)
 let rec play (player:State.t) (enemy:State.t)
     (house: ANSITerminal.style) (name: Hogwarts.t)  =
-  (*TODO: print desc once State.t is realized*)
   ANSITerminal.print_string [house] "Enter an action to perform > ";
   let cmd = read_line () in
   try (
     match parse cmd with
-    | Draw -> ()
+    | Draw -> (
+        let drawn = State.draw player in
+        let chosen_card = List.hd(State.to_list_hand drawn) in
+        ANSITerminal.(print_string [house] ("You drew: "^
+                                            (Hogwarts.spell_name chosen_card)));
+        play drawn enemy house name
+      )
     | Cast lst -> ()
     | Describe lst -> (
         let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
