@@ -1,67 +1,76 @@
-open Hogwarts
 open Yojson.Basic.Util
+open Hogwarts
 
-type player_name = string
-type player_health = int
-exception UnknownPlayer of player_name  
+module type Command = sig
+  type player_name
 
-type player = {
-  name : player_name;
-  health: player_health;
-}
+  type player_hp
 
-type hand = {
-  hand : spell list;
-}
+  type player
 
-type deck = {
-  deck : spell list;
-}
+  type hand
 
-let get_player j = {
-  name = j |> member "name" |> to_string;
-  health = j |> member "health" |> to_int;   
-}
+  type deck
 
-let get_deck j = { 
-  deck = j |> member "spells" |> to_list |> List.map create_spell; 
-}
+  val get_name: player -> player_name
 
-let get_name st =
-  st.name
+  val get_hp: player -> player_hp 
 
-let get_health st = 
-  st.health 
+  val get_hand: hand -> Hogwarts.spell list
 
-let get_hand st =
-  st.hand
+  val draw: Hogwarts.spell list ->
+    hand -> deck -> Hogwarts.spell list * Hogwarts.spell list
 
-(** update hand and deck
-    returns a tuple 
-    of updated hand and 
-    deck*)
-let draw chosen st1 st2=
-  (st1.hand @ chosen, 
-  match st2.deck with
-  | [] -> []
-  | h :: t -> t  
-  )  
+  val cast : 'a -> Hogwarts.spell -> hand -> 'a * Hogwarts.spell list
 
-(**from stack overflow. plan to write my own code*)
-let rec shuffle lst =
-let nd = List.map (fun c -> (Random.bits (), c)) lst in
-    let sond = List.sort compare nd in
-    List.map snd sond
+end 
+
+module Command: Command = struct  
+  type player_name = string
+  type player_hp = int
 
 
+  type player = {
+    name : player_name;
+    hp: player_hp;
+  }
 
-let rec cast chosen st =
-  List.filter (fun x -> x <> chosen) st.hand
-  
+  type hand = {
+    hand : spell list;
+  }
 
-let rec casted damage st =
-  st.health - damage   
+  type deck = {
+    deck : spell list;
+  }
 
+  let get_name st =
+    st.name
+
+  let get_hp st = 
+    st.hp 
+
+  let get_hand st =
+    st.hand
+
+  (** update hand and deck
+      returns a tuple 
+      of updated hand and 
+      deck*)
+  let draw chosen st1 st2=
+    (st1.hand @ chosen, 
+     match st2.deck with
+     | [] -> []
+     | h :: t -> t  
+    ) 
+
+  let cast damage chosen st =    
+    (damage,List.filter (fun x -> x <> chosen) st.hand)
+
+  (** returns hp after the spell is casted*)
+  let casted damage st = 
+    st.hp - damage  
+
+end 
 
 
 
