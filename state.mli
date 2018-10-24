@@ -26,3 +26,5 @@ val draw: Hogwarts.spell_info list ->
 
 val cast : Hogwarts.t -> Hogwarts.spell_name -> hand -> 
   Hogwarts.damage * Hogwarts.spell_info list
+
+val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player
