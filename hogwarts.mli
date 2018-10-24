@@ -47,3 +47,5 @@ val spell_description: t -> spell_name -> description
 (** [spell_damage h s] is the amount of damage that spell [s] in [h] inflicts. 
     Raises: UnknownSpell if spell [s] is not in [h] *)
 val spell_damage: t -> spell_name -> damage
+
+val spell_name: spell_info -> spell_name

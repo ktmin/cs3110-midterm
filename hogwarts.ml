@@ -63,3 +63,5 @@ let spell_description hogwarts spell =
 let spell_damage hogwarts spell = 
   let spell' = search hogwarts spell in spell'.damage
 
+let spell_name sp =
+  sp.name

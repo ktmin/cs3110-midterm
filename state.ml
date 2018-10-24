@@ -10,36 +10,35 @@ type player = {
   hp: player_hp;
 }
 
-type hand = {
-  hand : spell_info list;
+type hand = spell_info list
+
+type deck = spell_info list
+
+type player_state = {
+  player: player;
+  hand: hand;
+  deck: deck;
 }
 
-type deck = {
-  deck : spell_info list;
-}
-
-let get_name st =
-  st.name
-
-let get_hp st = 
-  st.hp 
-
-let get_hand st =
-  st.hand
+type t = player_state
 
 (** update hand and deck
     returns a tuple 
     of updated hand and 
     deck*)
-let draw chosen st1 st2=
-  (st1.hand @ chosen, 
-   match st2.deck with
-   | [] -> []
-   | h :: t -> t  
-  ) 
+let draw (pl:player_state) =
+  match pl.deck with
+  | [] -> pl
+  | h::t -> {pl with hand=(h::pl.hand); deck=t}
+
+let get_hand (pl:player_state) : hand =
+  pl.hand
+
+let get_deck (pl:player_state) : deck =
+  pl.deck
 
 let cast hogwarts chosen st =    
-  let spell = Hogwarts.search hogwarts chosen in 
+  let spell = search hogwarts chosen in 
   (Hogwarts.spell_damage hogwarts chosen , 
    List.filter (fun x -> x <> spell) st.hand)
 
@@ -48,8 +47,10 @@ let casted hogwarts spell st =
   let new_hp = st.hp - Hogwarts.spell_damage hogwarts spell in 
   {st with hp= new_hp }
 
-
-
+(*TODO: remove this*)
+let to_list_hand pl : spell_info list =
+  pl.hand
+(*Keeping this for later when we return to module method*)
 (* module type Command = sig
    type player_name
 

@@ -5,6 +5,8 @@
    cause the state to change.
 *)
 
+type t
+
 type player_name = string
 
 type player_hp = int
@@ -15,16 +17,14 @@ type hand
 
 type deck
 
-val get_name: player -> player_name
+val draw: t -> t
 
-val get_hp: player -> player_hp 
+val get_hand: t -> hand
 
-val get_hand: hand -> Hogwarts.spell_info list
+val get_deck: t -> deck
 
-val draw: Hogwarts.spell_info list ->
-  hand -> deck -> Hogwarts.spell_info list * Hogwarts.spell_info list
+val to_list_hand: t -> Hogwarts.spell_info list
+(* val cast : Hogwarts.spell_name -> 
+   Hogwarts.damage * t
 
-val cast : Hogwarts.t -> Hogwarts.spell_name -> hand -> 
-  Hogwarts.damage * Hogwarts.spell_info list
-
-val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player
+   val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player *)
