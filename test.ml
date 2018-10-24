@@ -4,7 +4,7 @@ open State
 open Command 
 
 
-let command_tests = [
+let tests = [
   "test 1 " >:: (fun _ -> 
       assert_equal (parse " draw ") (Draw));
 
@@ -19,6 +19,16 @@ let command_tests = [
       let f = fun () -> parse("  ") in
       assert_raises (Invalidcommand) f)
 ]
+
+let suite = 
+  "test for A6" >::: List.flatten[
+    tests;
+  ]
+
+let _ = run_test_tt_main suite
+
+
+
 
 
 
