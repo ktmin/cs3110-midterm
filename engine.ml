@@ -7,13 +7,14 @@ type end_state = Win | Loss | Continue
 let enemy_turn (enemy:player) (player:player) = ()
 (* let enemy_hand = get_hand enemy in () *)
 
-(* let check_conditions (player:player) (enemy:player) : end_state =
-   if State.get_hp enemy <= 0 then
+let check_conditions (player:State.t) (enemy:State.t) : end_state =
+  if State.get_hp enemy <= 0 then
     Win
-   else if State.get_hp player <= 0 then
+  else if State.get_hp player <= 0 then
     Loss
-   else
-    Continue *)
+  else
+    Continue
+
 (** [list_cards spells house] prints the names of all [spells] in the colour
     of [house]*)
 let rec list_cards (spells:spell_info list) (house:ANSITerminal.style) =
@@ -42,7 +43,14 @@ let rec play (player:State.t) (enemy:State.t)
                                             (Hogwarts.spell_name chosen_card)));
         play drawn enemy house name
       )
-    | Cast lst -> ()
+    | Cast lst -> (
+        let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
+        ANSITerminal.(print_string [house] 
+                        ("You cast "^sp_name^"\n"
+                         ^(Hogwarts.spell_description name sp_name))
+                     );
+        play player enemy house name
+      )
     | Describe lst -> (
         let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
         ANSITerminal.(print_string [house] 
