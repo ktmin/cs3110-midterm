@@ -48,6 +48,11 @@ val spell_description: t -> spell_name -> description
     Raises: UnknownSpell if spell [s] is not in [h] *)
 val spell_damage: t -> spell_name -> damage
 
+(** [spell_name s] is the name of the spell [s] *)
 val spell_name: spell_info -> spell_name
 
+(** [get_spells t] is the list of spells in [t] *)
 val get_spells: t -> spell_info list
+
+(** [spell_target s] is the target for the spell [s] *)
+val spell_target : spell_info -> target

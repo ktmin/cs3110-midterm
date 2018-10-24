@@ -9,8 +9,8 @@ type command =
   | View 
   | Instruction  
   | Forfeit
-  | Status
-  | Help
+  | Status 
+  | Help 
 
 exception Invalidcommand
 
