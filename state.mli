@@ -29,7 +29,6 @@ val init_enemy: Hogwarts.t -> t
 
 val get_hp: t -> int
 
-val cast : Hogwarts.t -> Hogwarts.spell_name -> t -> 
-  Hogwarts.damage * Hogwarts.spell_info list
+val cast : 'a -> Hogwarts.spell_info -> player_state -> player_state
 
 (*val casted : Hogwarts.t -> Hogwarts.spell_name -> player -> player*)

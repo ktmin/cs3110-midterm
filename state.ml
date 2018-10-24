@@ -45,10 +45,10 @@ let get_hand (pl:player_state) : hand =
 let get_deck (pl:player_state) : deck =
   pl.deck
 
+(**returns new hand after a spell is casted*)
 let cast hogwarts chosen st =    
-  let spell = search hogwarts chosen in 
-  (Hogwarts.spell_damage hogwarts chosen , 
-   List.filter (fun x -> x <> spell) st.hand)
+  let new_hand = List.filter (fun x -> x <> chosen) st.hand in
+  {st with hand = new_hand}
 
 (** returns hp after the spell is casted*)
 let casted hogwarts spell st = 
