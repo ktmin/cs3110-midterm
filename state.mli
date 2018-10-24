@@ -21,6 +21,7 @@ type hand
 
 type deck
 
+<<<<<<< HEAD
 (** update hand and deck
     after draw*)
 val draw: t -> t
@@ -54,5 +55,24 @@ val update : Hogwarts.t -> Hogwarts.spell_name -> t -> t
 (** Given Hogwarts state, spell info, and
     type t, returns an updated verison of type t*)
 val cast : Hogwarts.t -> Hogwarts.spell_info -> t -> t -> t
+=======
+val draw : t -> t
+
+val get_hand : t -> hand
+
+val get_deck : t -> deck
+
+val to_list_hand : t -> Hogwarts.spell_info list
+
+val init_player : Hogwarts.t -> string -> t
+
+val init_enemy : Hogwarts.t -> t
+
+val get_hp : t -> int
+
+val update : t -> Hogwarts.spell_info -> t
+
+val cast : Hogwarts.spell_info -> t -> t -> t
+>>>>>>> 73c870566efeef65bc7172ab7a79152bf40b488b
 
 

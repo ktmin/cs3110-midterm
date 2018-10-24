@@ -62,11 +62,11 @@ let add_spell hogwarts spell =
 let spell_description hogwarts spell = 
   let spell' = search hogwarts spell in spell'.description
 
-let spell_damage hogwarts spell = 
-  let spell' = search hogwarts spell in spell'.damage
+let spell_damage spell = 
+  spell.damage
 
-let spell_name sp =
-  sp.name
+let spell_name spell =
+  spell.name
 
 let spell_target spell = 
   spell.target

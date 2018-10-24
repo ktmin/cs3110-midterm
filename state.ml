@@ -42,17 +42,15 @@ let get_hand (pl:t) : hand =
 let get_deck (pl:t) : deck =
   pl.deck
 
-let update hogwarts spell st = 
-  let spell' = Hogwarts.search hogwarts spell in 
-  let damage = st.player.hp - (Hogwarts.spell_damage hogwarts spell) in
-  let updated_hand = List.filter (fun x -> x <> spell') st.hand in 
+let update st spell = 
+  let damage = st.player.hp - (Hogwarts.spell_damage spell) in
+  let updated_hand = List.filter (fun x -> x <> spell) st.hand in 
   let updated_player = {st.player with hp = damage} in 
   {st with player = updated_player; hand = updated_hand }
 
-let cast hogwarts spell st1 st2 =
-  let spell_name = Hogwarts.spell_name spell in 
-  if Hogwarts.spell_target spell = "self" then update hogwarts spell_name st1 
-  else update hogwarts spell_name st2
+let cast spell st1 st2 =
+  if Hogwarts.spell_target spell = "self" then update st1 spell 
+  else update st2 spell
 
 
 (** returns hp after the spell is casted*)
