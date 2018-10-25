@@ -14,33 +14,33 @@
     },
     {
       "name": "Episky",
-      "damage": -5,
+      "damage": -2,
       "target": "self",
       "description": "Used to heal minor injuries."
     },
     {
-      "name": "Damage Potion",
-      "damage": 10,
-      "target": "enemy",
-      "description": "Give 10 damage to your opponent."
-    },
-    {
-      "name": "Heal Potion",
-      "damage": -10,
+      "name": "Anapneo",
+      "damage": -5,
       "target": "self",
-      "description": "Gain 10 hp"
+      "description": "Clears the target's airway, should they find it blocked"
     },
     {
-      "name": "Venom",
-      "damage": 20,
+      "name": "Crucio",
+      "damage": 40,
       "target": "enemy",
-      "description": "Give 20 damage to your opponent"
+      "description": "The Second Unforgivable Curese, the Cruciatus Curse; Tortures your opponent mercilessly."
     },
     {
-      "name": "Fountain of Youth",
-      "damage": -20,
+      "name": "Ferula",
+      "damage": -5,
       "target": "self",
-      "description": "Gain 20 hp"
+      "description": "Binds a broken limb with a splint and bandages, tightly wrapped."
+    },
+    {
+      "name": "Flipendo",
+      "damage": 5,
+      "target": "target",
+      "description": "Also knows as the Knockback Jinx, pushes or flips something backwards."
     },
     {
       "name": "Love",

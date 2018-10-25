@@ -50,6 +50,7 @@ let search hogwarts spell =
   let spells = get_spells hogwarts in 
   search_helper spells spell
 
+(**Implementation credit goes to A5 shuffle method provided to us.  *)
 let shuffle hogwarts = 
   let spells = get_spells hogwarts in 
   {
