@@ -1,8 +1,52 @@
 type end_state = Win | Loss | Continue
 
-let enemy_turn (enemy:State.player) (player:State.player) = ()
-(* let enemy_hand = get_hand enemy in () *)
+(** [enemy_turn hogwarts enemy player house] takes in the arguments with enemy
+    as the caster and performs a basic naive action (attacking with as much 
+    damage each time as possible). It returns a tuple where the first argument 
+    is the new enemy state and the second, the new player state.*)
+let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t) 
+    (player:State.t) (house:ANSITerminal.style) : (State.t*State.t)=
+  (*Quick health check*)
+  if (State.get_hp enemy) <= 0 then (enemy,player)
+  else (
+    let enemy_hand = State.to_list_hand enemy in
+    if (List.length enemy_hand) < 7 then
+      enemy_turn hogwarts (State.draw enemy) player house
+    else (
+      (*What this does is either tries to kill the player if one spell exists
+        or does as much damage as possible. For milestone one I am not letting it
+        use self spells because it will glitch the game out because of how state
+        currently updates*)
+      let killers = List.filter (fun a -> 
+          (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
+      match killers with
+      | h::_ -> (
+          ANSITerminal.(print_string [house] 
+                          ("\nEnemy casts "^(Hogwarts.spell_name h)));
+          State.cast h enemy player)
+      | [] -> (
+          let max_damage = List.fold_left (fun max a -> 
+              let damage = Hogwarts.spell_damage a in
+              if max < damage then damage else max) 0 enemy_hand in 
+          let target_spell = 
+            List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) enemy_hand 
+          in (
+            if Hogwarts.spell_target target_spell = "self" then (
+              ANSITerminal.(print_string [house] "\n Opponent skips their go");
+              ((State.draw enemy),player))
+            else (
+              ANSITerminal.(print_string [house] 
+                              ("\nEnemy casts "^
+                               (Hogwarts.spell_name target_spell)));
+              State.cast target_spell enemy player))
+        )
+    ))
 
+(** [check_conditions player enemy] checks to see whether [player] or [enemy]
+    is below 0 health and if so, produces a Loss or Win state respictively if 
+    one has less than required health. Otherwise Continue is produced.
+    If both are under 0 health then by default the method will currently award 
+    the player the victory.*)
 let check_conditions (player:State.t) (enemy:State.t) : end_state =
   if State.get_hp enemy <= 0 then
     Win
@@ -30,8 +74,8 @@ let rec list_cards (spells:Hogwarts.spell_info list) (house:ANSITerminal.style)=
 let rec play (player:State.t) (enemy:State.t)
     (house: ANSITerminal.style) (name: Hogwarts.t)  =
   match check_conditions player enemy with
-  | Win -> (ANSITerminal.(print_string [house] "Congrats you win!"); exit 0)
-  | Loss -> (ANSITerminal.(print_string [house] "You lose :("); exit 0)
+  | Win -> (ANSITerminal.(print_string [house] "\nCongrats you win!\n"); exit 0)
+  | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :(\n"); exit 0)
   | Continue -> (
       ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
       let cmd = read_line () in
@@ -45,15 +89,18 @@ let rec play (player:State.t) (enemy:State.t)
             play drawn enemy house name
           )
         | Cast lst -> (
-            let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
+            let sp_name = String.concat " " lst in
             let info = Hogwarts.search name sp_name in
             if(List.mem (info) (State.to_list_hand player)) then (
               ANSITerminal.(print_string [house] ("You cast "^sp_name));
               let cast_update = State.cast info player enemy in (
-                if(Hogwarts.spell_damage info) < 0 then (
-                  play (fst cast_update) enemy house name
+                if(Hogwarts.spell_target info) = "self" then (
+                  let tup = enemy_turn name enemy (fst cast_update) house in
+                  play (snd tup) (fst tup) house name
                 ) else (
-                  play (fst cast_update) (snd cast_update) house name
+                  let tup = enemy_turn name (snd cast_update) 
+                      (fst cast_update) house in
+                  play (snd tup) (fst tup) house name
                 ))
             )
             else (
@@ -63,7 +110,7 @@ let rec play (player:State.t) (enemy:State.t)
             )
           )
         | Describe lst -> (
-            let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
+            let sp_name = String.concat " " lst in
             ANSITerminal.(print_string [house] 
                             ("Description for "^sp_name^":\n"
                              ^(Hogwarts.spell_description name sp_name))
@@ -116,8 +163,11 @@ let play_init f player house =
   let json = Yojson.Basic.from_file f in
   let hogwarts = Hogwarts.from_json json in 
   let player_state = State.init_player hogwarts player in
-  let enemy_state = State.init_enemy hogwarts in
-  play player_state enemy_state house hogwarts
+  let enemy_state = State.init_enemy hogwarts in (
+    ANSITerminal.(print_string [house] 
+                    ("\nYour opponent is "^
+                     (State.get_name enemy_state)^"!\n"));
+    play player_state enemy_state house hogwarts)
 
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 

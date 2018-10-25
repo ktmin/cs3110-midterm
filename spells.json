@@ -1,6 +1,12 @@
 {
   "spells": [
     {
+      "name": "Avada Kedavra",
+      "damage": 100,
+      "target": "enemy",
+      "description": "also known as the Killing Curse, kills a person instantaneously and without injury"
+    },
+    {
       "name": "Confringo",
       "damage": 5,
       "target": "enemy",
@@ -14,63 +20,51 @@
     },
     {
       "name": "Episky",
-      "damage": -2,
+      "damage": -10,
       "target": "self",
       "description": "Used to heal minor injuries."
-    },
-    {
-      "name": "Anapneo",
-      "damage": -5,
-      "target": "self",
-      "description": "Clears the target's airway, should they find it blocked"
     },
     {
       "name": "Crucio",
       "damage": 40,
       "target": "enemy",
-      "description": "The Second Unforgivable Curese, the Cruciatus Curse; Tortures your opponent mercilessly."
+      "description": "The Second Unforgivable Curse, the Cruciatus Curse; Tortures your opponent mercilessly."
+    },
+    {
+      "name": "Expelliarmus",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Disarms the target of the spell, such as knocking their wand out of their hand."
     },
     {
       "name": "Ferula",
-      "damage": -5,
+      "damage": -10,
       "target": "self",
       "description": "Binds a broken limb with a splint and bandages, tightly wrapped."
     },
     {
-      "name": "Flipendo",
-      "damage": 5,
-      "target": "target",
-      "description": "Also knows as the Knockback Jinx, pushes or flips something backwards."
-    },
-    {
-      "name": "Love",
-      "damage": -10,
-      "target": "enemy",
-      "description": "Give 10 hp for your opponent"
-    },
-    {
-      "name": "Water",
-      "damage": 10,
-      "target": "self",
-      "description": "Gain 10 hp"
-    },
-    {
-      "name": "Attack",
-      "damage": 10,
-      "target": "self",
-      "description": "Give 10 damage to your opponent"
-    },
-    {
-      "name": "Upper cut",
+      "name": "Incarcerous",
       "damage": 15,
-      "target": "self",
-      "description": "Give 15 damage to your opponent"
+      "target": "enemy",
+      "description": "Conjures up ropes, which then bind an opponent."
     },
     {
-      "name": "Annoy",
-      "damage": 0,
-      "target": "self",
-      "description": "Annoy your opponent"
+      "name": "Sectumsempra",
+      "damage": 90,
+      "target": "enemy",
+      "description": "Causes lacerations to appear all over an opponent’s body, as if they had been cut by an invisible sword."
+    },
+    {
+      "name": "Stupefy",
+      "damage": 20,
+      "target": "enemy",
+      "description": "Stupefies an opponent, or knocks them insensible temporarily."
+    },
+    {
+      "name": "Obliviate",
+      "damage": 50,
+      "target": "enemy",
+      "description": "Makes a person 'oblivious', erasing their memories of an event."
     }
   ],
   "starting spell": 0

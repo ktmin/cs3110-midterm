@@ -62,4 +62,4 @@ val update_caster : t -> Hogwarts.spell_info -> t
     be the same record twice*)
 val cast : Hogwarts.spell_info -> t -> t -> t*t
 
-
+val get_name : t -> player_name
