@@ -10,7 +10,7 @@ let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t)
   if (State.get_hp enemy) <= 0 then (enemy,player)
   else (
     let enemy_hand = State.to_list_hand enemy in
-    if (List.length enemy_hand) < 3 then
+    if (List.length enemy_hand) < 7 then
       enemy_turn hogwarts (State.draw enemy) player house
     else (
       (*What this does is either tries to kill the player if one spell exists
@@ -31,8 +31,9 @@ let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t)
           let target_spell = 
             List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) enemy_hand 
           in (
-            if Hogwarts.spell_target target_spell = "self" then 
-              ((State.draw enemy),player)
+            if Hogwarts.spell_target target_spell = "self" then (
+              ANSITerminal.(print_string [house] "\n Opponent skips their go");
+              ((State.draw enemy),player))
             else (
               ANSITerminal.(print_string [house] 
                               ("\nEnemy casts "^
@@ -93,7 +94,7 @@ let rec play (player:State.t) (enemy:State.t)
             if(List.mem (info) (State.to_list_hand player)) then (
               ANSITerminal.(print_string [house] ("You cast "^sp_name));
               let cast_update = State.cast info player enemy in (
-                if(Hogwarts.spell_damage info) < 0 then (
+                if(Hogwarts.spell_target info) = "self" then (
                   let tup = enemy_turn name enemy (fst cast_update) house in
                   play (snd tup) (fst tup) house name
                 ) else (

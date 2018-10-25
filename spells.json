@@ -56,21 +56,21 @@
     },
     {
       "name": "Water",
-      "damage": 10,
+      "damage": -10,
       "target": "self",
       "description": "Gain 10 hp"
     },
     {
       "name": "Attack",
       "damage": 10,
-      "target": "self",
+      "target": "enemy",
       "description": "Give 10 damage to your opponent"
     },
     {
       "name": "Upper cut",
       "damage": 15,
       "target": "self",
-      "description": "Give 15 damage to your opponent"
+      "description": "Give 15 damage to yourself"
     },
     {
       "name": "Annoy",
