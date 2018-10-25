@@ -25,58 +25,46 @@
       "description": "Used to heal minor injuries."
     },
     {
-      "name": "Damage Potion",
-      "damage": 10,
+      "name": "Crucio",
+      "damage": 40,
       "target": "enemy",
-      "description": "Give 10 damage to your opponent."
+      "description": "The Second Unforgivable Curse, the Cruciatus Curse; Tortures your opponent mercilessly."
     },
     {
-      "name": "Heal Potion",
+      "name": "Expelliarmus",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Disarms the target of the spell, such as knocking their wand out of their hand."
+    },
+    {
+      "name": "Ferula",
       "damage": -10,
       "target": "self",
-      "description": "Gain 10 hp"
+      "description": "Binds a broken limb with a splint and bandages, tightly wrapped."
     },
     {
-      "name": "Venom",
+      "name": "Incarcerous",
+      "damage": 15,
+      "target": "enemy",
+      "description": "Conjures up ropes, which then bind an opponent."
+    },
+    {
+      "name": "Sectumsempra",
+      "damage": 90,
+      "target": "enemy",
+      "description": "Causes lacerations to appear all over an opponent’s body, as if they had been cut by an invisible sword."
+    },
+    {
+      "name": "Stupefy",
       "damage": 20,
       "target": "enemy",
-      "description": "Give 20 damage to your opponent"
+      "description": "Stupefies an opponent, or knocks them insensible temporarily."
     },
     {
-      "name": "Fountain of Youth",
-      "damage": -20,
-      "target": "self",
-      "description": "Gain 20 hp"
-    },
-    {
-      "name": "Love",
-      "damage": -10,
+      "name": "Obliviate",
+      "damage": 50,
       "target": "enemy",
-      "description": "Give 10 hp for your opponent"
-    },
-    {
-      "name": "Water",
-      "damage": -10,
-      "target": "self",
-      "description": "Gain 10 hp"
-    },
-    {
-      "name": "Attack",
-      "damage": 10,
-      "target": "enemy",
-      "description": "Give 10 damage to your opponent"
-    },
-    {
-      "name": "Upper cut",
-      "damage": 15,
-      "target": "self",
-      "description": "Give 15 damage to yourself"
-    },
-    {
-      "name": "Annoy",
-      "damage": 0,
-      "target": "self",
-      "description": "Annoy your opponent"
+      "description": "Makes a person 'oblivious', erasing their memories of an event."
     }
   ],
   "starting spell": 0
