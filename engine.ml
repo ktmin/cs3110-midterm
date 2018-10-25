@@ -110,7 +110,7 @@ let rec play (player:State.t) (enemy:State.t)
             )
           )
         | Describe lst -> (
-            let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
+            let sp_name = String.concat " " lst in
             ANSITerminal.(print_string [house] 
                             ("Description for "^sp_name^":\n"
                              ^(Hogwarts.spell_description name sp_name))
