@@ -18,6 +18,9 @@ type t = {
   deck: deck;
 }
 
+let get_name player =
+  player.player.name
+
 let get_hp player = 
   player.player.hp
 

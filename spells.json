@@ -1,6 +1,12 @@
 {
   "spells": [
     {
+      "name": "Avada Kedavra",
+      "damage": 100,
+      "target": "enemy",
+      "description": "also known as the Killing Curse, kills a person instantaneously and without injury"
+    },
+    {
       "name": "Confringo",
       "damage": 5,
       "target": "enemy",
@@ -14,7 +20,7 @@
     },
     {
       "name": "Episky",
-      "damage": -5,
+      "damage": -10,
       "target": "self",
       "description": "Used to heal minor injuries."
     },
