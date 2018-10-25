@@ -38,9 +38,7 @@ let hogwarts_tests =
       ((spell_description spells_json "confringo")); 
 
     assert_equal_test "description test 2" 
-      ("You are on Ho Plaza. Cornell Health is to the southwest. "^
-       "The chimes are playing a concert in the clock tower. "^
-       "Someone tries to hand you a quartercard, but you avoid them.") 
+      ("Used to heal minor injuries.") 
       ((spell_description spells_json "episky"));
 
   ]
