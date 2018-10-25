@@ -23,63 +23,82 @@ let rec list_cards (spells:Hogwarts.spell_info list) (house:ANSITerminal.style)=
       ANSITerminal.(print_string [magenta] ((Hogwarts.spell_name h) ^ " "));
       list_cards t house
     )
+
 (** [play player enemy house name] is the main game loop that takes in [player]
     and [enemy] states, [house] text color and [name] hogwarts game state and 
     progresses based on player inputs until a win/loss condition is fulfilled.*)
 let rec play (player:State.t) (enemy:State.t)
     (house: ANSITerminal.style) (name: Hogwarts.t)  =
-  ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
-  let cmd = read_line () in
-  try (
-    match Command.parse cmd with
-    | Draw -> (
-        let drawn = State.draw player in
-        let chosen_card = List.hd(State.to_list_hand drawn) in
-        ANSITerminal.(print_string [house] ("You drew: "^
-                                            (Hogwarts.spell_name chosen_card)));
-        play drawn enemy house name
-      )
-    | Cast lst -> (
-        let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
-        ANSITerminal.(print_string [house] 
-                        ("You cast "^sp_name^"\n"
-                         ^(Hogwarts.spell_description name sp_name))
-                     );
-        play player enemy house name
-      )
-    | Describe lst -> (
-        let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
-        ANSITerminal.(print_string [house] 
-                        ("Description for "^sp_name^":\n"
-                         ^(Hogwarts.spell_description name sp_name))
-                     );
-        play player enemy house name
-      )
-    | View -> (ANSITerminal.(print_string [house] "The following spells can be
-    casted: \n");
-               list_cards (State.to_list_hand player) house;
-               play player enemy house name)
-    | Instruction -> (ANSITerminal.(print_string [house] "Rules are simple:\n
+  match check_conditions player enemy with
+  | Win -> (ANSITerminal.(print_string [house] "Congrats you win!"); exit 0)
+  | Loss -> (ANSITerminal.(print_string [house] "You lose :("); exit 0)
+  | Continue -> (
+      ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
+      let cmd = read_line () in
+      try (
+        match Command.parse cmd with
+        | Draw -> (
+            let drawn = State.draw player in
+            let chosen_card = List.hd(State.to_list_hand drawn) in
+            ANSITerminal.(print_string [house] 
+                            ("You drew: "^(Hogwarts.spell_name chosen_card)));
+            play drawn enemy house name
+          )
+        | Cast lst -> (
+            let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
+            let info = Hogwarts.search name sp_name in
+            if(List.mem (info) (State.to_list_hand player)) then (
+              ANSITerminal.(print_string [house] ("You cast "^sp_name));
+              let cast_update = State.cast info player enemy in (
+                if(Hogwarts.spell_damage info) < 0 then (
+                  play (fst cast_update) enemy house name
+                ) else (
+                  play (fst cast_update) (snd cast_update) house name
+                ))
+            )
+            else (
+              ANSITerminal.(
+                print_string [house] "Nice try but you don't have that spell");
+              play player enemy house name
+            )
+          )
+        | Describe lst -> (
+            let sp_name = List.fold_left (fun acc a -> acc^a) "" lst in
+            ANSITerminal.(print_string [house] 
+                            ("Description for "^sp_name^":\n"
+                             ^(Hogwarts.spell_description name sp_name))
+                         );
+            play player enemy house name
+          )
+        | View -> (ANSITerminal.(print_string [house] 
+                                   "The following spells can be casted: \n");
+                   list_cards (State.to_list_hand player) house;
+                   play player enemy house name)
+        | Instruction -> (ANSITerminal.(print_string [house] 
+                                          "Rules are simple:\n
     - You have a deck and spell cards that attack the opponent or heal you\n
     - Each turn you can just cast or draw and cast\n
     - You play against an AI that takes its turn after you\n
     - Winner is the person who makes the other reach 0 or less health");
-                      play player enemy house name)
-    | Forfeit -> (ANSITerminal.(print_string [house] "Turns out you weren't so 
-    tough and brave...\n"); exit 0)
-    | Help -> raise Command.Invalidcommand
-    | Status -> ANSITerminal.(print_string [house] "Your health:\n");
-      ANSITerminal.(print_string [magenta] (string_of_int 
-                                              (State.get_hp player)));
-      ANSITerminal.(print_string [house] "\nEnemy's health:\n");
-      ANSITerminal.(print_string [magenta] (string_of_int 
-                                              (State.get_hp enemy)));)
+                          play player enemy house name)
+        | Forfeit -> (ANSITerminal.(
+            print_string [house] 
+              "Turns out you weren't so tough and brave...\n"); exit 0)
+        | Help -> raise Command.Invalidcommand
+        | Status -> ANSITerminal.(print_string [house] "Your health:\n");
+          ANSITerminal.(print_string [magenta] (string_of_int 
+                                                  (State.get_hp player)));
+          ANSITerminal.(print_string [house] "\nEnemy's health:\n");
+          ANSITerminal.(print_string [magenta] (string_of_int 
+                                                  (State.get_hp enemy)));
+          play player enemy house name)
 
 
-  with Command.Invalidcommand ->
-    (ANSITerminal.(print_string [house] "Invalid command. Possible commands: \n
+      with Command.Invalidcommand ->
+        (ANSITerminal.(print_string [house] 
+                         "Invalid command. Possible commands: \n
     Draw, cast [card name], describe [card name], view, instruction, help, 
-    status, forfeit"); play player enemy house name )
+    status, forfeit"); play player enemy house name ))
 
 (** [choose_house h] returns the colour representing the respective Harry Potter
     house as specified by [h]. If the house name is invalid 

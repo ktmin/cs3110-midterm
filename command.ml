@@ -37,6 +37,10 @@ let parse_list list =
     if (h ="instruction" && (t = [])) then Instruction else     
 
     if ((h = "forfeit") && (t = [])) then Forfeit else
+
+    if ((h = "help") && (t = [])) then Help else
+
+    if ((h = "status") && (t = [])) then Status else
       raise Invalidcommand 
 
 (**prase a string and outputs its corresponding command.
