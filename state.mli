@@ -21,7 +21,6 @@ type hand
 
 type deck
 
-<<<<<<< HEAD
 (** update hand and deck
     after draw*)
 val draw: t -> t
@@ -49,30 +48,19 @@ val init_enemy: Hogwarts.t -> t
 val get_hp: t -> int
 
 (** Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*)
-val update : Hogwarts.t -> Hogwarts.spell_name -> t -> t
+    type t, returns an updated verison of type t that reduces/increases the 
+    health of the target user*)
+val update_damage : t -> Hogwarts.spell_info -> t
 
 (** Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*)
-val cast : Hogwarts.t -> Hogwarts.spell_info -> t -> t -> t
-=======
-val draw : t -> t
+    type t, returns an updated verison of type t that removes the 
+    spell card from the target user*)
+val update_caster : t -> Hogwarts.spell_info -> t
 
-val get_hand : t -> hand
+(** Given Hogwarts state, spell info, and
+    type t, returns an updated verison of type t*t. The first being the caster,
+    second the target. If the spell is self targeted then the tuple will just
+    be the same record twice*)
+val cast : Hogwarts.spell_info -> t -> t -> t*t
 
-val get_deck : t -> deck
-
-val to_list_hand : t -> Hogwarts.spell_info list
-
-val init_player : Hogwarts.t -> string -> t
-
-val init_enemy : Hogwarts.t -> t
-
-val get_hp : t -> int
-
-val update : t -> Hogwarts.spell_info -> t
-
-val cast : Hogwarts.spell_info -> t -> t -> t
->>>>>>> 73c870566efeef65bc7172ab7a79152bf40b488b
-
-
+val get_name : t -> player_name
