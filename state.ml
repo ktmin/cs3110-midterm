@@ -27,10 +27,6 @@ let init_player hogwarts name =
 let init_enemy hogwarts =
   {player={name="Malfoy"; hp=100}; hand=[]; deck=(Hogwarts.get_spells hogwarts)}
 
-(** update hand and deck
-    returns a tuple 
-    of updated hand and 
-    deck*)
 let draw (pl:t) =
   match pl.deck with
   | [] -> pl

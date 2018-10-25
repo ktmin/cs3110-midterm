@@ -18,7 +18,11 @@ let assert_equal_test name input expected_output : test =
 let assert_raises_test name input_exn expected_output : test =
   name >:: (fun _ -> assert_raises input_exn  expected_output)
 
-(* let spell : spell_info = {
+
+(** Used to test search *)
+(* type spell = Hogwarts.spell_info
+
+   let (spell1 : spell) = {
    name = "Confringo";
    damage = 5;
    target = "enemy";
@@ -29,7 +33,7 @@ let hogwarts_tests =
   [
 
     (* search *)
-    (* assert_equal_test "search test 1" () *)
+    (* assert_equal_test "search test 1" (spell1) search spells_json "confringo"  *)
 
     (* description *)
     assert_equal_test "description test 1"
@@ -38,9 +42,7 @@ let hogwarts_tests =
       ((spell_description spells_json "confringo")); 
 
     assert_equal_test "description test 2" 
-      ("You are on Ho Plaza. Cornell Health is to the southwest. "^
-       "The chimes are playing a concert in the clock tower. "^
-       "Someone tries to hand you a quartercard, but you avoid them.") 
+      ("Used to heal minor injuries.") 
       ((spell_description spells_json "episky"));
 
   ]

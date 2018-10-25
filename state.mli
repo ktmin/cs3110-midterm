@@ -7,8 +7,7 @@
    cause the state to change.
 *)
 
-(**represents player state including
-   the player itself, hand, and deck*)
+(** The abstract type of values representing a state. *)
 type t
 
 (**represents player name*)
@@ -17,19 +16,19 @@ type player_name = string
 (**represents player*)
 type player
 
+(** The type of hand *)
 type hand
 
+(** The type of deck *)
 type deck
 
-(** update hand and deck
-    after draw*)
+(** [draw t] updates hand and deck of statue [t] *)
 val draw: t -> t
 
-(** Given type t return 
-    hand*)
+(** [get_hand t] is the hand of a state [t] *)
 val get_hand: t -> hand
 
-(** Given type t return deck*)
+(** [get_deck t] is the deck of a state [t] *)
 val get_deck: t -> deck
 
 (**list representation of spells*)
@@ -47,12 +46,10 @@ val init_enemy: Hogwarts.t -> t
     hp*)
 val get_hp: t -> int
 
-(** Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*)
+(** [update t spell] is the upated state [t] *)
 val update : t -> Hogwarts.spell_info -> t
 
-(** Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*)
+(** [cast spell t t] is the effect of using [spell] on state [t] *)
 val cast : Hogwarts.spell_info -> t -> t -> t
 
 
