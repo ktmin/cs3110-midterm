@@ -48,11 +48,19 @@ val init_enemy: Hogwarts.t -> t
 val get_hp: t -> int
 
 (** Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*)
-val update : t -> Hogwarts.spell_info -> t
+    type t, returns an updated verison of type t that reduces/increases the 
+    health of the target user*)
+val update_damage : t -> Hogwarts.spell_info -> t
 
 (** Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*)
-val cast : Hogwarts.spell_info -> t -> t -> t
+    type t, returns an updated verison of type t that removes the 
+    spell card from the target user*)
+val update_caster : t -> Hogwarts.spell_info -> t
+
+(** Given Hogwarts state, spell info, and
+    type t, returns an updated verison of type t*t. The first being the caster,
+    second the target. If the spell is self targeted then the tuple will just
+    be the same record twice*)
+val cast : Hogwarts.spell_info -> t -> t -> t*t
 
 
