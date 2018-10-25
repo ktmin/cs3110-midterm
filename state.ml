@@ -21,14 +21,16 @@ type t = {
 let get_name player =
   player.player.name
 
-let get_hp player = 
+let get_hp player =
   player.player.hp
 
 let init_player hogwarts name =
-  {player={name=name; hp=100}; hand=[]; deck=(Hogwarts.get_spells hogwarts)}
+  {player={name=name; hp=100}; hand=[]; 
+   deck=(QCheck.Gen.(generate1 (shuffle_l (Hogwarts.get_spells hogwarts))))}
 
 let init_enemy hogwarts =
-  {player={name="Malfoy"; hp=100}; hand=[]; deck=(Hogwarts.get_spells hogwarts)}
+  {player={name="Malfoy"; hp=100}; hand=[]; 
+   deck=(QCheck.Gen.(generate1 (shuffle_l (Hogwarts.get_spells hogwarts))))}
 
 (** update hand and deck
     returns a tuple 
