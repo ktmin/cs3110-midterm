@@ -60,9 +60,27 @@ let command_tests =
         assert_raises (Invalidcommand) f)
   ]
 
+let init_state = (init_player spells_json "Clarkson")
+let state_after_draw =
+  draw init_state
+
+let spell =
+  search spells_json "confringo"
+
+let state_after_cast =
+  cast spell init_state state_after_draw
+
 let state_tests =
   [
+    "test 1 " >:: (fun _ ->
+        assert_equal (init_state |> get_hp) (100));
 
+    "test 2 " >:: (fun _ ->
+        assert_equal (state_after_draw |> get_hp) (100));
+
+    (* "test 3 " >:: (fun _ ->
+        assert_equal (state_after_cast |> get_hp)
+          (95)); *)
 
   ] 
 
