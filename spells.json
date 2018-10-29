@@ -4,68 +4,188 @@
       "name": "Avada Kedavra",
       "damage": 100,
       "target": "enemy",
-      "description": "also known as the Killing Curse, kills a person instantaneously and without injury"
+      "description": "also known as the Killing Curse, kills a person instantaneously and without injury",
+      "level": 5,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Confringo",
       "damage": 5,
       "target": "enemy",
-      "description": "Blasting Charm; causes items the charm comes in contact with to burst into flames."
+      "description": "Blasting Charm; causes items the charm comes in contact with to burst into flames.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Confundo",
       "damage": 5,
       "target": "enemy",
-      "description": "Confundus Charm; causes the victim to become confused and disoriented."
+      "description": "Confundus Charm; causes the victim to become confused and disoriented.",
+      "level": 1,
+      "type": "spell",
+      "daze": 2,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Episky",
       "damage": -10,
       "target": "self",
-      "description": "Used to heal minor injuries."
+      "description": "Used to heal minor injuries.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Crucio",
-      "damage": 40,
+      "damage": 15,
       "target": "enemy",
-      "description": "The Second Unforgivable Curse, the Cruciatus Curse; Tortures your opponent mercilessly."
+      "description": "The Second Unforgivable Curse, the Cruciatus Curse; Tortures your opponent mercilessly.",
+      "level": 5,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 5
     },
     {
       "name": "Expelliarmus",
       "damage": 5,
       "target": "enemy",
-      "description": "Disarms the target of the spell, such as knocking their wand out of their hand."
+      "description": "Disarms the target of the spell, such as knocking their wand out of their hand.",
+      "level": 2,
+      "type": "spell",
+      "daze": 1,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 1
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Ferula",
       "damage": -10,
       "target": "self",
-      "description": "Binds a broken limb with a splint and bandages, tightly wrapped."
+      "description": "Binds a broken limb with a splint and bandages, tightly wrapped.",
+      "level": 2,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Incarcerous",
-      "damage": 15,
+      "damage": 7,
       "target": "enemy",
-      "description": "Conjures up ropes, which then bind an opponent."
+      "description": "Conjures up ropes, which then bind an opponent.",
+      "level": 3,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 2
     },
     {
       "name": "Sectumsempra",
-      "damage": 90,
+      "damage": 20,
       "target": "enemy",
-      "description": "Causes lacerations to appear all over an opponent’s body, as if they had been cut by an invisible sword."
+      "description": "Causes lacerations to appear all over an opponent’s body, as if they had been cut by an invisible sword.",
+      "level": 4,
+      "type": "spell",
+      "daze": 0,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 5
     },
     {
       "name": "Stupefy",
       "damage": 20,
       "target": "enemy",
-      "description": "Stupefies an opponent, or knocks them insensible temporarily."
+      "description": "Stupefies an opponent, or knocks them insensible temporarily.",
+      "level": 1,
+      "type": "spell",
+      "daze": 2,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 0
     },
     {
       "name": "Obliviate",
-      "damage": 50,
+      "damage": 10,
       "target": "enemy",
-      "description": "Makes a person 'oblivious', erasing their memories of an event."
+      "description": "Makes a person 'oblivious', erasing their memories of an event.",
+      "level": 3,
+      "type": "spell",
+      "daze": 1,
+      "block": 0,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": 5
     }
-  ],
-  "starting spell": 0
+  ]
 }
