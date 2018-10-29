@@ -4,6 +4,7 @@ type spell_name = string
 type damage = int 
 type target = string
 type description = string
+type level = int
 
 
 (** [spell] stores each spell as a record with fields name as a string, damage 
@@ -13,6 +14,7 @@ type spell_info = {
   damage: damage;
   target: target;
   description: description;
+  level: level;
 }
 
 exception UnknownSpell of spell_name
@@ -35,6 +37,8 @@ let from_json j =
 
 let get_spells hogwarts =
   hogwarts.spells
+
+
 
 (** [search_helper spells spell] is a helper to search for [spell] in [spells] 
     Raies UnknownSpell if [spell] is not found in [spells] *)
