@@ -23,6 +23,9 @@ type description = string
 (** The abstract type of spell information *)
 type spell_info 
 
+(** The abstract type of remove *)
+type remove 
+
 (** Raised when an unknown spell is encountered *)
 exception UnknownSpell of spell_name
 
@@ -56,3 +59,18 @@ val get_spells: t -> spell_info list
 
 (** [spell_target s] is the target for the spell [s] *)
 val spell_target : spell_info -> target
+
+(** [spell_level s] is the spell level for the spell [s] *)
+val spell_level: spell_info -> int
+
+(** [spell_dazd s] is the dazing effect of spell [s]. *)
+val spell_daze : spell_info -> int
+
+(** [spell_block s] is the blocking time for spell [s] *)
+val spell_block : spell_info -> int
+
+(** [spell_remove s] is the remove effects of spell [s] *)
+val spell_remove : spell_info -> remove
+
+(** [spell_long_effect s] is the long-term effect of using spell [s] *)
+val spell_long_effect : spell_info -> int

@@ -5,6 +5,9 @@ type damage = int
 type target = string
 type description = string
 
+(** [remove] stores what will be romoved when casting a spell. Specifically from 
+    where [location] and how many spell cards [amount]. *)
+type remove = {location: string; amount: int}
 
 (** [spell] stores each spell as a record with fields name as a string, damage 
     as an int, target as a string, and description as a string  *)
@@ -13,19 +16,43 @@ type spell_info = {
   damage: damage;
   target: target;
   description: description;
+  level: int;
+  spell_type: string;
+  daze: int;
+  block: int;
+  remove: remove;
+  long_effect: int
 }
 
 exception UnknownSpell of spell_name
 
 type t = {spells: spell_info list}
 
+(** [extract_json j field f] is a helper to extract the information from [j] 
+    with field name [field] and using function [f] to format correctly. *)
+let extract_json j field f = 
+  j |> member field |> f
+
+(** [create_reomve] extracts the remove information from [j]. *)
+let create_remove j = 
+  {
+    location = extract_json j "location" to_string;
+    amount = extract_json j "count" to_int
+  }
+
 (** [create_spell j] extracts the spell information from [j]  *)
 let create_spell j = 
   {
-    name = j |> member "name" |> to_string |> String.lowercase_ascii;
-    damage = j |> member "damage" |> to_int;
-    target = j |> member "target" |> to_string;
-    description = j |> member "description" |> to_string
+    name = extract_json j "name" to_string |> String.lowercase_ascii;
+    damage = extract_json j "damage" to_int;
+    target = extract_json j "target" to_string;
+    description = extract_json j "description" to_string;
+    level = extract_json j "level" to_int;
+    spell_type = extract_json j "type" to_string;
+    daze = extract_json j "daze" to_int;
+    block = extract_json j "block" to_int;
+    remove = extract_json j "remove" create_remove;
+    long_effect = extract_json j "long-effect" to_int
   }
 
 let from_json j = 
@@ -71,3 +98,18 @@ let spell_name spell =
 
 let spell_target spell = 
   spell.target
+
+let spell_level spell = 
+  spell.level
+
+let spell_daze spell = 
+  spell.daze
+
+let spell_block spell = 
+  spell.block
+
+let spell_remove spell = 
+  spell.remove
+
+let spell_long_effect spell = 
+  spell.long_effect
