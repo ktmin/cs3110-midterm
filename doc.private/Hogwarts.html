@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="next" href="Command.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Hogwarts" rel="Chapter" href="Hogwarts.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Engine" rel="Chapter" href="Engine.html">
+<link title="Authors" rel="Chapter" href="Authors.html"><title>Hogwarts</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Command.html" title="Command">Next</a>
+</div>
+<h1>Module <a href="type_Hogwarts.html">Hogwarts</a></h1>
+
+<pre><span id="MODULEHogwarts"><span class="keyword">module</span> Hogwarts</span>: <code class="code">sig</code> <a href="Hogwarts.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p>Representation of static Hogwarts data.
+   This module represents the data stored in hogwarts files, including available 
+   spells.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="TYPEspell_name"><span class="keyword">type</span> <code class="type"></code>spell_name</span> = <code class="type">string</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of a spell name</p>
+</div>
+</div>
+
+
+<pre><span id="TYPEdamage"><span class="keyword">type</span> <code class="type"></code>damage</span> = <code class="type">int</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of a spell's damage</p>
+</div>
+</div>
+
+
+<pre><span id="TYPEtarget"><span class="keyword">type</span> <code class="type"></code>target</span> = <code class="type">string</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of target</p>
+</div>
+</div>
+
+
+<pre><span id="TYPEdescription"><span class="keyword">type</span> <code class="type"></code>description</span> = <code class="type">string</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of description</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEspell_info"><span class="keyword">type</span> <code class="type"></code>spell_info</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTspell_info.name">name</span>&nbsp;: <code class="type"><a href="Hogwarts.html#TYPEspell_name">spell_name</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTspell_info.damage">damage</span>&nbsp;: <code class="type"><a href="Hogwarts.html#TYPEdamage">damage</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTspell_info.target">target</span>&nbsp;: <code class="type"><a href="Hogwarts.html#TYPEtarget">target</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTspell_info.description">description</span>&nbsp;: <code class="type"><a href="Hogwarts.html#TYPEdescription">description</a></code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">spell</code> stores each spell as a record with fields name as a string, damage 
+    as an int, target as a string, and description as a string</p>
+
+<p>The abstract type of spell information</p>
+</div>
+</div>
+
+
+<pre><span id="EXCEPTIONUnknownSpell"><span class="keyword">exception</span> UnknownSpell</span> <span class="keyword">of</span> <code class="type"><a href="Hogwarts.html#TYPEspell_name">spell_name</a></code></pre>
+<div class="info ">
+<div class="info-desc">
+<p>Raised when an unknown spell is encountered</p>
+</div>
+</div>
+
+<pre><code><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTt.spells">spells</span>&nbsp;: <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> list</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p>The abstract type of values representing hogwarts.</p>
+</div>
+</div>
+
+
+<pre><span id="VALcreate_spell"><span class="keyword">val</span> create_spell</span> : <code class="type">Yojson.Basic.json -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_spell j</code> extracts the spell information from <code class="code">j</code></p>
+</div>
+</div>
+
+<pre><span id="VALfrom_json"><span class="keyword">val</span> from_json</span> : <code class="type">Yojson.Basic.json -> <a href="Hogwarts.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">from_json j</code> is the organized spells that <code class="code">j</code> represents.
+    Requires: <code class="code">j</code> is a valid JSON spell representation.</p>
+</div>
+</div>
+
+<pre><span id="VALget_spells"><span class="keyword">val</span> get_spells</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_spells t</code> is the list of spells in <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALsearch_helper"><span class="keyword">val</span> search_helper</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> list -> <a href="Hogwarts.html#TYPEspell_name">spell_name</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">search_helper spells spell</code> is a helper to search for <code class="code">spell</code> in <code class="code">spells</code> 
+    Raies UnknownSpell if <code class="code">spell</code> is not found in <code class="code">spells</code></p>
+</div>
+</div>
+
+<pre><span id="VALsearch"><span class="keyword">val</span> search</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_name">spell_name</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">search hogwarts spell</code> looks for the <code class="code">spell</code> and returns it.
+    Raises: UnknownSpell if <code class="code">spell</code> is not found in <code class="code">hogwarts</code></p>
+
+<p><code class="code">search hogwarts spell</code> looks for the <code class="code">spell</code> and returns it.
+    Raises: UnknownSpell if <code class="code">spell</code> is not found in <code class="code">hogwarts</code></p>
+</div>
+</div>
+
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Implementation credit goes to A5 shuffle method provided to us.</p>
+
+<p><code class="code">shuffle t</code> shuffles the spells of howarts <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALadd_spell"><span class="keyword">val</span> add_spell</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_spell t s</code> adds the spell <code class="code">s</code> to hogwarts <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_description"><span class="keyword">val</span> spell_description</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_name">spell_name</a> -> <a href="Hogwarts.html#TYPEdescription">description</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_description h s</code> is the description of spell <code class="code">s</code> in <code class="code">h</code>. 
+    Raises: UnknownSpell if spell <code class="code">s</code> is not in <code class="code">h</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_damage"><span class="keyword">val</span> spell_damage</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEdamage">damage</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_damage h s</code> is the amount of damage that spell <code class="code">s</code> in <code class="code">h</code> inflicts. 
+    Raises: UnknownSpell if spell <code class="code">s</code> is not in <code class="code">h</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_name"><span class="keyword">val</span> spell_name</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEspell_name">spell_name</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_name s</code> is the name of the spell <code class="code">s</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_target"><span class="keyword">val</span> spell_target</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEtarget">target</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_target s</code> is the target for the spell <code class="code">s</code></p>
+</div>
+</div>
+</body></html>
