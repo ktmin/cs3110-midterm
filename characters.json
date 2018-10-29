@@ -41,6 +41,13 @@
       "level": 3,
       "description": "One of the smartest witches alive, Hermione Granger is not a force to be reckon with.",
       "hp": 150
+    },
+    {
+      "name": "Ron Weasley",
+      "house": "Gryffindor",
+      "level": 3,
+      "description": "Ron Weasley is one of Harry Potter's best friends. He is an excellent Wizard Chess player, and was the Gryffindor Quidditch team's goalkeeper for one year.",
+      "hp": 150
     }
   ]
 }
