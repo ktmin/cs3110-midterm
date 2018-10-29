@@ -1,0 +1,46 @@
+{
+  "characters": [
+    {
+      "name": "Cho Chang",
+      "house": "Ravenclaw",
+      "level": 2,
+      "description": "Cho is the Seeker for the Ravenclaw Quidditch team. She is also a part of Dumbledore's Army.",
+      "hp": 100
+    },
+    {
+      "name": "Luna Lovegood",
+      "house": "Ravenclaw",
+      "level": 1,
+      "description": "Luna is often seen as being weird, but she is just unique. Not only is she great at spotting Nargles, she is a wonderful artist and true friend.",
+      "hp": 100
+    },
+    {
+      "name": "Gilderoy Lockhart",
+      "house": "Ravenclaw",
+      "level": 2,
+      "description": "Careful with Professor Lockhart! While an author, professor, and five-time winner of Witch Weekly's Most Charming Smile Award, Gilderoy Lockhart is great at memory charms.",
+      "hp": 100
+    },
+    {
+      "name": "Quirinus Quirrell",
+      "house": "Ravenclaw",
+      "level": 3,
+      "description": "Known for his stuttering, Professor Quirrell once held the role of Defense Against the Dark Arts professor...there's something suspicious about him.",
+      "hp": 150
+    },
+    {
+      "name": "Harry Potter",
+      "house": "Gryffindor",
+      "level": 3,
+      "description": "Harry Potter is the boy who lived...He was singled out by Lord Voldemort at birth to be his greatest rival, and our hero.",
+      "hp": 150
+    },
+    {
+      "name": "Hermione Granger",
+      "house": "Gryffindor",
+      "level": 3,
+      "description": "One of the smartest witches alive, Hermione Granger is not a force to be reckon with.",
+      "hp": 150
+    }
+  ]
+}
