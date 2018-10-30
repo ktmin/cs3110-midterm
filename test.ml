@@ -83,6 +83,10 @@ let spell5 =
 let spell6 = 
   search spells_json "Expelliarmus"
 
+let spell7 = 
+  search spells_json "Ferula"
+
+
 let init_pl =
   init_player spells_json "Bryan"
 
@@ -149,6 +153,12 @@ let state_tests =
         assert_equal (update spell6 init_pl draw2 
                       |> get_hand |> List.length) 
           (1));
+
+    "test 11 " >:: (fun _ ->
+        assert_equal (update spell7 init_pl init_en 
+                      |> get_hp) 
+          (110));
+
   ] 
 
 let suite =

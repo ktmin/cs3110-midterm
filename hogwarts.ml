@@ -36,8 +36,8 @@ let extract_json j field f =
 (** [create_reomve] extracts the remove information from [j]. *)
 let create_remove j = 
   {
-    location = extract_json j "location" to_string;
-    amount = extract_json j "count" to_int
+    location = extract_json j "loc" to_string;
+    amount = extract_json j "count" to_int;
   }
 
 (** [create_spell j] extracts the spell information from [j]  *)
@@ -51,8 +51,9 @@ let create_spell j =
     spell_type = extract_json j "type" to_string;
     daze = extract_json j "daze" to_int;
     block = extract_json j "block" to_bool;
-    remove = (extract_json j "remove" create_remove)::[];
-    long_effect = extract_json j "long-effect" to_int
+    remove = j |> member "remove" 
+             |> to_list |> List.map create_remove;
+    long_effect = extract_json j "long-effect" to_int;
   }
 
 let from_json j = 
