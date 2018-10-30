@@ -104,16 +104,16 @@ let update spell st1 st2 =
     let new_dazed = st1.dazed + (Hogwarts.spell_daze spell) in 
     let updated_health = st1.hp - (Hogwarts.spell_damage spell) in
     if Hogwarts.spell_target spell = "self" then (
-      if Hogwarts.spell_remove_location spell= "hand" then
+      if fst (Hogwarts.spell_remove spell) = "hand" then
 
-        let new_hand = drop (Hogwarts.spell_remove_amount spell)
+        let new_hand = drop (snd(Hogwarts.spell_remove spell))
             (st1.hand) in 
         {st1 with 
          hand= new_hand;
          hp = updated_health;
          dazed = new_dazed} 
-      else if Hogwarts.spell_remove_location spell = "deck" then 
-        let new_deck = drop (Hogwarts.spell_remove_amount spell)
+      else if fst (Hogwarts.spell_remove spell) = "deck" then 
+        let new_deck = drop (snd (Hogwarts.spell_remove spell))
             (st1.deck) in 
         {st1 with 
          deck= new_deck;
@@ -126,16 +126,16 @@ let update spell st1 st2 =
     ) else (  
       let new_dazed = st2.dazed + (Hogwarts.spell_daze spell) in 
       let updated_health = st2.hp - (Hogwarts.spell_damage spell) in
-      if Hogwarts.spell_remove_location spell = "hand" then
+      if fst (Hogwarts.spell_remove spell) = "hand" then
 
-        let new_hand = drop (Hogwarts.spell_remove_amount spell)
+        let new_hand = drop (snd (Hogwarts.spell_remove spell))
             (st2.hand) in 
         {st2 with 
          hand= new_hand;
          hp = updated_health;
          dazed = new_dazed} 
-      else if Hogwarts.spell_remove_location spell = "deck" then 
-        let new_deck = drop (Hogwarts.spell_remove_amount spell)
+      else if (fst (Hogwarts.spell_remove spell)) = "deck" then 
+        let new_deck = drop (snd (Hogwarts.spell_remove spell))
             (st2.deck) in 
         {st2 with 
          deck= new_deck;
