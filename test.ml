@@ -107,8 +107,6 @@ let draw2 =
 let draw3 = 
   draw draw2
 
-
-
 let state_tests =
   [
     "test 1 " >:: (fun _ ->
@@ -151,13 +149,6 @@ let state_tests =
         assert_equal (update spell6 init_pl draw2 
                       |> get_hand |> List.length) 
           (1));
-
-
-
-    (* "test 3 " >:: (fun _ ->
-        assert_equal (state_after_cast |> get_hp)
-          (95)); *)
-
   ] 
 
 let suite =
