@@ -26,12 +26,10 @@ let get_hand (st:t) =
 let get_deck (st:t) =
   st.deck
 
-(*filter out deck so that the cards' level is 
-  less than or equal to the player's level
-  outputs state.t *)
-let get_level_deck hogwarts st =
+
+let get_level_deck  st =
   let new_deck = List.filter (fun x -> st.level >= 
-                                       Hogwarts.spell_level hogwarts) st.deck in {
+                                       Hogwarts.spell_level x) st.deck in {
     st with deck = new_deck
   }
 
