@@ -36,7 +36,7 @@ let extract_json j field f =
 (** [create_reomve] extracts the remove information from [j]. *)
 let create_remove j = 
   {
-    location = extract_json j "location" to_string;
+    location = extract_json j "loc" to_string;
     amount = extract_json j "count" to_int
   }
 
@@ -62,8 +62,6 @@ let from_json j =
 
 let get_spells hogwarts =
   hogwarts.spells
-
-
 
 (** [search_helper spells spell] is a helper to search for [spell] in [spells] 
     Raies UnknownSpell if [spell] is not found in [spells] *)
