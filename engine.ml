@@ -61,25 +61,41 @@ let check_conditions (player:State.t) (enemy:State.t) : end_state =
 let rec list_cards (spells:Hogwarts.spell_info list) (house:ANSITerminal.style)=
   match spells with
   | [] -> (
-      ANSITerminal.(print_string [house] "\n\nEnter: Describe spell_name 
-      to see spell description.")
+      ANSITerminal.(print_string [house] "\n\nYeah... You have no spells")
     )
+  | h::[] -> (
+      ANSITerminal.(print_string 
+                      [magenta] 
+                      ((Hogwarts.spell_name h ^ 
+                        "\n\nEnter: Describe spell_name to see spell 
+                        description."))))
   | h::t -> (
-      ANSITerminal.(print_string [magenta] ((Hogwarts.spell_name h) ^ " "));
+      ANSITerminal.(print_string [magenta] ((Hogwarts.spell_name h) ^ ", "));
       list_cards t house
     )
 
+(** [run_command player enemy house hogwarts cmd callback] runs a valid [cmd] 
+    and mitigates possible errors that are thrown through Hogwarts.UnknownSpell.
+    Post command, the callback function is called and takes in [player] [enemy]
+    [house] [hogwarts] in that respective order.*)
 let rec run_command (player:State.t) (enemy:State.t)
     (house:ANSITerminal.style) (hogwarts:Hogwarts.t) (cmd:Command.command) 
     (callback:State.t -> State.t -> ANSITerminal.style -> Hogwarts.t -> unit) 
   : unit =
   match cmd with
   | Draw -> (
-      let drawn = State.draw player in
-      let chosen_card = List.hd(State.to_list_hand drawn) in
-      ANSITerminal.(print_string [house] 
-                      ("You drew: "^(Hogwarts.spell_name chosen_card)));
-      callback player enemy house hogwarts)
+      if List.length (State.to_list_hand player) >= 5 then (
+        ANSITerminal.(print_string 
+                        [house] 
+                        ("Don't get greedy. 
+                        You already have at least 5 cards"));
+        callback player enemy house hogwarts
+      ) else (
+        let drawn = State.draw player in
+        let chosen_card = List.hd(State.to_list_hand drawn) in
+        ANSITerminal.(print_string [house] 
+                        ("You drew: "^(Hogwarts.spell_name chosen_card)));
+        callback drawn enemy house hogwarts))
   | View -> (ANSITerminal.(print_string [house] 
                              "The following spells can be casted: \n");
              list_cards (State.to_list_hand player) house;
@@ -94,11 +110,16 @@ let rec run_command (player:State.t) (enemy:State.t)
         "Turns out you weren't so tough and brave...\n"); exit 0)
   | Describe lst -> (
       let sp_name = String.concat " " lst in
-      ANSITerminal.(print_string [house] 
-                      ("Description for "^sp_name^":\n"
-                       ^(Hogwarts.spell_description hogwarts sp_name))
-                   );
-      callback player enemy house hogwarts
+      try (
+        ANSITerminal.(print_string [house] 
+                        ("Description for "^sp_name^":\n"
+                         ^(Hogwarts.spell_description hogwarts sp_name))
+                     );
+      ) with Hogwarts.UnknownSpell sp_name -> (
+          ANSITerminal.(print_string [house] 
+                          (sp_name ^ " incorrectly spelled. Try again"));
+        );
+        callback player enemy house hogwarts
     )
   | Instruction -> (ANSITerminal.(print_string [house] 
                                     "Rules are simple:\n
@@ -115,25 +136,30 @@ let rec run_command (player:State.t) (enemy:State.t)
                                             (State.get_hp enemy)));
     callback player enemy house hogwarts
   | Cast lst -> (
+      (*TODO: reduce this part into its own method*)
       let sp_name = String.concat " " lst in
-      let info = Hogwarts.search hogwarts sp_name in
-      if(List.mem (info) (State.to_list_hand player)) then (
-        ANSITerminal.(print_string [house] ("You cast "^sp_name));
-        let cast_update = State.cast info player enemy in (
-          if(Hogwarts.spell_target info) = "self" then (
-            let tup = enemy_turn hogwarts enemy (fst cast_update) house in
-            callback (snd tup) (fst tup) house hogwarts
-          ) else (
-            let tup = enemy_turn hogwarts (snd cast_update) 
-                (fst cast_update) house in
-            callback (snd tup) (fst tup) house hogwarts
-          ))
-      )
-      else (
-        ANSITerminal.(
-          print_string [house] "Nice try but you don't have that spell");
-        callback player enemy house hogwarts
-      )
+      try (
+        let info = Hogwarts.search hogwarts sp_name in
+        if(List.mem (info) (State.to_list_hand player)) then (
+          ANSITerminal.(print_string [house] ("You cast "^sp_name));
+          let cast_update = State.cast info player enemy in (
+            if(Hogwarts.spell_target info) = "self" then (
+              let tup = enemy_turn hogwarts enemy (fst cast_update) house in
+              callback (snd tup) (fst tup) house hogwarts
+            ) else (
+              let tup = enemy_turn hogwarts (snd cast_update) 
+                  (fst cast_update) house in
+              callback (snd tup) (fst tup) house hogwarts
+            ))
+        )
+        else (
+          ANSITerminal.(
+            print_string [house] "Nice try but you don't have that spell");
+          callback player enemy house hogwarts
+        )) with Hogwarts.UnknownSpell sp_name -> (
+          ANSITerminal.(print_string [house] 
+                          (sp_name ^ " incorrectly spelled. Try again"))
+        )
     )
 
 (** [play player enemy house name] is the main game loop that takes in [player]
@@ -171,7 +197,7 @@ let play_init f player house =
   let json = Yojson.Basic.from_file f in
   let hogwarts = Hogwarts.from_json json in 
   let player_state = State.init_player hogwarts player in
-  let enemy_state = State.init_enemy hogwarts in (
+  let enemy_state = State.init_enemy hogwarts "Malfoy" in (
     ANSITerminal.(print_string [house] 
                     ("\nYour opponent is "^
                      (State.get_name enemy_state)^"!\n"));

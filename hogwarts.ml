@@ -51,7 +51,8 @@ let create_spell j =
     spell_type = extract_json j "type" to_string;
     daze = extract_json j "daze" to_int;
     block = extract_json j "block" to_bool;
-    remove = (extract_json j "remove" create_remove)::[];
+    (* remove = (extract_json j "remove" create_remove)::[]; *)
+    remove = [];
     long_effect = extract_json j "long-effect" to_int
   }
 
