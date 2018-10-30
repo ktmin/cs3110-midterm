@@ -8,7 +8,7 @@
       "level": 5,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -25,7 +25,7 @@
       "level": 1,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -42,7 +42,7 @@
       "level": 1,
       "type": "spell",
       "daze": 2,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -59,7 +59,7 @@
       "level": 1,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -76,7 +76,7 @@
       "level": 5,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -93,7 +93,7 @@
       "level": 2,
       "type": "spell",
       "daze": 1,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -110,7 +110,7 @@
       "level": 2,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -127,7 +127,7 @@
       "level": 3,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -144,7 +144,7 @@
       "level": 4,
       "type": "spell",
       "daze": 0,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -161,7 +161,7 @@
       "level": 1,
       "type": "spell",
       "daze": 2,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
@@ -178,7 +178,7 @@
       "level": 3,
       "type": "spell",
       "daze": 1,
-      "block": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
