@@ -147,7 +147,9 @@ let update spell st1 st2 =
          dazed = new_dazed} 
     )
 
-
+(*TODO: remove this*)
+let to_list_hand pl : Hogwarts.spell_info list =
+  pl.hand
 
 
 

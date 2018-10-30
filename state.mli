@@ -80,3 +80,6 @@ val drop : int -> 'a list -> 'a list
 (** [update spell st1 st2] updates a state [t]
     of player and a state [t] of enemy after cast *)
 val update : Hogwarts.spell_info -> t -> t -> t  
+
+(**list representation of spells*)
+val to_list_hand: t -> Hogwarts.spell_info list
