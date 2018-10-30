@@ -98,7 +98,7 @@ let update spell st1 st2 =
       st1 with
       dazed = new_dazed
     } else
-  if Hogwarts.spell_block spell >= 0 then
+  if Hogwarts.spell_block spell = true then
     let new_dazed = (st1.dazed - 1) in {
       st1 with
       dazed = new_dazed  
