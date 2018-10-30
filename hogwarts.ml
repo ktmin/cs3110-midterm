@@ -20,7 +20,7 @@ type spell_info = {
   spell_type: string;
   daze: int;
   block: bool;
-  remove: remove;
+  remove: remove list;
   long_effect: int
 }
 
@@ -51,7 +51,7 @@ let create_spell j =
     spell_type = extract_json j "type" to_string;
     daze = extract_json j "daze" to_int;
     block = extract_json j "block" to_bool;
-    remove = extract_json j "remove" create_remove;
+    remove = (extract_json j "remove" create_remove)::[];
     long_effect = extract_json j "long-effect" to_int
   }
 
@@ -110,13 +110,11 @@ let spell_daze spell =
 let spell_block spell = 
   spell.block
 
-let spell_remove_location spell = 
+let spell_remove spell = 
   let remove_fields = spell.remove in 
-  remove_fields.location
-
-let spell_remove_amount spell = 
-  let remove_fields = spell.remove in 
-  remove_fields.amount
+  match remove_fields with 
+  | [] -> raise (UnknownSpell spell.name)
+  | h::_ -> (h.location, h.amount)
 
 let spell_long_effect spell = 
   spell.long_effect

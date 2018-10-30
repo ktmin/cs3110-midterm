@@ -60,18 +60,22 @@ val spell_target : spell_info -> target
 (** [spell_level s] is the spell level for the spell [s] *)
 val spell_level: spell_info -> int
 
-(** [spell_dazd s] is the dazing effect of spell [s]. *)
+(** [spell_daze s] is the dazing effect of spell [s]. *)
 val spell_daze : spell_info -> int
 
 (** [spell_block s] is the blocking time for spell [s] *)
 val spell_block : spell_info -> bool
 
 (** [spell_remove_location s] is the location of removal after using spell [s]*)
-val spell_remove_location : spell_info -> string
+(* val spell_remove_location : spell_info -> string *)
 
 (** [spell_remove_amount s] is the amount of cards to remove after using spell 
     [s]. *)
-val spell_remove_amount : spell_info -> int
+(* val spell_remove_amount : spell_info -> int *)
+
+(** [spell_remove s] is the removal effects of casting spell [s]. 
+    Raises: UnknownSpell if spell [s] is does not have any information. *)
+val spell_remove : spell_info -> string*int
 
 (** [spell_long_effect s] is the long-term effect of using spell [s] *)
 val spell_long_effect : spell_info -> int
