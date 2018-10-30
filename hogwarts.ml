@@ -63,6 +63,8 @@ let from_json j =
 let get_spells hogwarts =
   hogwarts.spells
 
+
+
 (** [search_helper spells spell] is a helper to search for [spell] in [spells] 
     Raies UnknownSpell if [spell] is not found in [spells] *)
 let rec search_helper spells spell = 
@@ -108,8 +110,13 @@ let spell_daze spell =
 let spell_block spell = 
   spell.block
 
-let spell_remove spell = 
-  spell.remove
+let spell_remove_location spell = 
+  let remove_fields = spell.remove in 
+  remove_fields.location
+
+let spell_remove_amount spell = 
+  let remove_fields = spell.remove in 
+  remove_fields.amount
 
 let spell_long_effect spell = 
   spell.long_effect
