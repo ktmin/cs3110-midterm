@@ -19,7 +19,7 @@ type spell_info = {
   level: int;
   spell_type: string;
   daze: int;
-  block: int;
+  block: bool;
   remove: remove;
   long_effect: int
 }
@@ -50,7 +50,7 @@ let create_spell j =
     level = extract_json j "level" to_int;
     spell_type = extract_json j "type" to_string;
     daze = extract_json j "daze" to_int;
-    block = extract_json j "block" to_int;
+    block = extract_json j "block" to_bool;
     remove = extract_json j "remove" create_remove;
     long_effect = extract_json j "long-effect" to_int
   }

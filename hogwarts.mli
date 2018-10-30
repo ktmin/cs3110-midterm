@@ -64,7 +64,7 @@ val spell_level: spell_info -> int
 val spell_daze : spell_info -> int
 
 (** [spell_block s] is the blocking time for spell [s] *)
-val spell_block : spell_info -> int
+val spell_block : spell_info -> bool
 
 (** [spell_remove_location s] is the location of removal after using spell [s]*)
 val spell_remove_location : spell_info -> string
