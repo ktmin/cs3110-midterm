@@ -529,28 +529,6 @@
       ]
     },
     {
-      "name": "Fumos",
-      "damage": 5,
-      "target": "enemy",
-      "description": "Causes explosions.",
-      "level": 1,
-      "type": "spell",
-      "daze": 0,
-      "block": false,
-      "remove": [
-        {
-          "loc": "hand",
-          "count": 0
-        }
-      ],
-      "long-effect": [
-        {
-          "damage": 0,
-          "turns": 0
-        }
-      ]
-    },
-    {
       "name": "Lumos",
       "damage": -7,
       "target": "self",
@@ -683,7 +661,7 @@
       ]
     },
     {
-      "name": "Ear Shriveling ",
+      "name": "Ear Shriveling",
       "damage": 6,
       "target": "enemy",
       "description": "Cause a person’s ears to shrivel ",
@@ -705,7 +683,7 @@
       ]
     },
     {
-      "name": "Harmonia Nectere Passus ",
+      "name": "Harmonia Nectere Passus",
       "damage": -10,
       "target": "self",
       "description": "Mends broken things ",
