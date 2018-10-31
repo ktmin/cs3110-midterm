@@ -28,6 +28,9 @@ let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t)
     (player:State.t) (house:ANSITerminal.style) : (State.t*State.t)=
   (*Quick health check*)
   if (State.get_hp enemy) <= 0 then (enemy,player)
+  else if (State.get_dazed enemy) > 0 then (
+    ANSITerminal.(print_string [house] "Enemy is dazed and cannot cast!\n");
+    State.cast (List.hd (State.to_list_hand enemy)) enemy player)
   else (
     let enemy_hand = State.to_list_hand enemy in
     if (List.length enemy_hand) < 7 then
@@ -291,18 +294,24 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
   | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :( and die\n"); 
              exit 0)
   | Continue -> (
-      (*This is to avoid double status description*)
-      if not asked_state then (print_state player house; 
-                               print_state enemy house);
-      ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
-      let cmd = read_line () in
-      try (
-        run_command player enemy house hogwarts (Command.parse cmd) play
-      ) with Command.Invalidcommand ->
-        (ANSITerminal.(print_string [house] 
-                         "Invalid command. Possible commands: \n
+      if (State.get_dazed player) > 0 then (
+        ANSITerminal.(print_string [house] "You are dazed and unable to cast");
+        let tup = enemy_turn hogwarts enemy player house in
+        play (snd tup) (fst tup) house hogwarts)
+
+      else (
+        (*This is to avoid double status description*)
+        if not asked_state then (print_state player house; 
+                                 print_state enemy house);
+        ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
+        let cmd = read_line () in
+        try (
+          run_command player enemy house hogwarts (Command.parse cmd) play
+        ) with Command.Invalidcommand ->
+          (ANSITerminal.(print_string [house] 
+                           "Invalid command. Possible commands: \n
     Draw, cast [card name], describe [card name], view, instruction, help, 
-    status, forfeit"); play player enemy house hogwarts ))
+    status, forfeit"); play player enemy house hogwarts )))
 
 (*Below is all once-off used for starting the game*)
 
