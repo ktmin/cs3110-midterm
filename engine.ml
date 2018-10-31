@@ -22,7 +22,7 @@ let print_state caster house =
       effects
   );
   if (State.get_blocked caster) = 1 then
-    ANSITerminal.(print_string [house;ANSITerminal.Bold] "Is blocking\n")                             
+    ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n")                             
 
 (** [cast_spell spell caster target house] prints the casting [spell] that
     affects the target and printed info is in [house] style *)
