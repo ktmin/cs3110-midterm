@@ -2,7 +2,7 @@
   "spells": [
     {
       "name": "Avada Kedavra",
-      "damage": 100,
+      "damage": 1,
       "target": "enemy",
       "description": "also known as the Killing Curse, kills a person instantaneously and without injury",
       "level": 5,
