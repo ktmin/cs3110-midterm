@@ -1,13 +1,24 @@
 type end_state = Win | Loss | Continue
 
-let print_state player enemy house = 
-  ANSITerminal.(print_string [house] "\n\nYour health:\n");
-  ANSITerminal.(print_string [magenta] (string_of_int 
-                                          (State.get_hp player)));
-  ANSITerminal.(print_string [house] ("\n"^
-                                      (State.get_name enemy)^"'s health:\n"));
-  ANSITerminal.(print_string [magenta] (string_of_int 
-                                          (State.get_hp enemy)))
+let print_state caster house = 
+  ANSITerminal.(print_string [house]("\n"^
+                                     (State.get_name caster)^"'s health: ");
+                print_string [magenta] (string_of_int 
+                                          (State.get_hp caster)));
+  let dazed_time = State.get_dazed caster in
+  if dazed_time > 0 then (
+    ANSITerminal.(print_string [house]("\nDazed :");
+                  print_string [magenta] (string_of_int dazed_time);
+                  print_string [house](" turns"))
+  );
+  let effects = State.get_prolong_tupes caster in
+  if List.length effects > 0 then (
+    ANSITerminal.(print_string [magenta] "\nEffects: Turns Left");
+    List.iter (fun (a,b) -> 
+        ANSITerminal.(print_string [house]
+                        ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
+      effects
+  )                                    
 
 (** [enemy_turn hogwarts enemy player house] takes in the arguments with enemy
     as the caster and performs a basic naive action (attacking with as much 
@@ -139,7 +150,7 @@ let rec run_command (player:State.t) (enemy:State.t)
     - You play against an AI that takes its turn after you\n
     - Winner is the person who makes the other reach 0 or less health");
                     callback player enemy house hogwarts)
-  | Status -> print_state player enemy house;
+  | Status -> print_state player house; print_state enemy house;
     callback player enemy house hogwarts
   | Cast lst -> (
       (*TODO: reduce this part into its own method*)
@@ -250,7 +261,7 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
                    (Hogwarts.character_name enemy_char)) in
 
     if(affirmation hogwarts enemy_char enemy) then (
-      print_state player enemy house;
+      print_state player house; print_state enemy house;
       callback player enemy house hogwarts
     ) else
       choose_opponent player hogwarts house callback
@@ -281,7 +292,8 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
              exit 0)
   | Continue -> (
       (*This is to avoid double status description*)
-      if not asked_state then print_state player enemy house;
+      if not asked_state then (print_state player house; 
+                               print_state enemy house);
       ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
       let cmd = read_line () in
       try (
@@ -396,8 +408,8 @@ let rec house () =
   print_arr_2d intro_text;
   ANSITerminal.(
     print_string [magenta] 
-      "\n\nThe sorting hat is at lunch so you'll have to choose your own house.\n
-    In case you forgot, the choices are:\n";
+      "\n\nThe sorting hat is at lunch so you'll have to choose your own house.
+      \nIn case you forgot, the choices are:\n";
     print_string [red] "Gryffindor "; print_string [green] "Slytherin ";
     print_string [yellow] "Hufflepuff "; print_string [blue] "Ravenclaw";
     print_string [magenta] "\n\nEnter house name > ";

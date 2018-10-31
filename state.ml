@@ -60,6 +60,8 @@ let rec get_prolong_turn (st:t) =
   let prolong = st.prolong_effect in
   get_turn prolong 
 
+let get_prolong_tupes (st:t) =
+  st.prolong_effect
 
 let get_level_deck  st =
   let new_deck = List.filter (fun x -> st.level >= 

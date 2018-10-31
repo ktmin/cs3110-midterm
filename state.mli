@@ -123,3 +123,6 @@ val required_wins: t -> int
 (** [level_up t] attempts to level up player. Returns t if not enough wins
     have been secured. *)
 val level_up: t -> t
+
+(** [get_rpolong_tupes t] gets all prolonged effects of input caster*)
+val get_prolong_tupes: t -> (int*int) list
