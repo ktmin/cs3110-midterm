@@ -207,7 +207,7 @@ let play_init f1 f2 player house =
   let j2 = Yojson.Basic.from_file f2 in
   let hogwarts = Hogwarts.from_json j1 j2 in 
   let player_state = State.init_player_with_level_deck hogwarts player in
-  let enemy_state = State.init_enemy_with_level_deck hogwarts "Malfoy" in (
+  let enemy_state = State.init_enemy_with_level_deck hogwarts "Cho Chang" in (
     ANSITerminal.(print_string [house] 
                     ("\nYour opponent is "^
                      (State.get_name enemy_state)^"!\n"));
