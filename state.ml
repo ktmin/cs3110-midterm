@@ -178,10 +178,12 @@ let update_dazed st =
 (** [update_helper_block st prolonged_effect] is a helper for update for if block
     is true. *)
 let update_helper_block st  = 
-  let new_dazed = (st.dazed - 1) in {
-    st with
-    dazed = new_dazed
-  }
+  if st.dazed > 0 then 
+    let new_dazed = (st.dazed - 1) in {
+      st with
+      dazed = new_dazed
+    } else 
+    st
 
 (** [update_helper_hand st spell u_health u_dazed prolonged effect] is a helper 
     for update if hand is being updated. *)
@@ -224,7 +226,7 @@ let update_helper_health st  spell =
 let update spell st1 st2 =    
   if st1.dazed > 0 then (update_dazed st1 ) 
   else (if Hogwarts.spell_block spell = true 
-        then update_helper_block st1 
+        then update_helper_block st2 
         else (if Hogwarts.spell_target spell = "self" 
               then (update_helper_health st1 spell) 
               else (update_helper_health st2 spell)))
@@ -265,8 +267,8 @@ let cast spell st1 st2 : (t*t) =
     let updated_self =update spell st1 st2 in 
     (updated_self,update_prolong_damage spell st2) else 
   if st1.blocked = 1 then 
-    let updated_target = reset_blocked spell st1 in
-    (hand_after_cast spell updated_target, st2) 
+    let updated_pl = reset_blocked spell st1 in
+    (hand_after_cast spell updated_pl, st2) 
   else   
   if Hogwarts.spell_block spell = true then
     (hand_after_cast  spell (st1), 
