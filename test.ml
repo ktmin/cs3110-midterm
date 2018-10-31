@@ -104,7 +104,7 @@ let init_pl  =
   init_player spells_characters_json "Bryan"
 
 let init_en = 
-  init_enemy spells_characters_json "Oscar"
+  init_enemy spells_characters_json "Cho Chang"
 
 
 let state_tests =
@@ -152,17 +152,6 @@ let state_tests =
                        fst in 
           cast avada dazed2 init_en |> fst |> get_dazed            
         ) (0) );
-
-    "dazed test 5 " >:: (fun _ ->
-        assert_equal (
-          let dazed_enemy = cast confundo init_pl init_en
-                            |> snd in
-          let dazed1 = cast avada dazed_enemy init_en |>
-                       fst in 
-          let dazed2 = cast avada dazed1 init_en |>
-                       fst in 
-          let free = cast avada dazed2 init_en |> fst in 
-          cast avada free init_en |> snd |> get_hp  ) (0) );
 
 
     "hand after cast" >:: (fun _ -> 
