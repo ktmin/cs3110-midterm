@@ -28,6 +28,19 @@ let get_hand (st:t) =
 let get_deck (st:t) =
   st.deck
 
+(** [get_defeated_enemies st] is the list of defeated enemies. *)
+let get_defeated_enemies st = 
+  st.defeated_enemies
+
+(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
+    enemies. *)
+let add_defeated_enemy st enemy hogwarts = 
+  let defeated_enemy = (Hogwarts.search_characters hogwarts enemy) in 
+  let prev_defeated = get_defeated_enemies st in 
+  let defeated = (Hogwarts.character_name defeated_enemy)::prev_defeated in
+  {
+    st with defeated_enemies = defeated
+  }
 (** returns a list of prolong 
     damage that will be applied*)
 let rec get_prolong_damage (st:t) =
