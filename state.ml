@@ -28,7 +28,7 @@ let get_hand (st:t) =
 
 let get_deck (st:t) =
   st.deck
-  
+
 let get_blocked (st:t) = 
   st.blocked
 
@@ -277,6 +277,9 @@ let level_up (player:t) : t =
   if List.length player.defeated_enemies >= req then
     {player with level = player.level + 1}
   else player
+
+
+
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
