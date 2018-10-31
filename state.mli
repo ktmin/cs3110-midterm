@@ -119,3 +119,7 @@ val cast: Hogwarts.spell_info -> t -> t -> t*t
 
 (**list representation of spells*)
 val to_list_hand: t -> Hogwarts.spell_info list
+
+(**[refresh_deck Hogwarts.t t] refreshes the deck
+   of a state [t]*)
+val refresh_deck: Hogwarts.t -> t -> t

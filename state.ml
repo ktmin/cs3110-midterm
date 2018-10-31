@@ -36,8 +36,6 @@ let get_blocked (st:t) =
 let get_defeated_enemies st = 
   st.defeated_enemies
 
-(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
-    enemies. *)
 let add_defeated_enemy st enemy hogwarts = 
   let defeated_enemy = (Hogwarts.search_characters hogwarts enemy) in 
   let prev_defeated = get_defeated_enemies st in 
@@ -68,6 +66,8 @@ let rec get_prolong_turn (st:t) =
   let prolong = st.prolong_effect in
   get_turn prolong 
 
+let get_prolong_tupes (st:t) =
+  st.prolong_effect
 
 let get_level_deck  st =
   let new_deck = List.filter (fun x -> st.level >= 
@@ -154,9 +154,7 @@ let rec drop n lst =
       | h :: t -> t 
     )
 
-(** [update_helper_dazed st prolonged_effect] is a helper for update for if dazed 
-    is true. *)
-let update_helper_dazed st = 
+let update_dazed st = 
   let new_dazed = (st.dazed - 1) in {
     st with
     dazed = new_dazed
@@ -209,7 +207,7 @@ let update_helper_health st  spell =
 
 
 let update spell st1 st2 =    
-  if st1.dazed > 0 then (update_helper_dazed st1 ) 
+  if st1.dazed > 0 then (update_dazed st1 ) 
   else (if Hogwarts.spell_block spell = true 
         then update_helper_block st1 
         else (if Hogwarts.spell_target spell = "self" 
@@ -269,6 +267,27 @@ let cast spell st1 st2 : (t*t) =
     (hand_after_cast spell st1, update_prolong_damage spell updated_enemy)
   )
 
+(*Right now it's simplistic but will change for last release*)
+let required_wins (player:t) =
+  (player.level) * 2
+
+let level_up (player:t) : t =
+  (*Current formula is to just multiply level*2 for needed level up*)
+  let req = required_wins player in
+  if List.length player.defeated_enemies >= req then
+    {player with level = player.level + 1}
+  else player
+
+let refresh_deck hogwarts (st:t) = 
+  let new_deck = (QCheck.Gen.(generate1 (shuffle_l 
+                                           (Hogwarts.get_spells hogwarts)))) in 
+
+  let new_level_deck = List.filter (fun x -> st.level >= 
+                                             Hogwarts.spell_level x) new_deck in 
+  {st  with deck = new_level_deck}
+
+
+
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
@@ -288,36 +307,55 @@ let to_list_hand pl : Hogwarts.spell_info list =
 (*Keeping this for later when we return to module method*)
 (* module type Command = sig
    type player_name
+
    type player_hp
+
    type player
+
    type hand
+
    type deck
+
    val get_name: player -> player_name
+
    val get_hp: player -> player_hp 
+
    val get_hand: hand -> Hogwarts.spell_info list
+
    val draw: Hogwarts.spell_info list ->
     hand -> deck -> Hogwarts.spell_info list * Hogwarts.spell_info list
+
    val cast : 'a -> Hogwarts.spell_info -> hand -> 'a * Hogwarts.spell_info list
+
    end 
+
    module Command: Command = struct  
    type player_name = string
    type player_hp = int
+
+
    type player = {
     name : player_name;
     hp: player_hp;
    }
+
    type hand = {
     hand : spell_info list;
    }
+
    type deck = {
     deck : spell_info list;
    }
+
    let get_name st =
     st.name
+
    let get_hp st = 
     st.hp 
+
    let get_hand st =
     st.hand
+
    (** update hand and deck
       returns a tuple 
       of updated hand and 
@@ -328,9 +366,22 @@ let to_list_hand pl : Hogwarts.spell_info list =
      | [] -> []
      | h :: t -> t  
     ) 
+
    let cast damage chosen st =    
     (damage,List.filter (fun x -> x <> chosen) st.hand)
+
    (** returns hp after the spell is casted*)
    let casted damage st = 
     st.hp - damage  
+
    end  *)
+
+
+
+
+
+
+
+
+
+
