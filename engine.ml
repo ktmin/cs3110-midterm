@@ -1,8 +1,8 @@
 type end_state = Win | Loss | Continue
 
-(** [print_state caster house] prints all of the status info on the [caster]
-    in [house] style. *)
-let print_state caster house = 
+(** [print_state caster target house] prints all of the status info on the 
+    [caster] in [house] style. *)
+let print_state caster target house = 
   ANSITerminal.(print_string [house]("\n"^
                                      (State.get_name caster)^"'s health: ");
                 print_string [magenta] (string_of_int 
@@ -21,7 +21,7 @@ let print_state caster house =
                         ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
       effects
   );
-  if (State.get_blocked caster) = 1 then
+  if (State.get_blocked target) = 1 then
     ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n")                             
 
 (** [cast_spell spell caster target house] prints the casting [spell] that
@@ -91,7 +91,6 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
           ANSITerminal.(print_string [house] "\n Opponent skips their go");
           ((State.draw enemy),player)
         ) else (
-          List.iter(fun a -> print_endline (Hogwarts.spell_name a)) enemy_hand;
           let hp = State.get_hp enemy in
           let min_max = spell_finder enemy_hand (-100) 100 in
           (*max heal may be the same as min damage if player has no healing
@@ -377,8 +376,8 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
 
       else (
         (*This is to avoid double status description*)
-        if not asked_state then (print_state player house; 
-                                 print_state enemy house);
+        if not asked_state then (print_state player enemy house; 
+                                 print_state enemy player house);
         ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
         let cmd = read_line () in
         try (
