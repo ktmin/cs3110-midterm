@@ -2,6 +2,7 @@
    Parsing of player commands.
 *)
 
+(** [command] is the representation of command. *)
 type command = 
   | Draw
   | Cast of string list 
