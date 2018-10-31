@@ -119,3 +119,25 @@ val cast: Hogwarts.spell_info -> t -> t -> t*t
 
 (**list representation of spells*)
 val to_list_hand: t -> Hogwarts.spell_info list
+
+(** [get_defeated_enemies st] is the list of defeated enemies. *)
+val get_defeated_enemies: t -> Hogwarts.character_name list
+
+(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
+    enemies. *)
+val add_defeated_enemy: t -> Hogwarts.character_name -> Hogwarts.t -> t
+
+(** [required_wins t] returns amount of wins required to 
+    progress to next level. *)
+val required_wins: t -> int
+
+(** [level_up t] attempts to level up player. Returns t if not enough wins
+    have been secured. *)
+val level_up: t -> t
+
+(** [get_rpolong_tupes t] gets all prolonged effects of input caster*)
+val get_prolong_tupes: t -> (int*int) list
+
+(** [update_dazed st] is a helper for update for if dazed 
+    is true. *)
+val update_dazed: t -> t

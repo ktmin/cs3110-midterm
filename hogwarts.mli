@@ -64,7 +64,7 @@ val spell_description: t -> spell_name -> description
 
 (** [character_description h c] is the description of character [c] in [h]. 
     Raises: UnknownCharacter if character [c] is not in [h] *)
-val character_description: t -> character_name -> description
+val character_description: character_info -> description
 
 (** [spell_damage h s] is the amount of damage that spell [s] in [h] inflicts. 
     Raises: UnknownSpell if spell [s] is not in [h] *)

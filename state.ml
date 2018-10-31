@@ -28,7 +28,7 @@ let get_hand (st:t) =
 
 let get_deck (st:t) =
   st.deck
-
+  
 let get_blocked (st:t) = 
   st.blocked
 
@@ -36,8 +36,6 @@ let get_blocked (st:t) =
 let get_defeated_enemies st = 
   st.defeated_enemies
 
-(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
-    enemies. *)
 let add_defeated_enemy st enemy hogwarts = 
   let defeated_enemy = (Hogwarts.search_characters hogwarts enemy) in 
   let prev_defeated = get_defeated_enemies st in 
@@ -68,6 +66,8 @@ let rec get_prolong_turn (st:t) =
   let prolong = st.prolong_effect in
   get_turn prolong 
 
+let get_prolong_tupes (st:t) =
+  st.prolong_effect
 
 let get_level_deck  st =
   let new_deck = List.filter (fun x -> st.level >= 
@@ -154,9 +154,7 @@ let rec drop n lst =
       | h :: t -> t 
     )
 
-(** [update_helper_dazed st prolonged_effect] is a helper for update for if dazed 
-    is true. *)
-let update_helper_dazed st = 
+let update_dazed st = 
   let new_dazed = (st.dazed - 1) in {
     st with
     dazed = new_dazed
@@ -209,7 +207,7 @@ let update_helper_health st  spell =
 
 
 let update spell st1 st2 =    
-  if st1.dazed > 0 then (update_helper_dazed st1 ) 
+  if st1.dazed > 0 then (update_dazed st1 ) 
   else (if Hogwarts.spell_block spell = true 
         then update_helper_block st1 
         else (if Hogwarts.spell_target spell = "self" 
@@ -269,6 +267,16 @@ let cast spell st1 st2 : (t*t) =
     (hand_after_cast spell st1, update_prolong_damage spell updated_enemy)
   )
 
+(*Right now it's simplistic but will change for last release*)
+let required_wins (player:t) =
+  (player.level) * 2
+
+let level_up (player:t) : t =
+  (*Current formula is to just multiply level*2 for needed level up*)
+  let req = required_wins player in
+  if List.length player.defeated_enemies >= req then
+    {player with level = player.level + 1}
+  else player
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =

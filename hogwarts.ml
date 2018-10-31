@@ -140,9 +140,8 @@ let add_spell hogwarts spell =
 let spell_description hogwarts spell = 
   let spell' = search_spells hogwarts spell in spell'.spell_description
 
-let character_description hogwarts character = 
-  let character' = search_characters hogwarts character in 
-  character'.character_description
+let character_description character = 
+  character.character_description
 
 let spell_damage spell = 
   spell.damage
