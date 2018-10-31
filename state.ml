@@ -4,6 +4,7 @@ type t = {
   hp: int;
   level: int;
   dazed: int;
+  blocked: int;
   prolong_effect: (int * int) list;  
   hand: Hogwarts.spell_info list;
   deck: Hogwarts.spell_info list;
@@ -281,14 +282,29 @@ let update_prolong_damage spell st =
     hp = st.hp - new_prolong_damage;
   }
 
+let update_blocked spell st = 
+  if Hogwarts.spell_block spell = true then 
+    let new_block = 1 in   
+    {st with   
+     blocked = new_block} else
+    st 
+
+let reset_blocked spell st = 
+  {st with 
+   blocked = 0} 
+
 
 let cast spell st1 st2 : (t*t) =
   if st1.dazed > 0 then
     let updated_self =update spell st1 st2 in 
-    (hand_after_cast spell updated_self,update_prolong_damage spell st2) else   
+    (updated_self,update_prolong_damage spell st2) else 
+  if st1.blocked = 1 then 
+    let updated_self = reset_blocked spell st1 in
+    (hand_after_cast spell updated_self, st2) 
+  else   
   if Hogwarts.spell_block spell = true then
-    let updated = update spell st1 st2 in 
-    (hand_after_cast  spell updated, update_prolong_damage spell st2) 
+    (hand_after_cast  spell st1, update_blocked spell
+       (update_prolong_damage spell st2)) 
   else 
 
   if Hogwarts.spell_target spell = "self" then (
