@@ -8,6 +8,7 @@ type t = {
   prolong_effect: (int * int) list;  
   hand: Hogwarts.spell_info list;
   deck: Hogwarts.spell_info list;
+  defeated_enemies: Hogwarts.character_name list
 }
 
 let get_name st =
@@ -30,6 +31,20 @@ let get_deck (st:t) =
 
 let get_blocked (st:t) = 
   st.blocked
+
+(** [get_defeated_enemies st] is the list of defeated enemies. *)
+let get_defeated_enemies st = 
+  st.defeated_enemies
+
+(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
+    enemies. *)
+let add_defeated_enemy st enemy hogwarts = 
+  let defeated_enemy = (Hogwarts.search_characters hogwarts enemy) in 
+  let prev_defeated = get_defeated_enemies st in 
+  let defeated = (Hogwarts.character_name defeated_enemy)::prev_defeated in
+  {
+    st with defeated_enemies = defeated
+  }
 
 (** returns a list of prolong 
     damage that will be applied*)
@@ -62,18 +77,31 @@ let get_level_deck  st =
 
 
 let init_player hogwarts name =
-  {name=name; hp=100; level = 0; dazed = 0; 
-   prolong_effect = []; hand=[]; blocked =0;
+  {name=name; hp=100; level = 1; dazed = 0; blocked = 0;
+   prolong_effect = []; hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l
-                                  (Hogwarts.get_spells hogwarts))))
+                                  (Hogwarts.get_spells hogwarts))));
+
+   defeated_enemies = []
   }
 
+let init_player_with_level_deck hogwarts name = 
+  let player = init_player hogwarts name in
+  get_level_deck player
+
 let init_enemy hogwarts name =
-  {name=name; hp=100; level = 0; dazed = 0;
+  let enemy_info = Hogwarts.search_characters hogwarts name in 
+  let enemy_level = Hogwarts.character_level enemy_info in 
+  {name=name; hp=100; level = enemy_level; dazed = 0;
    prolong_effect = [];
-   hand=[]; blocked =0;
+   hand=[]; blocked = 0;
    deck=(QCheck.Gen.(generate1 (shuffle_l 
-                                  (Hogwarts.get_spells hogwarts))))}
+                                  (Hogwarts.get_spells hogwarts))));
+   defeated_enemies = []
+  }
+
+let init_enemy_with_level_deck hogwarts name =
+  get_level_deck (init_enemy hogwarts name)
 
 let draw (st:t) =
   match st.deck with
@@ -188,85 +216,6 @@ let update spell st1 st2 =
               then (update_helper_health st1 spell) 
               else (update_helper_health st2 spell)))
 
-
-
-
-(*
-let update spell st1 st2 = 
-  let new_prolong_effect = update_prolong spell st1 st2 in 
-  let prolong_damage = p_damage spell st1 st2 in   
-  let updated_hp = st1.hp - (Hogwarts.spell_damage spell) - 
-                         prolong_damage in 
-  if st1.dazed > 0 then
-    let new_dazed = (st1.dazed - 1) in {
-      st1 with
-      dazed = new_dazed;
-      prolong_effect = new_prolong_effect;
-      hp = updated_hp 
-    } else
-  if Hogwarts.spell_block spell = true then
-    let new_dazed = (st1.dazed - 1) in {
-      st1 with
-      dazed = new_dazed; 
-      prolong_effect = new_prolong_effect 
-    } else  
-    let new_dazed = st1.dazed + (Hogwarts.spell_daze spell) in 
-    let updated_health = st1.hp - (Hogwarts.spell_damage spell) - 
-                         prolong_damage in
-    if Hogwarts.spell_target spell = "self" then (
-      if fst (Hogwarts.spell_remove spell) = "hand" then
-        let new_hand = drop (snd(Hogwarts.spell_remove spell))
-            (st1.hand) in 
-        {st1 with 
-         hand= new_hand;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect} 
-      else if fst (Hogwarts.spell_remove spell) = "deck" then 
-        let new_deck = drop (snd (Hogwarts.spell_remove spell))
-            (st1.deck) in 
-        {st1 with 
-         deck= new_deck;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect
-        }    
-      else
-        {st1 with 
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect = new_prolong_effect} 
-    ) else (  
-      let new_dazed = st2.dazed + (Hogwarts.spell_daze spell) in 
-      let updated_health = st2.hp - (Hogwarts.spell_damage spell) -
-                           prolong_damage in                      
-      if fst (Hogwarts.spell_remove spell) = "hand" then
-
-        let new_hand = drop (snd (Hogwarts.spell_remove spell))
-            (st2.hand) in 
-        {st2 with 
-         hand= new_hand;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect} 
-      else if (fst (Hogwarts.spell_remove spell)) = "deck" then 
-        let new_deck = drop (snd (Hogwarts.spell_remove spell))
-            (st2.deck) in 
-        {st2 with 
-         deck= new_deck;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect=new_prolong_effect}    
-      else
-        {st2 with 
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect} 
-    )
- *)   
-
-
-
 (**updates state after drawing*)
 let hand_after_cast spell st =
   let new_hand = List.filter (fun x -> spell <>
@@ -284,6 +233,7 @@ let update_prolong_damage spell st =
     prolong_effect = new_prolong_effect;
     hp = st.hp - new_prolong_damage;
   }
+
 
 let update_blocked spell st = 
   if Hogwarts.spell_block spell = true then 
@@ -320,27 +270,9 @@ let cast spell st1 st2 : (t*t) =
   )
 
 
-
-
-
-(*removal from hand and deck is removing 
-  first n elements*)
-(*not sure what long-effect is suppose to do*)
-
-(** shouldn't block be boolean*)
-
-
-(*seperate function to handle block*)
-
-(*takes care of damage done by 
-  prolong spell*)
-
-
-
-
-
-
-
+(*TODO: remove this*)
+let to_list_hand pl : Hogwarts.spell_info list =
+  pl.hand
 
 
 
@@ -356,55 +288,36 @@ let cast spell st1 st2 : (t*t) =
 (*Keeping this for later when we return to module method*)
 (* module type Command = sig
    type player_name
-
    type player_hp
-
    type player
-
    type hand
-
    type deck
-
    val get_name: player -> player_name
-
    val get_hp: player -> player_hp 
-
    val get_hand: hand -> Hogwarts.spell_info list
-
    val draw: Hogwarts.spell_info list ->
     hand -> deck -> Hogwarts.spell_info list * Hogwarts.spell_info list
-
    val cast : 'a -> Hogwarts.spell_info -> hand -> 'a * Hogwarts.spell_info list
-
    end 
-
    module Command: Command = struct  
    type player_name = string
    type player_hp = int
-
-
    type player = {
     name : player_name;
     hp: player_hp;
    }
-
    type hand = {
     hand : spell_info list;
    }
-
    type deck = {
     deck : spell_info list;
    }
-
    let get_name st =
     st.name
-
    let get_hp st = 
     st.hp 
-
    let get_hand st =
     st.hand
-
    (** update hand and deck
       returns a tuple 
       of updated hand and 
@@ -415,22 +328,9 @@ let cast spell st1 st2 : (t*t) =
      | [] -> []
      | h :: t -> t  
     ) 
-
    let cast damage chosen st =    
     (damage,List.filter (fun x -> x <> chosen) st.hand)
-
    (** returns hp after the spell is casted*)
    let casted damage st = 
     st.hp - damage  
-
    end  *)
-
-
-
-
-
-
-
-
-
-

@@ -43,7 +43,6 @@ val get_prolong_damage: t -> int list
     of prolonged damage *)
 val get_prolong_turn: t -> int list 
 
-
 (** [get_blocked t] is the representation of 
     how many times a player is blocked *)
 val get_blocked: t -> int 
@@ -59,9 +58,17 @@ val get_level_deck: t -> t
     state of [t] of player *)
 val init_player: Hogwarts.t -> string -> t
 
+(** [init_player_with_level_deck Hogwarts.t name] is a player initialized with a 
+    leveled deck. *)
+val init_player_with_level_deck : Hogwarts.t -> string -> t
+
 (** [init_enemy Hogwarts.t name] in the initial 
     state of [t] of enemy *)
 val init_enemy: Hogwarts.t -> string -> t
+
+(** [init_enemy_with_level_deck Hogwarts.t name] is an enemy initialized with a 
+    leveled deck. *)
+val init_enemy_with_level_deck : Hogwarts.t -> string -> t
 
 (**[draw t] updates the deck of a state [t]
    after draw*)
@@ -109,3 +116,6 @@ val hand_after_cast: Hogwarts.spell_info -> t -> t
     The first being the caster,
     second the target.*)
 val cast: Hogwarts.spell_info -> t -> t -> t*t 
+
+(**list representation of spells*)
+val to_list_hand: t -> Hogwarts.spell_info list
