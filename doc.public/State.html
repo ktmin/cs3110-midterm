@@ -40,58 +40,176 @@
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
 <div class="info-desc">
-<p>The abstract type of values representing a state.</p>
+<p>The abstract type of values representing a player
+    state.</p>
 </div>
 </div>
 
 
-<pre><span id="TYPEplayer_name"><span class="keyword">type</span> <code class="type"></code>player_name</span> = <code class="type">string</code> </pre>
-<div class="info ">
+<pre><span id="VALget_name"><span class="keyword">val</span> get_name</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 <div class="info-desc">
-<p>represents player name</p>
+<p><code class="code">get_name t</code> is the name of 
+    player in <code class="code">t</code></p>
 </div>
 </div>
 
-
-<pre><span id="TYPEplayer"><span class="keyword">type</span> <code class="type"></code>player</span> </pre>
-<div class="info ">
+<pre><span id="VALget_hp"><span class="keyword">val</span> get_hp</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>represents player</p>
+<p><code class="code">get_hp t</code> is the hp of 
+    player in <code class="code">t</code></p>
 </div>
 </div>
 
-
-<pre><span id="TYPEhand"><span class="keyword">type</span> <code class="type"></code>hand</span> </pre>
-<div class="info ">
+<pre><span id="VALget_level"><span class="keyword">val</span> get_level</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>The type of hand</p>
+<p><code class="code">get_level t</code> is the level of 
+    player in <code class="code">t</code></p>
 </div>
 </div>
 
-
-<pre><span id="TYPEdeck"><span class="keyword">type</span> <code class="type"></code>deck</span> </pre>
-<div class="info ">
+<pre><span id="VALget_dazed"><span class="keyword">val</span> get_dazed</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>The type of deck</p>
+<p><code class="code">get_dazed t</code> is the number of
+    turns player is dazed in <code class="code">t</code></p>
 </div>
 </div>
 
-
-<pre><span id="VALdraw"><span class="keyword">val</span> draw</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
-<div class="info-desc">
-<p><code class="code">draw t</code> updates hand and deck of statue <code class="code">t</code></p>
-</div>
-</div>
-
-<pre><span id="VALget_hand"><span class="keyword">val</span> get_hand</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEhand">hand</a></code></pre><div class="info ">
+<pre><span id="VALget_hand"><span class="keyword">val</span> get_hand</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">get_hand t</code> is the hand of a state <code class="code">t</code></p>
 </div>
 </div>
 
-<pre><span id="VALget_deck"><span class="keyword">val</span> get_deck</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEdeck">deck</a></code></pre><div class="info ">
+<pre><span id="VALget_deck"><span class="keyword">val</span> get_deck</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">get_deck t</code> is the deck of a state <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALget_prolong_damage"><span class="keyword">val</span> get_prolong_damage</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_prolong_damage t</code> is the list of
+    prolong damage that will be applied</p>
+</div>
+</div>
+
+<pre><span id="VALget_prolong_turn"><span class="keyword">val</span> get_prolong_turn</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_prolong_turn t</code> is the list of turns
+    of prolonged damage</p>
+</div>
+</div>
+
+<pre><span id="VALget_blocked"><span class="keyword">val</span> get_blocked</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_blocked t</code> is the representation of 
+    how many times a player is blocked</p>
+</div>
+</div>
+
+<pre><span id="VALget_level_deck"><span class="keyword">val</span> get_level_deck</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_level_deck t</code> is the 
+    updated deck of a state <code class="code">t</code>, 
+    filtered out by removing 
+    cards that have greater 
+    level than the level of player in <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALinit_player"><span class="keyword">val</span> init_player</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_player Hogwarts.t name</code> in the initial 
+    state of <code class="code">t</code> of player</p>
+</div>
+</div>
+
+<pre><span id="VALinit_player_with_level_deck"><span class="keyword">val</span> init_player_with_level_deck</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_player_with_level_deck Hogwarts.t name</code> is a player initialized with a 
+    leveled deck.</p>
+</div>
+</div>
+
+<pre><span id="VALinit_enemy"><span class="keyword">val</span> init_enemy</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_enemy Hogwarts.t name</code> in the initial 
+    state of <code class="code">t</code> of enemy</p>
+</div>
+</div>
+
+<pre><span id="VALinit_enemy_with_level_deck"><span class="keyword">val</span> init_enemy_with_level_deck</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_enemy_with_level_deck Hogwarts.t name</code> is an enemy initialized with a 
+    leveled deck.</p>
+</div>
+</div>
+
+<pre><span id="VALdraw"><span class="keyword">val</span> draw</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">draw t</code> updates the deck of a state <code class="code">t</code>
+   after draw</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_damage"><span class="keyword">val</span> update_damage</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_damage t</code> updates the 
+    hp of a state <code class="code">t</code> after cast</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_caster"><span class="keyword">val</span> update_caster</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_caster t</code> updates the 
+    deck and hand of a state <code class="code">t</code> after cast</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_prolong_list"><span class="keyword">val</span> update_prolong_list</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> (int * int) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_prolong_list t</code> returns 
+    the list of prolonged damage after
+    one turn</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_prolong"><span class="keyword">val</span> update_prolong</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a> -> (<a href="Hogwarts.html#TYPEdamage">Hogwarts.damage</a> * <a href="Hogwarts.html#TYPEturns">Hogwarts.turns</a>) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_prolong Hogwarts.spell_info</code> returns 
+   the list of prolonged damaged after one turn</p>
+</div>
+</div>
+
+<pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">int -> 'a list -> 'a list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">drop n</code> is a helper function
+    to remove n number of elements from a given 
+    list</p>
+</div>
+</div>
+
+<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update spell st1 st2</code> updates a state <code class="code">t</code>
+    of player and a state <code class="code">t</code> of enemy according to
+    the casted spell</p>
+</div>
+</div>
+
+<pre><span id="VALhand_after_cast"><span class="keyword">val</span> hand_after_cast</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">hand_after_cast t</code> updates state <code class="code">t</code>
+    after state<code class="code">t</code> casts a spell</p>
+</div>
+</div>
+
+<pre><span id="VALcast"><span class="keyword">val</span> cast</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a> * <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">cast Hogwarts.spell_info</code> 
+    returns an updated verison of type t*t.
+    The first being the caster,
+    second the target.</p>
 </div>
 </div>
 
@@ -101,50 +219,50 @@
 </div>
 </div>
 
-<pre><span id="VALinit_player"><span class="keyword">val</span> init_player</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALrefresh_deck"><span class="keyword">val</span> refresh_deck</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Given hogwarts state and player name
-    outputs type t</p>
+<p><code class="code">refresh_deck Hogwarts.t t</code> refreshes the deck
+   of a state <code class="code">t</code></p>
 </div>
 </div>
 
-<pre><span id="VALinit_enemy"><span class="keyword">val</span> init_enemy</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALget_defeated_enemies"><span class="keyword">val</span> get_defeated_enemies</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEcharacter_name">Hogwarts.character_name</a> list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Given hogwarts state outputs
-    outputs type t</p>
+<p><code class="code">get_defeated_enemies st</code> is the list of defeated enemies.</p>
 </div>
 </div>
 
-<pre><span id="VALget_hp"><span class="keyword">val</span> get_hp</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<pre><span id="VALadd_defeated_enemy"><span class="keyword">val</span> add_defeated_enemy</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEcharacter_name">Hogwarts.character_name</a> -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Given type t, returns
-    hp</p>
+<p><code class="code">add_defeated_enemy st enemy hogwarts</code> is an updated state with defeated 
+    enemies.</p>
 </div>
 </div>
 
-<pre><span id="VALupdate_damage"><span class="keyword">val</span> update_damage</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALrequired_wins"><span class="keyword">val</span> required_wins</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t that reduces/increases the 
-    health of the target user</p>
+<p><code class="code">required_wins t</code> returns amount of wins required to 
+    progress to next level.</p>
 </div>
 </div>
 
-<pre><span id="VALupdate_caster"><span class="keyword">val</span> update_caster</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALlevel_up"><span class="keyword">val</span> level_up</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t that removes the 
-    spell card from the target user</p>
+<p><code class="code">level_up t</code> attempts to level up player. Returns t if not enough wins
+    have been secured.</p>
 </div>
 </div>
 
-<pre><span id="VALcast"><span class="keyword">val</span> cast</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a> * <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALget_prolong_tupes"><span class="keyword">val</span> get_prolong_tupes</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> (int * int) list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*t. The first being the caster,
-    second the target. If the spell is self targeted then the tuple will just
-    be the same record twice</p>
+<p><code class="code">get_rpolong_tupes t</code> gets all prolonged effects of input caster</p>
 </div>
 </div>
 
-<pre><span id="VALget_name"><span class="keyword">val</span> get_name</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEplayer_name">player_name</a></code></pre></body></html>
+<pre><span id="VALupdate_dazed"><span class="keyword">val</span> update_dazed</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_dazed st</code> is a helper for update for if dazed 
+    is true.</p>
+</div>
+</div>
+</body></html>
