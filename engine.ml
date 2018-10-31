@@ -225,7 +225,7 @@ let rec run_command (player:State.t) (enemy:State.t)
     - You play against an AI that takes its turn after you\n
     - Winner is the person who makes the other reach 0 or less health");
                     callback player enemy house hogwarts)
-  | Status -> print_state player house; print_state enemy house;
+  | Status -> print_state player enemy house; print_state enemy player house;
     callback player enemy house hogwarts
   | Cast lst -> (
       (*TODO: reduce this part into its own method*)
@@ -337,7 +337,7 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
                    (Hogwarts.character_name enemy_char)) in
 
     if(affirmation hogwarts enemy_char enemy) then (
-      print_state player house; print_state enemy house;
+      print_state player enemy house; print_state enemy player house;
       callback player enemy house hogwarts
     ) else
       choose_opponent player hogwarts house callback
