@@ -91,6 +91,7 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
           ANSITerminal.(print_string [house] "\n Opponent skips their go");
           ((State.draw enemy),player)
         ) else (
+          List.iter(fun a -> print_endline (Hogwarts.spell_name a)) enemy_hand;
           let hp = State.get_hp enemy in
           let min_max = spell_finder enemy_hand (-100) 100 in
           (*max heal may be the same as min damage if player has no healing
@@ -104,8 +105,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
             if hp < 100 then (
               if is_healing && 
                  Hogwarts.spell_target max_heal = "self" then (
-                let tup = cast_spell max_heal enemy enemy house in
-                ((snd tup),player)
+                let tup = cast_spell max_heal enemy player house in
+                ((fst tup),player)
               ) else (
                 cast_spell min_damage enemy player house
               )
@@ -120,8 +121,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
                 cast_spell max_damage enemy player house) else (
                 if player_hp > hp then (
                   if is_healing then
-                    let tup = cast_spell max_heal enemy enemy house in
-                    ((snd tup),player)
+                    let tup = cast_spell max_heal enemy player house in
+                    ((fst tup),player)
                   else
                     cast_spell max_damage enemy player house
                 ) else (
