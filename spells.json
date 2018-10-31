@@ -15,7 +15,12 @@
           "count": 0
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Confringo",
@@ -32,7 +37,12 @@
           "count": 0
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Confundo",
@@ -49,7 +59,12 @@
           "count": 0
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Episky",
@@ -66,11 +81,16 @@
           "count": 0
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Crucio",
-      "damage": 15,
+      "damage": 0,
       "target": "enemy",
       "description": "The Second Unforgivable Curse, the Cruciatus Curse; Tortures your opponent mercilessly.",
       "level": 5,
@@ -83,7 +103,12 @@
           "count": 0
         }
       ],
-      "long-effect": 5
+      "long-effect": [
+        {
+          "damage": 15,
+          "turns": 5
+        }
+      ]
     },
     {
       "name": "Expelliarmus",
@@ -100,7 +125,12 @@
           "count": 1
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Ferula",
@@ -117,11 +147,16 @@
           "count": 0
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Incarcerous",
-      "damage": 7,
+      "damage": 0,
       "target": "enemy",
       "description": "Conjures up ropes, which then bind an opponent.",
       "level": 3,
@@ -134,11 +169,16 @@
           "count": 0
         }
       ],
-      "long-effect": 2
+      "long-effect": [
+        {
+          "damage": 7,
+          "turns": 2
+        }
+      ]
     },
     {
       "name": "Sectumsempra",
-      "damage": 20,
+      "damage": 0,
       "target": "enemy",
       "description": "Causes lacerations to appear all over an opponent’s body, as if they had been cut by an invisible sword.",
       "level": 4,
@@ -151,7 +191,12 @@
           "count": 0
         }
       ],
-      "long-effect": 5
+      "long-effect": [
+        {
+          "damage": 20,
+          "turns": 5
+        }
+      ]
     },
     {
       "name": "Stupefy",
@@ -168,11 +213,16 @@
           "count": 0
         }
       ],
-      "long-effect": 0
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     },
     {
       "name": "Obliviate",
-      "damage": 10,
+      "damage": 0,
       "target": "enemy",
       "description": "Makes a person 'oblivious', erasing their memories of an event.",
       "level": 3,
@@ -185,7 +235,12 @@
           "count": 0
         }
       ],
-      "long-effect": 5
+      "long-effect": [
+        {
+          "damage": 10,
+          "turns": 5
+        }
+      ]
     }
   ]
 }
