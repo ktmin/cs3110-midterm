@@ -28,6 +28,9 @@ let get_hand (st:t) =
 let get_deck (st:t) =
   st.deck
 
+let get_blocked (st:t) = 
+  st.blocked
+
 (** returns a list of prolong 
     damage that will be applied*)
 let rec get_prolong_damage (st:t) =
