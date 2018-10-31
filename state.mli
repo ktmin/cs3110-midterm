@@ -120,6 +120,10 @@ val cast: Hogwarts.spell_info -> t -> t -> t*t
 (**list representation of spells*)
 val to_list_hand: t -> Hogwarts.spell_info list
 
+(**[refresh_deck Hogwarts.t t] refreshes the deck
+   of a state [t]*)
+val refresh_deck: Hogwarts.t -> t -> t
+
 (** [get_defeated_enemies st] is the list of defeated enemies. *)
 val get_defeated_enemies: t -> Hogwarts.character_name list
 

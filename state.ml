@@ -28,7 +28,7 @@ let get_hand (st:t) =
 
 let get_deck (st:t) =
   st.deck
-  
+
 let get_blocked (st:t) = 
   st.blocked
 
@@ -277,6 +277,23 @@ let level_up (player:t) : t =
   if List.length player.defeated_enemies >= req then
     {player with level = player.level + 1}
   else player
+
+let refresh_deck hogwarts (st:t) = 
+  let new_deck = (QCheck.Gen.(generate1 (shuffle_l 
+                                           (Hogwarts.get_spells hogwarts)))) in 
+
+  let new_level_deck = List.filter (fun x -> st.level >= 
+                                             Hogwarts.spell_level x) new_deck in 
+  {st  with deck = new_level_deck}
+
+
+
+let update_blocked spell st = 
+  if Hogwarts.spell_block spell = true then 
+    let new_block = 1 in   
+    {st with   
+     blocked = new_block} else
+    st 
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
