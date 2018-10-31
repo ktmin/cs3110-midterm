@@ -42,7 +42,7 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
     else (
       if (State.get_dazed enemy) > 0 then (
         ANSITerminal.(print_string [house] "\n\nEnemy is dazed and cannot cast!\n");
-        State.cast (List.hd (State.to_list_hand enemy)) enemy player)
+        (State.update_dazed enemy, player))
       else (
         if hand_size = 0 then (
           ANSITerminal.(print_string [house] "\n Opponent skips their go");
