@@ -200,6 +200,12 @@ let update spell st1 st2 =
     )
 
 let cast spell st1 st2 : (t*t) =
+  if Hogwarts.spell_daze spell > 0 then
+    let updated_self =update spell st1 st2 in 
+    (updated_self, st2) else   
+  if Hogwarts.spell_block spell = true then 
+    let updated_self = update spell st1 st2 in 
+    (updated_self, st2) else 
   if Hogwarts.spell_target spell = "self" then (
     let updated_self = update spell st1 st2 in
     (updated_self, st2)
