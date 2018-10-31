@@ -43,6 +43,9 @@ val get_prolong_damage: t -> int list
     of prolonged damage *)
 val get_prolong_turn: t -> int list 
 
+(** [get_blocked t] is the representation of 
+    how many times a player is blocked *)
+val get_blocked: t -> int 
 
 (** [get_level_deck t] is the 
     updated deck of a state [t], 

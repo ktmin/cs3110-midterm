@@ -4,6 +4,7 @@ type t = {
   hp: int;
   level: int;
   dazed: int;
+  blocked: int;
   prolong_effect: (int * int) list;  
   hand: Hogwarts.spell_info list;
   deck: Hogwarts.spell_info list;
@@ -27,6 +28,9 @@ let get_hand (st:t) =
 
 let get_deck (st:t) =
   st.deck
+
+let get_blocked (st:t) = 
+  st.blocked
 
 (** [get_defeated_enemies st] is the list of defeated enemies. *)
 let get_defeated_enemies st = 
@@ -73,7 +77,7 @@ let get_level_deck  st =
 
 
 let init_player hogwarts name =
-  {name=name; hp=100; level = 1; dazed = 0; 
+  {name=name; hp=100; level = 1; dazed = 0; blocked = 0;
    prolong_effect = []; hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l
                                   (Hogwarts.get_spells hogwarts))));
@@ -82,13 +86,15 @@ let init_player hogwarts name =
   }
 
 let init_player_with_level_deck hogwarts name = 
-  let player = init_player hogwarts name in print_int (List.length player.deck);
+  let player = init_player hogwarts name in
   get_level_deck player
 
 let init_enemy hogwarts name =
-  {name=name; hp=100; level = 1; dazed = 0;
+  let enemy_info = Hogwarts.search_characters hogwarts name in 
+  let enemy_level = Hogwarts.character_level enemy_info in 
+  {name=name; hp=100; level = enemy_level; dazed = 0;
    prolong_effect = [];
-   hand=[]; 
+   hand=[]; blocked = 0;
    deck=(QCheck.Gen.(generate1 (shuffle_l 
                                   (Hogwarts.get_spells hogwarts))));
    defeated_enemies = []
@@ -210,84 +216,6 @@ let update spell st1 st2 =
               then (update_helper_health st1 spell) 
               else (update_helper_health st2 spell)))
 
-
-
-
-(*
-let update spell st1 st2 = 
-  let new_prolong_effect = update_prolong spell st1 st2 in 
-  let prolong_damage = p_damage spell st1 st2 in   
-  let updated_hp = st1.hp - (Hogwarts.spell_damage spell) - 
-                         prolong_damage in 
-  if st1.dazed > 0 then
-    let new_dazed = (st1.dazed - 1) in {
-      st1 with
-      dazed = new_dazed;
-      prolong_effect = new_prolong_effect;
-      hp = updated_hp 
-    } else
-  if Hogwarts.spell_block spell = true then
-    let new_dazed = (st1.dazed - 1) in {
-      st1 with
-      dazed = new_dazed; 
-      prolong_effect = new_prolong_effect 
-    } else  
-    let new_dazed = st1.dazed + (Hogwarts.spell_daze spell) in 
-    let updated_health = st1.hp - (Hogwarts.spell_damage spell) - 
-                         prolong_damage in
-    if Hogwarts.spell_target spell = "self" then (
-      if fst (Hogwarts.spell_remove spell) = "hand" then
-        let new_hand = drop (snd(Hogwarts.spell_remove spell))
-            (st1.hand) in 
-        {st1 with 
-         hand= new_hand;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect} 
-      else if fst (Hogwarts.spell_remove spell) = "deck" then 
-        let new_deck = drop (snd (Hogwarts.spell_remove spell))
-            (st1.deck) in 
-        {st1 with 
-         deck= new_deck;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect
-        }    
-      else
-        {st1 with 
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect = new_prolong_effect} 
-    ) else (  
-      let new_dazed = st2.dazed + (Hogwarts.spell_daze spell) in 
-      let updated_health = st2.hp - (Hogwarts.spell_damage spell) -
-                           prolong_damage in                      
-      if fst (Hogwarts.spell_remove spell) = "hand" then
-        let new_hand = drop (snd (Hogwarts.spell_remove spell))
-            (st2.hand) in 
-        {st2 with 
-         hand= new_hand;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect} 
-      else if (fst (Hogwarts.spell_remove spell)) = "deck" then 
-        let new_deck = drop (snd (Hogwarts.spell_remove spell))
-            (st2.deck) in 
-        {st2 with 
-         deck= new_deck;
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect=new_prolong_effect}    
-      else
-        {st2 with 
-         hp = updated_health;
-         dazed = new_dazed;
-         prolong_effect= new_prolong_effect} 
-    )
- *)   
-
-
-
 (**updates state after drawing*)
 let hand_after_cast spell st =
   let new_hand = List.filter (fun x -> spell <>
@@ -307,13 +235,29 @@ let update_prolong_damage spell st =
   }
 
 
+let update_blocked spell st = 
+  if Hogwarts.spell_block spell = true then 
+    let new_block = 1 in   
+    {st with   
+     blocked = new_block} else
+    st 
+
+let reset_blocked spell st = 
+  {st with 
+   blocked = 0} 
+
+
 let cast spell st1 st2 : (t*t) =
   if st1.dazed > 0 then
     let updated_self =update spell st1 st2 in 
-    (updated_self,update_prolong_damage spell st2) else   
+    (updated_self,update_prolong_damage spell st2) else 
+  if st1.blocked = 1 then 
+    let updated_self = reset_blocked spell st1 in
+    (hand_after_cast spell updated_self, st2) 
+  else   
   if Hogwarts.spell_block spell = true then
-    let updated = update spell st1 st2 in 
-    (hand_after_cast  spell updated, update_prolong_damage spell st2) 
+    (hand_after_cast  spell st1, update_blocked spell
+       (update_prolong_damage spell st2)) 
   else 
 
   if Hogwarts.spell_target spell = "self" then (
