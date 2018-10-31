@@ -179,6 +179,10 @@ let spell_long_effect spell =
   | [] -> failwith "TODO"
   | h::_ -> (h.damage,h.turns)
 
+let is_long_effect spell = 
+  let prolonged_effect = spell_long_effect spell in 
+  if snd prolonged_effect <> 0 then true else false
+
 let character_house character = 
   character.house
 

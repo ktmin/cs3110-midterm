@@ -104,6 +104,9 @@ val spell_remove : spell_info -> string*int
 (** [spell_long_effect s] is the long-term effect of using spell [s] *)
 val spell_long_effect : spell_info -> damage*turns
 
+(** [is_long_effect s] is whether [s] has a prolonged effect. *)
+val is_long_effect : spell_info -> bool
+
 (** [character_house c] is the house of character [c] *)
 val character_house : character_info -> string
 
