@@ -4,7 +4,8 @@ let print_state player enemy house =
   ANSITerminal.(print_string [house] "\n\nYour health:\n");
   ANSITerminal.(print_string [magenta] (string_of_int 
                                           (State.get_hp player)));
-  ANSITerminal.(print_string [house] "\nEnemy's health:\n");
+  ANSITerminal.(print_string [house] ("\n"^
+                                      (State.get_name enemy)^"'s health:\n"));
   ANSITerminal.(print_string [magenta] (string_of_int 
                                           (State.get_hp enemy)))
 
@@ -22,9 +23,9 @@ let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t)
       enemy_turn hogwarts (State.draw enemy) player house
     else (
       (*What this does is either tries to kill the player if one spell exists
-        or does as much damage as possible. For milestone one I am not letting it
-        use self spells because it will glitch the game out because of how state
-        currently updates*)
+        or does as much damage as possible. For milestone one I am not letting 
+        it use self spells because it will glitch the game out 
+        because of how state currently updates*)
       let killers = List.filter (fun a -> 
           (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
       match killers with
@@ -201,18 +202,77 @@ let choose_house (h: string): ANSITerminal.style option =
   | "hufflepuff" -> Some ANSITerminal.yellow
   | _ -> None
 
+(*Below is all once-off used for starting the game*)
+(** [affirmation hogwarts enemy_info enemy] takes in the enemy for the info 
+    output and returns a boolean if the player chooses to fight that enemy.
+    Y or YES will fight, any other input (N or invalid) will return to character
+    menu. *)
+let affirmation (hogwarts:Hogwarts.t)(enemy_info:Hogwarts.character_info) 
+    (enemy:State.t) : bool =
+  ANSITerminal.(print_string [ANSITerminal.Bold; cyan] 
+                  (Hogwarts.character_name enemy_info);
+                print_string [cyan] ("\n-=-=-=-=-\n"^
+                                     (Hogwarts.character_description enemy_info)
+                                     ^"\n-=-=-=-=-\n");
+                print_string [cyan] ("Level: "^
+                                     (string_of_int (State.get_level enemy)));
+                print_string [cyan] ("\nStarting Health: "^
+                                     (string_of_int (State.get_hp enemy)));
+                print_string [cyan] ("\nHouse: "^
+                                     (Hogwarts.character_house enemy_info)));
+  ANSITerminal.(print_string [magenta] 
+                  "\n\nDo you want to duel this opponent (Y/N)? ");
+  let ans = String.uppercase_ascii (read_line ()) in
+  ans = "Y" || ans = "YES"
 
+(** [choose_opponenet player hogwarts house] gives the option for the player to
+    choose from the range of opponents to face. *)
+let rec choose_opponent player hogwarts house =
+  ANSITerminal.(print_string [magenta] "\nYour level: ");
+  ANSITerminal.(print_string [house] (string_of_int (State.get_level player)));
+
+  ANSITerminal.(print_string [magenta] 
+                  "\n\nHere are the possible opponents you may face:\n\n");
+  ANSITerminal.(print_string [house] 
+                  "Name: Level";
+                print_string [black] "\n");
+  let mapped = List.map (fun c -> (Hogwarts.character_name c)^": "^
+                                  (string_of_int (Hogwarts.character_level c))) 
+      (Hogwarts.get_characters hogwarts) in
+  let enemy_lst = String.concat "\n" mapped in
+  ANSITerminal.(print_string [cyan] enemy_lst;
+                print_string [magenta] 
+                  "\n\nEnter the name of who you want to face > ");
+  (*This complete mess just makes the string camel case*)
+  let target_name_lst = String.split_on_char ' ' (read_line ()) in
+  let target_name = String.concat " " (List.map (fun str -> 
+      String.capitalize_ascii (String.lowercase_ascii str)) target_name_lst) in
+  try (
+    let enemy_char = Hogwarts.search_characters hogwarts target_name in
+    let enemy = (State.init_enemy hogwarts 
+                   (Hogwarts.character_name enemy_char)) in
+
+    if(affirmation hogwarts enemy_char enemy) then (
+      print_state player enemy house;
+      play player enemy house hogwarts
+    ) else
+      choose_opponent player hogwarts house
+  ) with Hogwarts.UnknownCharacter target_name -> (
+      ANSITerminal.(print_string [house] 
+                      "\n\nI have no idea where you saw that name...\n
+                Try entering an actual person's name this time\n");
+      choose_opponent player hogwarts house
+    )
+
+
+(** [play_init f1 f2 house] takes in a spells json [f1] and characters [f2], 
+    and a ANSITerminal.style [house] color, then starts the game.*)
 let play_init f1 f2 player house = 
   let j1 = Yojson.Basic.from_file f1 in
   let j2 = Yojson.Basic.from_file f2 in
   let hogwarts = Hogwarts.from_json j1 j2 in 
   let player_state = State.init_player hogwarts player in
-  let enemy_state = State.init_enemy hogwarts "Malfoy" in (
-    ANSITerminal.(print_string [house] 
-                    ("\nYour opponent is "^
-                     (State.get_name enemy_state)^"!\n"));
-    play player_state enemy_state house hogwarts)
-
+  choose_opponent player_state hogwarts house
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 
     player's name to be used in gameplay. 
@@ -224,21 +284,18 @@ let rec name house =
   no numbers or symbols. Just letters. Please.\n\n";
     print_string [magenta] "Enter your name > "
   );
-
-  let reg = Str.regexp "^[A-Za-z]+$" in
+  let reg = Str.regexp "^[A-Za-z]+[A-Za-z ]*$" in
   let player_name = read_line () in
   if Str.string_match reg player_name 0 then
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play_init "spells.json" "characters.json" player_name house 
+     play_init "spells.json" "characters.json" (String.trim player_name) house 
     ) else (ANSITerminal.(
       print_string [magenta] "Simple stuff, 
       I wonder how you will fare in Hogwarts if you struggle at even this... 
       Try again\n"
     ); name house)
-
-(*Below is all once-off used for starting the game*)
 
 (*ASCII Art FTW: http://patorjk.com/software/taag/*)
 let intro_text = [
@@ -252,6 +309,9 @@ let intro_text = [
   ["     ";"_____";" ___/";"(__  ) ";"____/  ";"       "]
 ]
 
+(** [get_color_code num] gets the respective color of house in accordance with
+    [num]. 0 or 1 is red, 2,3 yellow, 4,5 green, 6,7 blue. Any other number
+    will return white.*)
 let get_color_code (num:int) : ANSITerminal.style =
   match num with
   | 0 | 1 -> ANSITerminal.red
@@ -262,6 +322,8 @@ let get_color_code (num:int) : ANSITerminal.style =
 
 let ref_num = ref 0
 
+(** [print_arr arr] prints he first element of a non-empty list and returns
+    all non-printed elements (can be an empty list).*)
 let rec print_arr (arr:string list) : (string list)=
   let itr = (!ref_num mod 8) in
   let color = get_color_code itr in
@@ -272,6 +334,9 @@ let rec print_arr (arr:string list) : (string list)=
              if itr = 7 then print_string "\n";
              t)
 
+(** [print_arr_2d arr] prints all elements from a list of string lists.
+    The printing pattern is it prints the head element of each respective list
+    and iterates forward until all lists are empty.*)
 let rec print_arr_2d (arr:(string list) list) =
   match arr with
   | [] -> ()
