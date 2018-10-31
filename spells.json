@@ -527,6 +527,204 @@
           "turns": 0
         }
       ]
+    },
+    {
+      "name": "Fumos",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Causes explosions.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Lumos",
+      "damage": -7,
+      "target": "self",
+      "description": "Magical elixir that heals yourself",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Arania Exumai",
+      "damage": 10,
+      "target": "enemy",
+      "description": "Blasts away Spiders",
+      "level": 2,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Cheering",
+      "damage": -15,
+      "target": "self",
+      "description": "Makes yourself happy and giddy ",
+      "level": 3,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Conjunctivitis",
+      "damage": 6,
+      "target": "enemy",
+      "description": "Damages opponents eyesight ",
+      "level": 2,
+      "type": "spell",
+      "daze": 2,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Depulso",
+      "damage": 0,
+      "target": "enemy",
+      "description": "Drives an object away ",
+      "level": 2,
+      "type": "spell",
+      "daze": 0,
+      "block": true,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Duro",
+      "damage": -15,
+      "target": "self",
+      "description": "Make yourself stronger ",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Ear Shriveling ",
+      "damage": 6,
+      "target": "enemy",
+      "description": "Cause a person’s ears to shrivel ",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Harmonia Nectere Passus ",
+      "damage": -10,
+      "target": "self",
+      "description": "Mends broken things ",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     }
   ]
 }
