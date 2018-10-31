@@ -66,25 +66,25 @@ let command_tests =
 
 
 let spell1 =
-  search spells_json "Avada Kedavra"
+  search spells_json "avada kedavra"
 
 let spell2 = 
-  search spells_json "Confringo" 
+  search spells_json "confringo" 
 
 let spell3 = 
-  search spells_json "Confundo"
+  search spells_json "confundo"
 
 let spell4 = 
-  search spells_json "Episky"   
+  search spells_json "episky"   
 
 let spell5 = 
-  search spells_json "Crucio"  
+  search spells_json "crucio"  
 
 let spell6 = 
-  search spells_json "Expelliarmus"
+  search spells_json "expelliarmus"
 
 let spell7 = 
-  search spells_json "Ferula"
+  search spells_json "ferula"
 
 
 let init_pl =
@@ -165,7 +165,7 @@ let suite =
   "test suite for A6"  >::: List.flatten [
     hogwarts_tests;
     command_tests;
-    state_tests;
+    (*state_tests;*)
   ]
 
 let _ = run_test_tt_main suite
