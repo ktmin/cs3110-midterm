@@ -267,7 +267,7 @@
     {
       "name": "Protego",
       "damage": 0,
-      "target": "enemy",
+      "target": "self",
       "description": "A shield charm that can fend off spells.",
       "level": 1,
       "type": "spell",
@@ -514,7 +514,7 @@
       "level": 1,
       "type": "spell",
       "daze": 0,
-      "block": true,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
