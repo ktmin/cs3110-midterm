@@ -168,41 +168,6 @@ let rec run_command (player:State.t) (enemy:State.t)
         )
     )
 
-(** [play player enemy house name] is the main game loop that takes in [player]
-    and [enemy] states, [house] text color and [name] hogwarts game state and 
-    progresses based on player inputs until a win/loss condition is fulfilled.
-    The [asked_state] is an optional argument that if set to false will by 
-    default print out the statuses of [player] and [enemy]*)
-let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
-    (house: ANSITerminal.style) (name: Hogwarts.t)  =
-  match check_conditions player enemy with
-  | Win -> (ANSITerminal.(print_string [house] "\nCongrats you win!\n"); exit 0)
-  | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :(\n"); exit 0)
-  | Continue -> (
-      (*This is to avoid double status description*)
-      if not asked_state then print_state player enemy house;
-      ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
-      let cmd = read_line () in
-      try (
-        run_command player enemy house name (Command.parse cmd) play
-      ) with Command.Invalidcommand ->
-        (ANSITerminal.(print_string [house] 
-                         "Invalid command. Possible commands: \n
-    Draw, cast [card name], describe [card name], view, instruction, help, 
-    status, forfeit"); play player enemy house name ))
-
-(** [choose_house h] returns the colour representing the respective Harry Potter
-    house as specified by [h]. If the house name is invalid 
-    (name does not exist), None will be returned.*)
-let choose_house (h: string): ANSITerminal.style option =
-  match String.lowercase_ascii h with
-  | "gryffindor" -> Some ANSITerminal.red
-  | "slytherin" -> Some ANSITerminal.green
-  | "ravenclaw" -> Some ANSITerminal.blue
-  | "hufflepuff" -> Some ANSITerminal.yellow
-  | _ -> None
-
-(*Below is all once-off used for starting the game*)
 (** [affirmation hogwarts enemy_info enemy] takes in the enemy for the info 
     output and returns a boolean if the player chooses to fight that enemy.
     Y or YES will fight, any other input (N or invalid) will return to character
@@ -225,9 +190,14 @@ let affirmation (hogwarts:Hogwarts.t)(enemy_info:Hogwarts.character_info)
   let ans = String.uppercase_ascii (read_line ()) in
   ans = "Y" || ans = "YES"
 
-(** [choose_opponenet player hogwarts house] gives the option for the player to
-    choose from the range of opponents to face. *)
-let rec choose_opponent player hogwarts house =
+(** [choose_opponenet player hogwarts house callback] gives the option for the 
+    player to choose from the range of opponents to face. [callback] is 
+    called when player chooses a character and affirms that they want 
+    to battle them. *)
+let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t) 
+    (house:ANSITerminal.style) 
+    (callback: ?asked_state:bool -> State.t -> State.t -> 
+     ANSITerminal.style -> Hogwarts.t -> unit) : unit =
   ANSITerminal.(print_string [magenta] "\nYour level: ");
   ANSITerminal.(print_string [house] (string_of_int (State.get_level player)));
 
@@ -254,16 +224,55 @@ let rec choose_opponent player hogwarts house =
 
     if(affirmation hogwarts enemy_char enemy) then (
       print_state player enemy house;
-      play player enemy house hogwarts
+      callback player enemy house hogwarts
     ) else
-      choose_opponent player hogwarts house
+      choose_opponent player hogwarts house callback
   ) with Hogwarts.UnknownCharacter target_name -> (
       ANSITerminal.(print_string [house] 
                       "\n\nI have no idea where you saw that name...\n
                 Try entering an actual person's name this time\n");
-      choose_opponent player hogwarts house
+      choose_opponent player hogwarts house callback
     )
 
+(** [play player enemy house name] is the main game loop that takes in [player]
+    and [enemy] states, [house] text color and [name] hogwarts game state and 
+    progresses based on player inputs until a win/loss condition is fulfilled.
+    The [asked_state] is an optional argument that if set to false will by 
+    default print out the statuses of [player] and [enemy]*)
+let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
+    (house: ANSITerminal.style) (hogwarts: Hogwarts.t)  =
+  match check_conditions player enemy with
+  | Win -> (ANSITerminal.(print_string [Bold; cyan] "\n\n-=-=-=-=-=-=-=-=-";
+                          print_string [house] "\nCongrats you win!\n";
+                          print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n"); 
+            choose_opponent player hogwarts house play)
+  | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :( and die\n"); 
+             exit 0)
+  | Continue -> (
+      (*This is to avoid double status description*)
+      if not asked_state then print_state player enemy house;
+      ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
+      let cmd = read_line () in
+      try (
+        run_command player enemy house hogwarts (Command.parse cmd) play
+      ) with Command.Invalidcommand ->
+        (ANSITerminal.(print_string [house] 
+                         "Invalid command. Possible commands: \n
+    Draw, cast [card name], describe [card name], view, instruction, help, 
+    status, forfeit"); play player enemy house hogwarts ))
+
+(*Below is all once-off used for starting the game*)
+
+(** [choose_house h] returns the colour representing the respective Harry Potter
+    house as specified by [h]. If the house name is invalid 
+    (name does not exist), None will be returned.*)
+let choose_house (h: string): ANSITerminal.style option =
+  match String.lowercase_ascii h with
+  | "gryffindor" -> Some ANSITerminal.red
+  | "slytherin" -> Some ANSITerminal.green
+  | "ravenclaw" -> Some ANSITerminal.blue
+  | "hufflepuff" -> Some ANSITerminal.yellow
+  | _ -> None
 
 (** [play_init f1 f2 house] takes in a spells json [f1] and characters [f2], 
     and a ANSITerminal.style [house] color, then starts the game.*)
@@ -272,7 +281,7 @@ let play_init f1 f2 player house =
   let j2 = Yojson.Basic.from_file f2 in
   let hogwarts = Hogwarts.from_json j1 j2 in 
   let player_state = State.init_player hogwarts player in
-  choose_opponent player_state hogwarts house
+  choose_opponent player_state hogwarts house play
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 
     player's name to be used in gameplay. 

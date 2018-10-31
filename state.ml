@@ -65,7 +65,7 @@ let init_player hogwarts name =
   }
 
 let init_enemy hogwarts name =
-  {name=name; hp=100; level = 0; dazed = 0;
+  {name=name; hp=1; level = 0; dazed = 0;
    prolong_effect = [];
    hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l 
