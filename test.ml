@@ -22,9 +22,8 @@ let assert_raises_test name input_exn expected_output : test =
 
 
 (** Used to test search_spells *)
-(* type spell = Hogwarts.spell_info
-   let (spell1 : spell) = {
-   name = "Confringo";
+(* let spell = {
+   spell_name = "Confringo";
    damage = 5;
    target = "enemy";
    description = "Blasting Charm; causes items the charm comes in contact with to burst into flames."

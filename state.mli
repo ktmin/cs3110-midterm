@@ -35,6 +35,15 @@ val get_hand: t -> Hogwarts.spell_info list
 (** [get_deck t] is the deck of a state [t] *)
 val get_deck: t -> Hogwarts.spell_info list 
 
+(** [get_prolong_damage t] is the list of
+    prolong damage that will be applied*)
+val get_prolong_damage: t -> int list
+
+(** [get_prolong_turn t] is the list of turns
+    of prolonged damage *)
+val get_prolong_turn: t -> int list 
+
+
 (** [get_level_deck t] is the 
     updated deck of a state [t], 
     filtered out by removing 
@@ -60,16 +69,24 @@ val update_damage : t -> Hogwarts.spell_info -> t
 
 (** [update_caster t] updates the 
     deck and hand of a state [t] after cast*)
-
 val update_caster : t -> Hogwarts.spell_info -> t
 
-(** [cast Hogwarts.spell_info] 
-    returns an updated verison of type t*t.
-    The first being the caster,
-    second the target. If the spell is self targeted
-     then the tuple will just
-    be the same record twice*)
-val cast : Hogwarts.spell_info -> t -> t -> t*t
+
+(** [update_prolong_list t] returns 
+    the list of prolonged damage after
+    one turn*)
+val update_prolong_list : t -> (int * int) list
+
+(**[update_prolong Hogwarts.spell_info] returns 
+   the list of prolonged damaged after one turn*)
+val update_prolong: Hogwarts.spell_info -> t -> t -> 
+  (Hogwarts.damage * Hogwarts.turns) list
+
+
+(** [p_damage Hogwarts.spell_info] returns 
+    the sum of prolonged damaged that will be 
+    affected by a player*)
+val p_damage: Hogwarts.spell_info -> t -> t -> int
 
 
 (** [drop n] is a helper function
@@ -78,8 +95,16 @@ val cast : Hogwarts.spell_info -> t -> t -> t*t
 val drop : int -> 'a list -> 'a list 
 
 (** [update spell st1 st2] updates a state [t]
-    of player and a state [t] of enemy after cast *)
+    of player and a state [t] of enemy according to
+    the casted spell *)
 val update : Hogwarts.spell_info -> t -> t -> t  
+
+
+(** [cast Hogwarts.spell_info] 
+    returns an updated verison of type t*t.
+    The first being the caster,
+    second the target.*)
+val cast: Hogwarts.spell_info -> t -> t -> t*t 
 
 (**list representation of spells*)
 val to_list_hand: t -> Hogwarts.spell_info list

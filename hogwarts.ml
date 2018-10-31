@@ -91,7 +91,8 @@ let create_character j =
 let from_json j1 j2 = 
   {
     spells = ((extract_json j1 "spells" to_list) |> List.map create_spell);
-    characters = ((extract_json j2 "characters" to_list) |> List.map create_character);
+    characters = ((extract_json j2 "characters" to_list) 
+                  |> List.map create_character);
   }
 
 let get_spells hogwarts =
@@ -176,7 +177,7 @@ let spell_remove spell =
 let spell_long_effect spell = 
   let prolonged_effect = spell.long_effect in 
   match prolonged_effect with 
-  | [] -> failwith "TODO"
+  | [] -> (0,0)
   | h::_ -> (h.damage,h.turns)
 
 let is_long_effect spell = 
