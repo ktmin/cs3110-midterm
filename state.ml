@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> e6932e3b7df6ae74f629ee1a0ab623abcf9dc768
 open Yojson.Basic 
 (* open Hogwarts *)
 type t = {
@@ -292,10 +295,6 @@ let level_up (player:t) : t =
     {player with level = player.level + 1}
   else player
 
-
-
-
-
 let update_blocked spell st = 
   if Hogwarts.spell_block spell = true then 
     let new_block = 1 in   
@@ -306,96 +305,3 @@ let update_blocked spell st =
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
   pl.hand
-
-
-
-
-
-(** returns hp after the spell is casted*)
-(* let casted hogwarts spell st = 
-   let new_hp = st.hp - Hogwarts.spell_damage hogwarts spell in 
-   {st with hp= new_hp } *)
-
-
-
-(*Keeping this for later when we return to module method*)
-(* module type Command = sig
-   type player_name
-
-   type player_hp
-
-   type player
-
-   type hand
-
-   type deck
-
-   val get_name: player -> player_name
-
-   val get_hp: player -> player_hp 
-
-   val get_hand: hand -> Hogwarts.spell_info list
-
-   val draw: Hogwarts.spell_info list ->
-    hand -> deck -> Hogwarts.spell_info list * Hogwarts.spell_info list
-
-   val cast : 'a -> Hogwarts.spell_info -> hand -> 'a * Hogwarts.spell_info list
-
-   end 
-
-   module Command: Command = struct  
-   type player_name = string
-   type player_hp = int
-
-
-   type player = {
-    name : player_name;
-    hp: player_hp;
-   }
-
-   type hand = {
-    hand : spell_info list;
-   }
-
-   type deck = {
-    deck : spell_info list;
-   }
-
-   let get_name st =
-    st.name
-
-   let get_hp st = 
-    st.hp 
-
-   let get_hand st =
-    st.hand
-
-   (** update hand and deck
-      returns a tuple 
-      of updated hand and 
-      deck*)
-   let draw chosen st1 st2=
-    (st1.hand @ chosen, 
-     match st2.deck with
-     | [] -> []
-     | h :: t -> t  
-    ) 
-
-   let cast damage chosen st =    
-    (damage,List.filter (fun x -> x <> chosen) st.hand)
-
-   (** returns hp after the spell is casted*)
-   let casted damage st = 
-    st.hp - damage  
-
-   end  *)
-
-
-
-
-
-
-
-
-
-

@@ -104,7 +104,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
             if hp < 100 then (
               if is_healing && 
                  Hogwarts.spell_target max_heal = "self" then (
-                cast_spell max_heal enemy enemy house
+                let tup = cast_spell max_heal enemy enemy house in
+                ((snd tup),player)
               ) else (
                 cast_spell min_damage enemy player house
               )
@@ -119,7 +120,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
                 cast_spell max_damage enemy player house) else (
                 if player_hp > hp then (
                   if is_healing then
-                    cast_spell max_heal enemy enemy house
+                    let tup = cast_spell max_heal enemy enemy house in
+                    ((snd tup),player)
                   else
                     cast_spell max_damage enemy player house
                 ) else (
