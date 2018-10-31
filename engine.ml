@@ -1,5 +1,7 @@
 type end_state = Win | Loss | Continue
 
+(** [print_state caster house] prints all of the status info on the [caster]
+    in [house] style. *)
 let print_state caster house = 
   ANSITerminal.(print_string [house]("\n"^
                                      (State.get_name caster)^"'s health: ");
@@ -18,7 +20,48 @@ let print_state caster house =
         ANSITerminal.(print_string [house]
                         ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
       effects
-  )                                    
+  );
+  if (State.get_blocked caster) = 1 then
+    ANSITerminal.(print_string [house;ANSITerminal.Bold] "Is blocking\n")                             
+
+(** [cast_spell spell caster target house] prints the casting [spell] that
+    affects the target and printed info is in [house] style *)
+let cast_spell (spell:Hogwarts.spell_info) (caster:State.t) (target:State.t)
+    (house:ANSITerminal.style)=
+  let name = State.get_name caster in (
+    ANSITerminal.(print_string [house] 
+                    ("\n"^name^" casts "^
+                     (Hogwarts.spell_name spell)));
+    State.cast spell caster target)
+
+(** [spell_finder spells min_threshold max_threshold] takes a non-empty [spells]
+    list and returns a tuple of the (minim*maximum) damaging spell in the given 
+    thresholds (inclusive). *)
+let spell_finder (spells:Hogwarts.spell_info list) 
+    (min_threshold:int) (max_threshold:int) : 
+  ((Hogwarts.spell_info) * ((Hogwarts.spell_info))) = 
+  let max_damage = List.fold_left (fun max a -> 
+      let damage = Hogwarts.spell_damage a in
+      if max < damage && damage <= max_threshold then damage else max) 
+      (min_threshold) spells in
+  let min_damage = List.fold_left (fun max a -> 
+      let damage = Hogwarts.spell_damage a in
+      if max > damage && damage >= min_threshold then damage else max) 
+      (max_threshold) spells in
+  let min_spell =
+    try (
+      List.find (fun a -> (Hogwarts.spell_damage a) = min_damage) 
+        spells 
+    ) with Not_found -> (
+        List.hd spells
+      ) in
+  let max_spell = 
+    try (
+      List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) 
+        spells 
+    ) with Not_found -> (
+        List.hd spells
+      ) in (min_spell, max_spell)
 
 (** [enemy_turn hogwarts enemy player house] takes in the arguments with enemy
     as the caster and performs a basic naive action (attacking with as much 
@@ -48,35 +91,46 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
           ANSITerminal.(print_string [house] "\n Opponent skips their go");
           ((State.draw enemy),player)
         ) else (
-          (*What this does is either tries to kill the player if one spell exists
-            or does as much damage as possible. For milestone one I am not letting 
-            it use self spells because it will glitch the game out 
-            because of how state currently updates*)
-          let killers = List.filter (fun a -> 
-              (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
-          match killers with
-          | h::_ -> (
-              ANSITerminal.(print_string [house] 
-                              ("\nEnemy casts "^(Hogwarts.spell_name h)));
-              State.cast h enemy player)
-          | [] -> (
-              let max_damage = List.fold_left (fun max a -> 
-                  let damage = Hogwarts.spell_damage a in
-                  if max < damage then damage else max) (-1000) enemy_hand in 
-              let target_spell = 
-                List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) 
-                  enemy_hand 
-              in (
-                if Hogwarts.spell_target target_spell = "self" then (
-                  ANSITerminal.(print_string [house] "\n Opponent skips their go");
-                  ((State.draw enemy),player))
-                else (
-                  ANSITerminal.(print_string [house] 
-                                  ("\nEnemy casts "^
-                                   (Hogwarts.spell_name target_spell)));
-                  State.cast target_spell enemy player))
+          let hp = State.get_hp enemy in
+          let min_max = spell_finder enemy_hand (-100) 100 in
+          (*max heal may be the same as min damage if player has no healing
+            spells*)
+          let max_heal = fst min_max in
+          let is_healing = Hogwarts.spell_damage max_heal < 0 in
+          let max_damage = snd min_max in
+          let min_damage = fst (spell_finder enemy_hand 0 100) in
+          (* If a player blocks do not waste resources on them *)
+          if State.get_blocked player = 1 then (
+            if hp < 100 then (
+              if is_healing && 
+                 Hogwarts.spell_target max_heal = "self" then (
+                let tup = cast_spell max_heal enemy enemy house in
+                ((snd tup),player)
+              ) else (
+                cast_spell min_damage enemy player house
+              )
+            ) else (
+              cast_spell min_damage enemy player house
             )
-        ))))
+          ) else (
+            let player_hp = State.get_hp player in (
+              (*If can kill - kill. otherwise if player hp > enemy then heal
+                otherwise do as much damage as possible*)
+              if Hogwarts.spell_damage max_damage > player_hp then (
+                cast_spell max_damage enemy player house) else (
+                if player_hp > hp then (
+                  if is_healing then
+                    let tup = cast_spell max_heal enemy enemy house in
+                    ((snd tup),player)
+                  else
+                    cast_spell max_damage enemy player house
+                ) else (
+                  cast_spell max_damage enemy player house
+                )
+              ))
+          )
+        )
+      )))
 
 (** [check_conditions player enemy] checks to see whether [player] or [enemy]
     is below 0 health and if so, produces a Loss or Win state respictively if 
