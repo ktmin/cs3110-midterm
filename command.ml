@@ -21,6 +21,8 @@ let rec no_blank_elem list =
       no_blank_elem t else 
       h :: no_blank_elem t
 
+(** returns command from a list 
+    representation of line command*)
 let parse_list list = 
   match list with
   | [] -> raise Invalidcommand
@@ -43,8 +45,7 @@ let parse_list list =
     if ((h = "status") && (t = [])) then Status else
       raise Invalidcommand 
 
-(**prase a string and outputs its corresponding command.
-   Outputs an exception Invalidcommand if a command is malfored*)
+
 let parse str = 
   let trim_str = String.trim str in 
   let string = String.lowercase_ascii(trim_str) in   
