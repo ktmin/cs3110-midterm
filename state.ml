@@ -85,7 +85,9 @@ let init_player_with_level_deck hogwarts name =
   get_level_deck player
 
 let init_enemy hogwarts name =
-  {name=name; hp=1; level = 0; dazed = 0;
+  let enemy_info = Hogwarts.search_characters hogwarts name in 
+  let enemy_level = Hogwarts.character_level enemy_info in 
+  {name=name; hp=100; level = enemy_level; dazed = 0;
    prolong_effect = [];
    hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l 
