@@ -1,5 +1,13 @@
 type end_state = Win | Loss | Continue
 
+let print_state player enemy house = 
+  ANSITerminal.(print_string [house] "\n\nYour health:\n");
+  ANSITerminal.(print_string [magenta] (string_of_int 
+                                          (State.get_hp player)));
+  ANSITerminal.(print_string [house] "\nEnemy's health:\n");
+  ANSITerminal.(print_string [magenta] (string_of_int 
+                                          (State.get_hp enemy)))
+
 (** [enemy_turn hogwarts enemy player house] takes in the arguments with enemy
     as the caster and performs a basic naive action (attacking with as much 
     damage each time as possible). It returns a tuple where the first argument 
@@ -80,7 +88,8 @@ let rec list_cards (spells:Hogwarts.spell_info list) (house:ANSITerminal.style)=
     [house] [hogwarts] in that respective order.*)
 let rec run_command (player:State.t) (enemy:State.t)
     (house:ANSITerminal.style) (hogwarts:Hogwarts.t) (cmd:Command.command) 
-    (callback:State.t -> State.t -> ANSITerminal.style -> Hogwarts.t -> unit) 
+    (callback: ?asked_state:bool -> State.t -> State.t -> 
+     ANSITerminal.style -> Hogwarts.t -> unit) 
   : unit =
   match cmd with
   | Draw -> (
@@ -129,12 +138,7 @@ let rec run_command (player:State.t) (enemy:State.t)
     - You play against an AI that takes its turn after you\n
     - Winner is the person who makes the other reach 0 or less health");
                     callback player enemy house hogwarts)
-  | Status -> ANSITerminal.(print_string [house] "Your health:\n");
-    ANSITerminal.(print_string [magenta] (string_of_int 
-                                            (State.get_hp player)));
-    ANSITerminal.(print_string [house] "\nEnemy's health:\n");
-    ANSITerminal.(print_string [magenta] (string_of_int 
-                                            (State.get_hp enemy)));
+  | Status -> print_state player enemy house;
     callback player enemy house hogwarts
   | Cast lst -> (
       (*TODO: reduce this part into its own method*)
@@ -146,11 +150,11 @@ let rec run_command (player:State.t) (enemy:State.t)
           let cast_update = State.cast info player enemy in (
             if(Hogwarts.spell_target info) = "self" then (
               let tup = enemy_turn hogwarts enemy (fst cast_update) house in
-              callback (snd tup) (fst tup) house hogwarts
+              callback ~asked_state:(false) (snd tup) (fst tup) house hogwarts
             ) else (
               let tup = enemy_turn hogwarts (snd cast_update) 
                   (fst cast_update) house in
-              callback (snd tup) (fst tup) house hogwarts
+              callback ~asked_state:(false) (snd tup) (fst tup) house hogwarts
             ))
         )
         else (
@@ -165,13 +169,17 @@ let rec run_command (player:State.t) (enemy:State.t)
 
 (** [play player enemy house name] is the main game loop that takes in [player]
     and [enemy] states, [house] text color and [name] hogwarts game state and 
-    progresses based on player inputs until a win/loss condition is fulfilled.*)
-let rec play (player:State.t) (enemy:State.t)
+    progresses based on player inputs until a win/loss condition is fulfilled.
+    The [asked_state] is an optional argument that if set to false will by 
+    default print out the statuses of [player] and [enemy]*)
+let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
     (house: ANSITerminal.style) (name: Hogwarts.t)  =
   match check_conditions player enemy with
   | Win -> (ANSITerminal.(print_string [house] "\nCongrats you win!\n"); exit 0)
   | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :(\n"); exit 0)
   | Continue -> (
+      (*This is to avoid double status description*)
+      if not asked_state then print_state player enemy house;
       ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
       let cmd = read_line () in
       try (
@@ -230,16 +238,60 @@ let rec name house =
       Try again\n"
     ); name house)
 
+(*Below is all once-off used for starting the game*)
+
+(*ASCII Art FTW: http://patorjk.com/software/taag/*)
+let intro_text = [
+  ["    __  __";"   / / / /";"  / /_/ /";" / __  /";"/_/ /_/";"       "];
+  ["    ";"___ ";" __ \\";" /_/ /";"\\____/";"     "];
+  ["       ";" ____ _";"/ __ `/";" /_/ /";"\\__, / ";"/____/ "];
+  ["         ";"_      __";" | /| / /";"| |/ |/ /";"|__/|__/";"         "];
+  ["      ";"____ _";" __ `/";" /_/ /";"\\__,_/";"     "];
+  ["      ";"_____";" ___/";" /  ";"_/   ";"      "];
+  ["__ ";"/ /_";" __/";"/ /_";"\\__/";"    "];
+  ["     ";"_____";" ___/";"(__  ) ";"____/  ";"       "]
+]
+
+let get_color_code (num:int) : ANSITerminal.style =
+  match num with
+  | 0 | 1 -> ANSITerminal.red
+  | 2 | 3 -> ANSITerminal.yellow
+  | 4 | 5 -> ANSITerminal.green
+  | 6 | 7 -> ANSITerminal.blue 
+  | _ -> ANSITerminal.white
+
+let ref_num = ref 0
+
+let rec print_arr (arr:string list) : (string list)=
+  let itr = (!ref_num mod 8) in
+  let color = get_color_code itr in
+  match arr with
+  | [] -> []
+  | h::t -> (ANSITerminal.(print_string [color] (h)); 
+             ref_num := !ref_num + 1;
+             if itr = 7 then print_string "\n";
+             t)
+
+let rec print_arr_2d (arr:(string list) list) =
+  match arr with
+  | [] -> ()
+  | h::t -> ( let printed = print_arr h in
+              if List.length printed > 0 then
+                print_arr_2d (t@[printed])
+              else
+                print_arr_2d t
+            )
+
 (** [house] begins the game by asking the player for their chose Harry Potter
     house. It will progress to name and gameplay if a valid name is provided
     (case-insensitive) or repeat until a valid one is inputted.*)
 let rec house () =
   ANSITerminal.(
-    print_string [magenta] "\nWelcome to ";
-    print_string [red] "Ho"; print_string [green] "gw";
-    print_string [yellow] "ar"; print_string [blue] "ts";
+    print_string [magenta] "\nWelcome to \n");
+  print_arr_2d intro_text;
+  ANSITerminal.(
     print_string [magenta] 
-      "!\nThe sorting hat is at lunch so you'll have to choose your own house.\n
+      "\n\nThe sorting hat is at lunch so you'll have to choose your own house.\n
     In case you forgot, the choices are:\n";
     print_string [red] "Gryffindor "; print_string [green] "Slytherin ";
     print_string [yellow] "Hufflepuff "; print_string [blue] "Ravenclaw";
