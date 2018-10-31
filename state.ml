@@ -291,12 +291,6 @@ let level_up (player:t) : t =
     {player with level = player.level + 1}
   else player
 
-let update_blocked spell st = 
-  if Hogwarts.spell_block spell = true then 
-    let new_block = 1 in   
-    {st with   
-     blocked = new_block} else
-    st 
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
