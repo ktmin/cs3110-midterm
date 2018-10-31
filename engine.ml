@@ -7,7 +7,7 @@ let print_state caster house =
                                           (State.get_hp caster)));
   let dazed_time = State.get_dazed caster in
   if dazed_time > 0 then (
-    ANSITerminal.(print_string [house]("\nDazed :");
+    ANSITerminal.(print_string [house]("\nDazed: ");
                   print_string [magenta] (string_of_int dazed_time);
                   print_string [house](" turns"))
   );
@@ -24,19 +24,26 @@ let print_state caster house =
     as the caster and performs a basic naive action (attacking with as much 
     damage each time as possible). It returns a tuple where the first argument 
     is the new enemy state and the second, the new player state.*)
-let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t) 
-    (player:State.t) (house:ANSITerminal.style) : (State.t*State.t)=
+let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
+    (enemy:State.t) (player:State.t) (house:ANSITerminal.style) : 
+  (State.t*State.t)=
   (*Quick health check*)
   if (State.get_hp enemy) <= 0 then (enemy,player)
   else (
     let enemy_hand = State.to_list_hand enemy in
-    if (List.length enemy_hand) < 7 then
-      enemy_turn hogwarts (State.draw enemy) player house
+    let hand_size = (List.length enemy_hand) in
+    if hand_size < 7 && not skip_draw then
+      let new_hand = State.draw enemy in
+      if(List.length (State.to_list_hand enemy)) = hand_size then
+        enemy_turn ~skip_draw:(true) hogwarts new_hand player house
+      else 
+        enemy_turn hogwarts new_hand player house
     else (
       if (State.get_dazed enemy) > 0 then (
         ANSITerminal.(print_string [house] "\n\nEnemy is dazed and cannot cast!\n");
         State.cast (List.hd (State.to_list_hand enemy)) enemy player)
       else (
+        print_int (List.length enemy_hand);
         (*What this does is either tries to kill the player if one spell exists
           or does as much damage as possible. For milestone one I am not letting 
           it use self spells because it will glitch the game out 
@@ -117,10 +124,16 @@ let rec run_command (player:State.t) (enemy:State.t)
         callback player enemy house hogwarts
       ) else (
         let drawn = State.draw player in
-        let chosen_card = List.hd(State.to_list_hand drawn) in
-        ANSITerminal.(print_string [house] 
-                        ("You drew: "^(Hogwarts.spell_name chosen_card)));
-        callback drawn enemy house hogwarts))
+        if List.length (State.to_list_hand drawn) > 0 then (
+          let chosen_card = List.hd(State.to_list_hand drawn) in
+          ANSITerminal.(print_string [house] 
+                          ("You drew: "^(Hogwarts.spell_name chosen_card)));
+          callback drawn enemy house hogwarts
+        )
+        else (
+          ANSITerminal.(print_string [house] "You have no cards to draw from");
+          callback drawn enemy house hogwarts)))
+
   | View -> (ANSITerminal.(print_string [house] 
                              "The following spells can be casted: \n");
              list_cards (State.to_list_hand player) house;
@@ -143,9 +156,9 @@ let rec run_command (player:State.t) (enemy:State.t)
         callback player enemy house hogwarts
       ) with Hogwarts.UnknownSpell sp_name -> (
           ANSITerminal.(print_string [house] 
-                          (sp_name ^ " incorrectly spelled. Try again"));
-        );
-        callback player enemy house hogwarts
+                          (sp_name ^ " incorrectly spelled. Try again\n"));
+          callback player enemy house hogwarts
+        )
     )
   | Instruction -> (ANSITerminal.(print_string [house] 
                                     "Rules are simple:\n
@@ -179,7 +192,8 @@ let rec run_command (player:State.t) (enemy:State.t)
           callback player enemy house hogwarts
         )) with Hogwarts.UnknownSpell sp_name -> (
           ANSITerminal.(print_string [house] 
-                          (sp_name ^ " incorrectly spelled. Try again"))
+                          (sp_name ^ " incorrectly spelled. Try again"));
+          callback player enemy house hogwarts
         )
     )
 
@@ -296,7 +310,8 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
              exit 0)
   | Continue -> (
       if (State.get_dazed player) > 0 then (
-        ANSITerminal.(print_string [house] "You are dazed and unable to cast");
+        ANSITerminal.(print_string [house] 
+                        "\nYou are dazed and unable to cast\n");
         let tup = enemy_turn hogwarts enemy player house in
         play (snd tup) (fst tup) house hogwarts)
 
