@@ -1,3 +1,5 @@
+
+open Yojson.Basic 
 (* open Hogwarts *)
 type t = {
   name : string;
@@ -103,9 +105,21 @@ let init_enemy hogwarts name =
 let init_enemy_with_level_deck hogwarts name =
   get_level_deck (init_enemy hogwarts name)
 
+let refresh_deck hogwarts (st:t) = 
+  let new_deck = (QCheck.Gen.(generate1 (shuffle_l 
+                                           (Hogwarts.get_spells hogwarts)))) in 
+
+  let new_level_deck = List.filter (fun x -> st.level >= 
+                                             Hogwarts.spell_level x) new_deck in 
+  {st  with deck = new_level_deck}
+
 let draw (st:t) =
   match st.deck with
-  | [] -> st
+  | [] -> 
+    let new_deck =  
+      refresh_deck (Hogwarts.from_json (from_file "spells.json") 
+                      (from_file "characters.json")) st in 
+    {st with deck = new_deck.deck}
   | h::t -> {st with hand=(h::st.hand); deck=t}
 
 
@@ -278,13 +292,7 @@ let level_up (player:t) : t =
     {player with level = player.level + 1}
   else player
 
-let refresh_deck hogwarts (st:t) = 
-  let new_deck = (QCheck.Gen.(generate1 (shuffle_l 
-                                           (Hogwarts.get_spells hogwarts)))) in 
 
-  let new_level_deck = List.filter (fun x -> st.level >= 
-                                             Hogwarts.spell_level x) new_deck in 
-  {st  with deck = new_level_deck}
 
 
 
