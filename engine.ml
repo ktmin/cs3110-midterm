@@ -115,6 +115,7 @@ let rec run_command (player:State.t) (enemy:State.t)
                         ("Description for "^sp_name^":\n"
                          ^(Hogwarts.spell_description hogwarts sp_name))
                      );
+        callback player enemy house hogwarts
       ) with Hogwarts.UnknownSpell sp_name -> (
           ANSITerminal.(print_string [house] 
                           (sp_name ^ " incorrectly spelled. Try again"));
