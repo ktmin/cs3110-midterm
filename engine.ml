@@ -140,7 +140,7 @@ let rec run_command (player:State.t) (enemy:State.t)
       (*TODO: reduce this part into its own method*)
       let sp_name = String.concat " " lst in
       try (
-        let info = Hogwarts.search hogwarts sp_name in
+        let info = Hogwarts.search_spells hogwarts sp_name in
         if(List.mem (info) (State.to_list_hand player)) then (
           ANSITerminal.(print_string [house] ("You cast "^sp_name));
           let cast_update = State.cast info player enemy in (
@@ -194,9 +194,10 @@ let choose_house (h: string): ANSITerminal.style option =
   | _ -> None
 
 
-let play_init f player house = 
-  let json = Yojson.Basic.from_file f in
-  let hogwarts = Hogwarts.from_json json in 
+let play_init f1 f2 player house = 
+  let j1 = Yojson.Basic.from_file f1 in
+  let j2 = Yojson.Basic.from_file f2 in
+  let hogwarts = Hogwarts.from_json j1 j2 in 
   let player_state = State.init_player hogwarts player in
   let enemy_state = State.init_enemy hogwarts "Malfoy" in (
     ANSITerminal.(print_string [house] 
@@ -222,7 +223,7 @@ let rec name house =
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play_init "spells.json" player_name house 
+     play_init "spells.json" "characters.json" player_name house 
     ) else (ANSITerminal.(
       print_string [magenta] "Simple stuff, 
       I wonder how you will fare in Hogwarts if you struggle at even this... 
