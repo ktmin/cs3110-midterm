@@ -257,7 +257,7 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
       String.capitalize_ascii (String.lowercase_ascii str)) target_name_lst) in
   try (
     let enemy_char = Hogwarts.search_characters hogwarts target_name in
-    let enemy = (State.init_enemy hogwarts 
+    let enemy = (State.init_enemy_with_level_deck hogwarts 
                    (Hogwarts.character_name enemy_char)) in
 
     if(affirmation hogwarts enemy_char enemy) then (
@@ -323,7 +323,7 @@ let play_init f1 f2 player house =
   let j1 = Yojson.Basic.from_file f1 in
   let j2 = Yojson.Basic.from_file f2 in
   let hogwarts = Hogwarts.from_json j1 j2 in 
-  let player_state = State.init_player hogwarts player in
+  let player_state = State.init_player_with_level_deck hogwarts player in
   choose_opponent player_state hogwarts house play
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 
