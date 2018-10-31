@@ -115,3 +115,11 @@ val get_defeated_enemies: t -> Hogwarts.character_name list
 (** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
     enemies. *)
 val add_defeated_enemy: t -> Hogwarts.character_name -> Hogwarts.t -> t
+
+(** [required_wins t] returns amount of wins required to 
+    progress to next level. *)
+val required_wins: t -> int
+
+(** [level_up t] attempts to level up player. Returns t if not enough wins
+    have been secured. *)
+val level_up: t -> t

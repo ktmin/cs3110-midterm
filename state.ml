@@ -69,7 +69,7 @@ let get_level_deck  st =
 
 
 let init_player hogwarts name =
-  {name=name; hp=100; level = 0; dazed = 0; 
+  {name=name; hp=100; level = 1; dazed = 0; 
    prolong_effect = []; hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l
                                   (Hogwarts.get_spells hogwarts))));
@@ -228,6 +228,16 @@ let cast spell st1 st2 : (t*t) =
     (st1,updated_enemy)
   )
 
+(*Right now it's simplistic but will change for last release*)
+let required_wins (player:t) =
+  (player.level) * 2
+
+let level_up (player:t) : t =
+  (*Current formula is to just multiply level*2 for needed level up*)
+  let req = required_wins player in
+  if List.length player.defeated_enemies >= req then
+    {player with level = player.level + 1}
+  else player
 
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =

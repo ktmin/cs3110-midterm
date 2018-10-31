@@ -209,8 +209,13 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
     (house:ANSITerminal.style) 
     (callback: ?asked_state:bool -> State.t -> State.t -> 
      ANSITerminal.style -> Hogwarts.t -> unit) : unit =
-  ANSITerminal.(print_string [magenta] "\nYour level: ");
-  ANSITerminal.(print_string [house] (string_of_int (State.get_level player)));
+  ANSITerminal.(print_string [magenta] "\nYour level: ";
+                print_string [house] (string_of_int (State.get_level player));
+                print_string [magenta] "\nWins to next level: ";
+                print_string [house] 
+                  (string_of_int (State.required_wins player - 
+                                  (List.length 
+                                     (State.get_defeated_enemies player)))));
 
   ANSITerminal.(print_string [magenta] 
                   "\n\nHere are the possible opponents you may face:\n\n");
@@ -268,7 +273,9 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
                           print_string [house] "\nCongrats you win!\n";
                           print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n"); 
             choose_opponent 
-              (State.add_defeated_enemy player (State.get_name enemy) hogwarts) 
+              (State.level_up
+                 (State.add_defeated_enemy player 
+                    (State.get_name enemy) hogwarts)) 
               hogwarts house play)
   | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :( and die\n"); 
              exit 0)
