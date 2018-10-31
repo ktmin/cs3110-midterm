@@ -2,9 +2,11 @@ open OUnit2
 open Hogwarts
 open Command
 open State
+open Yojson.Basic
 
 (**Loading json files in [spells_json] *)
-let spells_json = from_json (Yojson.Basic.from_file "spells.json")
+let spells_characters_json = from_json (from_file "spells.json") 
+    (from_file "characters.json")
 
 (** [assert_equal_test input expected_output] constructs an OUnit
     test named [name] that asserts the equality of 
@@ -19,11 +21,9 @@ let assert_raises_test name input_exn expected_output : test =
   name >:: (fun _ -> assert_raises input_exn  expected_output)
 
 
-(** Used to test search *)
-(* type spell = Hogwarts.spell_info
-
-   let (spell1 : spell) = {
-   name = "Confringo";
+(** Used to test search_spells *)
+(* let spell = {
+   spell_name = "Confringo";
    damage = 5;
    target = "enemy";
    description = "Blasting Charm; causes items the charm comes in contact with to burst into flames."
@@ -32,18 +32,18 @@ let assert_raises_test name input_exn expected_output : test =
 let hogwarts_tests =
   [
 
-    (* search *)
-    (* assert_equal_test "search test 1" (spell1) search spells_json "confringo"  *)
+    (* search_spells *)
+    (* assert_equal_test "search_spells test 1" (spell1) search_spells spells_json "confringo"  *)
 
     (* description *)
     assert_equal_test "description test 1"
       ("Blasting Charm; causes items the charm comes in contact with to burst "^
        "into flames.") 
-      ((spell_description spells_json "confringo")); 
+      ((spell_description spells_characters_json "confringo")); 
 
     assert_equal_test "description test 2" 
       ("Used to heal minor injuries.") 
-      ((spell_description spells_json "episky"));
+      ((spell_description spells_characters_json "episky"));
 
   ]
 
@@ -66,7 +66,8 @@ let command_tests =
 
 
 let spell1 =
-  search spells_json "Avada Kedavra"
+  <<<<<<< HEAD
+    search spells_json "Avada Kedavra"
 
 let spell2 = 
   search spells_json "Confringo" 
@@ -95,6 +96,41 @@ let dazed_2 =
 let dazed_1 = 
   update spell1 dazed_2 init_pl 
 
+  =======
+  search_spells spells_characters_json "avada kedavra"
+
+let spell2 = 
+  search_spells spells_characters_json "confringo" 
+
+let spell3 = 
+  search_spells spells_characters_json "confundo"
+
+let spell4 = 
+  search_spells spells_characters_json "episky"   
+
+let spell5 = 
+  search_spells spells_characters_json "crucio"  
+
+let spell6 = 
+  search_spells spells_characters_json "expelliarmus"
+
+let spell7 = 
+  search_spells spells_characters_json "ferula"
+
+
+let init_pl =
+  init_player spells_characters_json "Bryan"
+
+let init_en = 
+  init_enemy spells_characters_json "Oscar"
+
+let dazed_2 = 
+  update spell3 init_pl init_en 
+
+let dazed_1 = 
+  update spell1 dazed_2 init_pl 
+
+  >>>>>>> 39723c6245014c45eafccb4e93ae8b637078178d
 let dazed_0 = 
   update spell1 dazed_1 init_pl
 
@@ -141,9 +177,19 @@ let state_tests =
         assert_equal (update spell4 init_pl init_en 
                       |> get_hp) (110));
 
-    "test 9 " >:: (fun _ ->
+    (* "test 9 " >:: (fun _ ->
         assert_equal (update spell5 init_pl init_en 
-                      |> get_hp) (85));
+                      |> get_hp) (85)); *)
+
+    "test 10 " >:: (fun _ ->
+        assert_equal (update spell6 init_pl draw2 
+                      |> get_hand |> List.length) 
+          (1));
+
+    "test 11 " >:: (fun _ ->
+        assert_equal (update spell7 init_pl init_en 
+                      |> get_hp) 
+          (110));
 
     "test 10 " >:: (fun _ ->
         assert_equal (update spell6 init_pl draw2 
