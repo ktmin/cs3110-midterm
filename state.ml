@@ -28,12 +28,9 @@ let get_hand (st:t) =
 let get_deck (st:t) =
   st.deck
 
-(** [get_defeated_enemies st] is the list of defeated enemies. *)
 let get_defeated_enemies st = 
   st.defeated_enemies
 
-(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
-    enemies. *)
 let add_defeated_enemy st enemy hogwarts = 
   let defeated_enemy = (Hogwarts.search_characters hogwarts enemy) in 
   let prev_defeated = get_defeated_enemies st in 

@@ -108,3 +108,10 @@ val cast: Hogwarts.spell_info -> t -> t -> t*t
 
 (**list representation of spells*)
 val to_list_hand: t -> Hogwarts.spell_info list
+
+(** [get_defeated_enemies st] is the list of defeated enemies. *)
+val get_defeated_enemies: t -> Hogwarts.character_name list
+
+(** [add_defeated_enemy st enemy hogwarts] is an updated state with defeated 
+    enemies. *)
+val add_defeated_enemy: t -> Hogwarts.character_name -> Hogwarts.t -> t

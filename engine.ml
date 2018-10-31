@@ -190,6 +190,17 @@ let affirmation (hogwarts:Hogwarts.t)(enemy_info:Hogwarts.character_info)
   let ans = String.uppercase_ascii (read_line ()) in
   ans = "Y" || ans = "YES"
 
+(** [inverse_colour colour] takes in a colour and returns the inverse (if it was
+    in the background. If not one of four house clours 
+    (red, green, blue, yellow) then default ANSITerminal style is returned. *)
+let inverse_colour (colour:ANSITerminal.style) : ANSITerminal.style list =
+  match colour with
+  | ANSITerminal.Foreground(Red) -> [ANSITerminal.white;ANSITerminal.on_red]
+  | ANSITerminal.Foreground(Green) -> [ANSITerminal.white;ANSITerminal.on_green]
+  | ANSITerminal.Foreground(Blue) -> [ANSITerminal.white;ANSITerminal.on_blue]
+  | ANSITerminal.Foreground(Yellow) -> [ANSITerminal.black;ANSITerminal.on_yellow]
+  | _ -> [ANSITerminal.default]
+
 (** [choose_opponenet player hogwarts house callback] gives the option for the 
     player to choose from the range of opponents to face. [callback] is 
     called when player chooses a character and affirms that they want 
@@ -203,16 +214,27 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
 
   ANSITerminal.(print_string [magenta] 
                   "\n\nHere are the possible opponents you may face:\n\n");
-  ANSITerminal.(print_string [house] 
-                  "Name: Level";
+  ANSITerminal.(print_string [cyan] 
+                  "Name: Level ";
+                print_string [black; on_cyan] 
+                  "(inverted colors are completed)";
                 print_string [black] "\n");
-  let mapped = List.map (fun c -> (Hogwarts.character_name c)^": "^
+  let mapped = List.map (fun c -> (Hogwarts.character_name c),
                                   (string_of_int (Hogwarts.character_level c))) 
       (Hogwarts.get_characters hogwarts) in
-  let enemy_lst = String.concat "\n" mapped in
-  ANSITerminal.(print_string [cyan] enemy_lst;
-                print_string [magenta] 
-                  "\n\nEnter the name of who you want to face > ");
+  (*print all enemies accordingly*)
+  List.iter (fun tup -> let colour = if(List.mem (fst tup)
+                                          (State.get_defeated_enemies player)) 
+                          then 
+                            (inverse_colour house) 
+                          else [house] in 
+              ANSITerminal.( print_string
+                               colour ((fst tup)^": "^(snd tup));
+                             print_string [default] "\n"
+                           )) mapped;
+
+  ANSITerminal.(print_string [magenta] 
+                  "\nEnter the name of who you want to face > ");
   (*This complete mess just makes the string camel case*)
   let target_name_lst = String.split_on_char ' ' (read_line ()) in
   let target_name = String.concat " " (List.map (fun str -> 
@@ -245,7 +267,9 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
   | Win -> (ANSITerminal.(print_string [Bold; cyan] "\n\n-=-=-=-=-=-=-=-=-";
                           print_string [house] "\nCongrats you win!\n";
                           print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n"); 
-            choose_opponent player hogwarts house play)
+            choose_opponent 
+              (State.add_defeated_enemy player (State.get_name enemy) hogwarts) 
+              hogwarts house play)
   | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :( and die\n"); 
              exit 0)
   | Continue -> (
