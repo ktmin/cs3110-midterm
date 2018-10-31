@@ -241,6 +241,292 @@
           "turns": 2
         }
       ]
+    },
+    {
+      "name": "Petrificus Totalus",
+      "damage": 0,
+      "target": "enemy",
+      "description": "Also known as The Full Body-Bind, this spell paralyses the victim.",
+      "level": 2,
+      "type": "spell",
+      "daze": 1,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 2,
+          "turns": 1
+        }
+      ]
+    },
+    {
+      "name": "Protego",
+      "damage": 0,
+      "target": "self",
+      "description": "A shield charm that can fend off spells.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": true,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Diffindo",
+      "damage": 15,
+      "target": "enemy",
+      "description": "The Severing Charm, which can be used to cut absolutely anything.",
+      "level": 3,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Incendio",
+      "damage": 5,
+      "target": "enemy",
+      "description": "A spell for starting fires.",
+      "level": 2,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Impedimenta",
+      "damage": 0,
+      "target": "enemy",
+      "description": "Impediment Jinx; prevents the victim from approaching the caster.",
+      "level": 2,
+      "type": "spell",
+      "daze": 1,
+      "block": true,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Reducto",
+      "damage": 15,
+      "target": "enemy",
+      "description": "Reductor Cure; breaks objects and in its strongest form has the ability to disintegrate them.",
+      "level": 3,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Avis",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Launches birds from your wand.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Baubillious",
+      "damage": 10,
+      "target": "enemy",
+      "description": "Damages opponent or creatures.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Bluebell Flames",
+      "damage": 7,
+      "target": "enemy",
+      "description": "Shoots blue flames at opponent.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Bombarda",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Causes explosions.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Bombarda Maxima",
+      "damage": 10,
+      "target": "enemy",
+      "description": "Causes large explosions.",
+      "level": 2,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Deprimo",
+      "damage": 5,
+      "target": "enemy",
+      "description": "Wind damaging spell.",
+      "level": 2,
+      "type": "spell",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Fumos",
+      "damage": 0,
+      "target": "enemy",
+      "description": "Causes explosions.",
+      "level": 1,
+      "type": "spell",
+      "daze": 0,
+      "block": true,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
     }
   ]
 }
