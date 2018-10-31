@@ -79,14 +79,9 @@ val update_prolong_list : t -> (int * int) list
 
 (**[update_prolong Hogwarts.spell_info] returns 
    the list of prolonged damaged after one turn*)
-val update_prolong: Hogwarts.spell_info -> t -> t -> 
+val update_prolong: Hogwarts.spell_info -> t ->
   (Hogwarts.damage * Hogwarts.turns) list
 
-
-(** [p_damage Hogwarts.spell_info] returns 
-    the sum of prolonged damaged that will be 
-    affected by a player*)
-val p_damage: Hogwarts.spell_info -> t -> t -> int
 
 
 (** [drop n] is a helper function
@@ -98,6 +93,11 @@ val drop : int -> 'a list -> 'a list
     of player and a state [t] of enemy according to
     the casted spell *)
 val update : Hogwarts.spell_info -> t -> t -> t  
+
+
+(** [hand_after_cast t] updates state [t]
+    after state[t] casts a spell *)
+val hand_after_cast: Hogwarts.spell_info -> t -> t
 
 
 (** [cast Hogwarts.spell_info] 

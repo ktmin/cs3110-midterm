@@ -190,13 +190,39 @@ let state_tests =
     "prolong effect 2 " >:: (fun _ ->
         assert_equal ( 
           let prolong1 =  cast crucio init_pl init_en |> snd in
-          let prolong2 = cast avada prolong1 init_pl in
-          prolong2 |> fst |> get_hp)
-          (100 ) );
+          let prolong2 = cast confingo init_pl prolong1 |> snd in
+          prolong2 |> get_hp)
+          (80) );
 
+    "prolong effect 3 " >:: (fun _ ->
+        assert_equal ( 
+          let prolong1 =  cast crucio init_pl init_en |> snd in
+          let prolong2 = cast confingo init_pl prolong1 |> snd in
+          let prolong3 = cast confingo init_pl prolong2 |> snd in 
+          prolong3 |> get_hp)
+          (60) );
 
+    "prolong effect 4 " >:: (fun _ ->
+        assert_equal ( 
+          let prolong1 =  cast crucio init_pl init_en |> snd in
+          let prolong2 = cast confingo init_pl prolong1 |> snd in
+          let prolong3 = cast confingo init_pl prolong2 |> snd in
+          let prolong4 = cast confingo init_pl prolong3 |> snd in 
+          let prolong5 = cast confingo init_pl prolong4 |> snd in
+          let prolong6 = cast confingo init_pl prolong5 |> snd in
+          prolong6 |> get_hp)
+          (0) );
 
+    "remove test 1 " >:: (fun _  ->
+        assert_equal ( (let drew = draw init_pl in 
+                        cast expelliarmus init_pl drew ) |> snd 
+                       |> get_hand |> List.length) 0 );  
 
+    "remove test 2 " >:: (fun _  ->
+        assert_equal ( (let drew = draw init_pl in 
+                        let drew2 = draw drew in 
+                        cast expelliarmus init_pl drew2 ) |> snd 
+                       |> get_hand |> List.length) 1 );     
 
 
 
