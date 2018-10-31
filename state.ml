@@ -119,8 +119,10 @@ let draw (st:t) =
   | [] -> 
     let new_deck =  
       refresh_deck (Hogwarts.from_json (from_file "spells.json") 
-                      (from_file "characters.json")) st in 
-    {st with deck = new_deck.deck}
+                      (from_file "characters.json")) st in
+    let new_hand = List.hd new_deck.deck in    
+    {st with deck = new_deck.deck;
+             hand = new_hand :: st.hand }
   | h::t -> {st with hand=(h::st.hand); deck=t}
 
 
