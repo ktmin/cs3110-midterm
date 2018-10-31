@@ -1,55 +1,82 @@
 type end_state = Win | Loss | Continue
 
-let print_state player enemy house = 
-  ANSITerminal.(print_string [house] "\n\nYour health:\n");
-  ANSITerminal.(print_string [magenta] (string_of_int 
-                                          (State.get_hp player)));
-  ANSITerminal.(print_string [house] "\nEnemy's health:\n");
-  ANSITerminal.(print_string [magenta] (string_of_int 
-                                          (State.get_hp enemy)))
+let print_state caster house = 
+  ANSITerminal.(print_string [house]("\n"^
+                                     (State.get_name caster)^"'s health: ");
+                print_string [magenta] (string_of_int 
+                                          (State.get_hp caster)));
+  let dazed_time = State.get_dazed caster in
+  if dazed_time > 0 then (
+    ANSITerminal.(print_string [house]("\nDazed: ");
+                  print_string [magenta] (string_of_int dazed_time);
+                  print_string [house](" turns"))
+  );
+  let effects = State.get_prolong_tupes caster in
+  if List.length effects > 0 then (
+    ANSITerminal.(print_string [magenta] "\nEffects: Turns Left");
+    List.iter (fun (a,b) -> 
+        ANSITerminal.(print_string [house]
+                        ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
+      effects
+  )                                    
 
 (** [enemy_turn hogwarts enemy player house] takes in the arguments with enemy
     as the caster and performs a basic naive action (attacking with as much 
     damage each time as possible). It returns a tuple where the first argument 
     is the new enemy state and the second, the new player state.*)
-let rec enemy_turn (hogwarts:Hogwarts.t)(enemy:State.t) 
-    (player:State.t) (house:ANSITerminal.style) : (State.t*State.t)=
+let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
+    (enemy:State.t) (player:State.t) (house:ANSITerminal.style) : 
+  (State.t*State.t)=
   (*Quick health check*)
   if (State.get_hp enemy) <= 0 then (enemy,player)
   else (
+    (*Either get 7 cards or maximum that is in deck*)
     let enemy_hand = State.to_list_hand enemy in
-    if (List.length enemy_hand) < 7 then
-      enemy_turn hogwarts (State.draw enemy) player house
+    let hand_size = (List.length enemy_hand) in
+    if hand_size < 7 && not skip_draw then
+      let new_hand = State.draw enemy in
+      if(List.length (State.to_list_hand new_hand)) = hand_size then
+        enemy_turn ~skip_draw:(true) hogwarts new_hand player house
+      else 
+        enemy_turn hogwarts new_hand player house
     else (
-      (*What this does is either tries to kill the player if one spell exists
-        or does as much damage as possible. For milestone one I am not letting it
-        use self spells because it will glitch the game out because of how state
-        currently updates*)
-      let killers = List.filter (fun a -> 
-          (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
-      match killers with
-      | h::_ -> (
-          ANSITerminal.(print_string [house] 
-                          ("\nEnemy casts "^(Hogwarts.spell_name h)));
-          State.cast h enemy player)
-      | [] -> (
-          let max_damage = List.fold_left (fun max a -> 
-              let damage = Hogwarts.spell_damage a in
-              if max < damage then damage else max) 0 enemy_hand in 
-          let target_spell = 
-            List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) 
-              enemy_hand 
-          in (
-            if Hogwarts.spell_target target_spell = "self" then (
-              ANSITerminal.(print_string [house] "\n Opponent skips their go");
-              ((State.draw enemy),player))
-            else (
+      if (State.get_dazed enemy) > 0 then (
+        ANSITerminal.(print_string [house] "\n\nEnemy is dazed and cannot cast!\n");
+        (State.update_dazed enemy, player))
+      else (
+        if hand_size = 0 then (
+          ANSITerminal.(print_string [house] "\n Opponent skips their go");
+          ((State.draw enemy),player)
+        ) else (
+          (*What this does is either tries to kill the player if one spell exists
+            or does as much damage as possible. For milestone one I am not letting 
+            it use self spells because it will glitch the game out 
+            because of how state currently updates*)
+          let killers = List.filter (fun a -> 
+              (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
+          match killers with
+          | h::_ -> (
               ANSITerminal.(print_string [house] 
-                              ("\nEnemy casts "^
-                               (Hogwarts.spell_name target_spell)));
-              State.cast target_spell enemy player))
-        )
-    ))
+                              ("\nEnemy casts "^(Hogwarts.spell_name h)));
+              State.cast h enemy player)
+          | [] -> (
+              let max_damage = List.fold_left (fun max a -> 
+                  let damage = Hogwarts.spell_damage a in
+                  if max < damage then damage else max) (-1000) enemy_hand in 
+              let target_spell = 
+                List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) 
+                  enemy_hand 
+              in (
+                if Hogwarts.spell_target target_spell = "self" then (
+                  ANSITerminal.(print_string [house] "\n Opponent skips their go");
+                  ((State.draw enemy),player))
+                else (
+                  ANSITerminal.(print_string [house] 
+                                  ("\nEnemy casts "^
+                                   (Hogwarts.spell_name target_spell)));
+                  State.cast target_spell enemy player))
+            )
+        ))))
 
 (** [check_conditions player enemy] checks to see whether [player] or [enemy]
     is below 0 health and if so, produces a Loss or Win state respictively if 
@@ -101,10 +128,16 @@ let rec run_command (player:State.t) (enemy:State.t)
         callback player enemy house hogwarts
       ) else (
         let drawn = State.draw player in
-        let chosen_card = List.hd(State.to_list_hand drawn) in
-        ANSITerminal.(print_string [house] 
-                        ("You drew: "^(Hogwarts.spell_name chosen_card)));
-        callback drawn enemy house hogwarts))
+        if List.length (State.to_list_hand drawn) > 0 then (
+          let chosen_card = List.hd(State.to_list_hand drawn) in
+          ANSITerminal.(print_string [house] 
+                          ("You drew: "^(Hogwarts.spell_name chosen_card)));
+          callback drawn enemy house hogwarts
+        )
+        else (
+          ANSITerminal.(print_string [house] "You have no cards to draw from");
+          callback drawn enemy house hogwarts)))
+
   | View -> (ANSITerminal.(print_string [house] 
                              "The following spells can be casted: \n");
              list_cards (State.to_list_hand player) house;
@@ -127,9 +160,9 @@ let rec run_command (player:State.t) (enemy:State.t)
         callback player enemy house hogwarts
       ) with Hogwarts.UnknownSpell sp_name -> (
           ANSITerminal.(print_string [house] 
-                          (sp_name ^ " incorrectly spelled. Try again"));
-        );
-        callback player enemy house hogwarts
+                          (sp_name ^ " incorrectly spelled. Try again\n"));
+          callback player enemy house hogwarts
+        )
     )
   | Instruction -> (ANSITerminal.(print_string [house] 
                                     "Rules are simple:\n
@@ -138,7 +171,7 @@ let rec run_command (player:State.t) (enemy:State.t)
     - You play against an AI that takes its turn after you\n
     - Winner is the person who makes the other reach 0 or less health");
                     callback player enemy house hogwarts)
-  | Status -> print_state player enemy house;
+  | Status -> print_state player house; print_state enemy house;
     callback player enemy house hogwarts
   | Cast lst -> (
       (*TODO: reduce this part into its own method*)
@@ -163,8 +196,102 @@ let rec run_command (player:State.t) (enemy:State.t)
           callback player enemy house hogwarts
         )) with Hogwarts.UnknownSpell sp_name -> (
           ANSITerminal.(print_string [house] 
-                          (sp_name ^ " incorrectly spelled. Try again"))
+                          (sp_name ^ " incorrectly spelled. Try again"));
+          callback player enemy house hogwarts
         )
+    )
+
+(** [affirmation hogwarts enemy_info enemy] takes in the enemy for the info 
+    output and returns a boolean if the player chooses to fight that enemy.
+    Y or YES will fight, any other input (N or invalid) will return to character
+    menu. *)
+let affirmation (hogwarts:Hogwarts.t)(enemy_info:Hogwarts.character_info) 
+    (enemy:State.t) : bool =
+  ANSITerminal.(print_string [ANSITerminal.Bold; cyan] 
+                  (Hogwarts.character_name enemy_info);
+                print_string [cyan] ("\n-=-=-=-=-\n"^
+                                     (Hogwarts.character_description enemy_info)
+                                     ^"\n-=-=-=-=-\n");
+                print_string [cyan] ("Level: "^
+                                     (string_of_int (State.get_level enemy)));
+                print_string [cyan] ("\nStarting Health: "^
+                                     (string_of_int (State.get_hp enemy)));
+                print_string [cyan] ("\nHouse: "^
+                                     (Hogwarts.character_house enemy_info)));
+  ANSITerminal.(print_string [magenta] 
+                  "\n\nDo you want to duel this opponent (Y/N)? ");
+  let ans = String.uppercase_ascii (read_line ()) in
+  ans = "Y" || ans = "YES"
+
+(** [inverse_colour colour] takes in a colour and returns the inverse (if it was
+    in the background. If not one of four house clours 
+    (red, green, blue, yellow) then default ANSITerminal style is returned. *)
+let inverse_colour (colour:ANSITerminal.style) : ANSITerminal.style list =
+  match colour with
+  | ANSITerminal.Foreground(Red) -> [ANSITerminal.white;ANSITerminal.on_red]
+  | ANSITerminal.Foreground(Green) -> [ANSITerminal.white;ANSITerminal.on_green]
+  | ANSITerminal.Foreground(Blue) -> [ANSITerminal.white;ANSITerminal.on_blue]
+  | ANSITerminal.Foreground(Yellow) -> [ANSITerminal.black;ANSITerminal.on_yellow]
+  | _ -> [ANSITerminal.default]
+
+(** [choose_opponenet player hogwarts house callback] gives the option for the 
+    player to choose from the range of opponents to face. [callback] is 
+    called when player chooses a character and affirms that they want 
+    to battle them. *)
+let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t) 
+    (house:ANSITerminal.style) 
+    (callback: ?asked_state:bool -> State.t -> State.t -> 
+     ANSITerminal.style -> Hogwarts.t -> unit) : unit =
+  ANSITerminal.(print_string [magenta] "\nYour level: ";
+                print_string [house] (string_of_int (State.get_level player));
+                print_string [magenta] "\nWins to next level: ";
+                print_string [house] 
+                  (string_of_int (State.required_wins player - 
+                                  (List.length 
+                                     (State.get_defeated_enemies player)))));
+
+  ANSITerminal.(print_string [magenta] 
+                  "\n\nHere are the possible opponents you may face:\n\n");
+  ANSITerminal.(print_string [cyan] 
+                  "Name: Level ";
+                print_string [black; on_cyan] 
+                  "(inverted colors are completed)";
+                print_string [black] "\n");
+  let mapped = List.map (fun c -> (Hogwarts.character_name c),
+                                  (string_of_int (Hogwarts.character_level c))) 
+      (Hogwarts.get_characters hogwarts) in
+  (*print all enemies accordingly*)
+  List.iter (fun tup -> let colour = if(List.mem (fst tup)
+                                          (State.get_defeated_enemies player)) 
+                          then 
+                            (inverse_colour house) 
+                          else [house] in 
+              ANSITerminal.( print_string
+                               colour ((fst tup)^": "^(snd tup));
+                             print_string [default] "\n"
+                           )) mapped;
+
+  ANSITerminal.(print_string [magenta] 
+                  "\nEnter the name of who you want to face > ");
+  (*This complete mess just makes the string camel case*)
+  let target_name_lst = String.split_on_char ' ' (read_line ()) in
+  let target_name = String.concat " " (List.map (fun str -> 
+      String.capitalize_ascii (String.lowercase_ascii str)) target_name_lst) in
+  try (
+    let enemy_char = Hogwarts.search_characters hogwarts target_name in
+    let enemy = (State.init_enemy_with_level_deck hogwarts 
+                   (Hogwarts.character_name enemy_char)) in
+
+    if(affirmation hogwarts enemy_char enemy) then (
+      print_state player house; print_state enemy house;
+      callback player enemy house hogwarts
+    ) else
+      choose_opponent player hogwarts house callback
+  ) with Hogwarts.UnknownCharacter target_name -> (
+      ANSITerminal.(print_string [house] 
+                      "\n\nI have no idea where you saw that name...\n
+                Try entering an actual person's name this time\n");
+      choose_opponent player hogwarts house callback
     )
 
 (** [play player enemy house name] is the main game loop that takes in [player]
@@ -173,22 +300,41 @@ let rec run_command (player:State.t) (enemy:State.t)
     The [asked_state] is an optional argument that if set to false will by 
     default print out the statuses of [player] and [enemy]*)
 let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
-    (house: ANSITerminal.style) (name: Hogwarts.t)  =
+    (house: ANSITerminal.style) (hogwarts: Hogwarts.t)  =
   match check_conditions player enemy with
-  | Win -> (ANSITerminal.(print_string [house] "\nCongrats you win!\n"); exit 0)
-  | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :(\n"); exit 0)
+  | Win -> (ANSITerminal.(print_string [Bold; cyan] "\n\n-=-=-=-=-=-=-=-=-";
+                          print_string [house] "\nCongrats you win!\n";
+                          print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n"); 
+            choose_opponent 
+              (State.level_up
+                 (State.add_defeated_enemy player 
+                    (State.get_name enemy) hogwarts)) 
+              hogwarts house play)
+  | Loss -> (ANSITerminal.(print_string [house] "\nYou lose :( and die\n"); 
+             exit 0)
   | Continue -> (
-      (*This is to avoid double status description*)
-      if not asked_state then print_state player enemy house;
-      ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
-      let cmd = read_line () in
-      try (
-        run_command player enemy house name (Command.parse cmd) play
-      ) with Command.Invalidcommand ->
-        (ANSITerminal.(print_string [house] 
-                         "Invalid command. Possible commands: \n
+      if (State.get_dazed player) > 0 then (
+        ANSITerminal.(print_string [house] 
+                        "\nYou are dazed and unable to cast\n");
+        let step = State.update_dazed player in
+        let tup = enemy_turn hogwarts enemy step house in
+        play (snd tup) (fst tup) house hogwarts)
+
+      else (
+        (*This is to avoid double status description*)
+        if not asked_state then (print_state player house; 
+                                 print_state enemy house);
+        ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
+        let cmd = read_line () in
+        try (
+          run_command player enemy house hogwarts (Command.parse cmd) play
+        ) with Command.Invalidcommand ->
+          (ANSITerminal.(print_string [house] 
+                           "Invalid command. Possible commands: \n
     Draw, cast [card name], describe [card name], view, instruction, help, 
-    status, forfeit"); play player enemy house name ))
+    status, forfeit"); play player enemy house hogwarts )))
+
+(*Below is all once-off used for starting the game*)
 
 (** [choose_house h] returns the colour representing the respective Harry Potter
     house as specified by [h]. If the house name is invalid 
@@ -201,18 +347,14 @@ let choose_house (h: string): ANSITerminal.style option =
   | "hufflepuff" -> Some ANSITerminal.yellow
   | _ -> None
 
-
+(** [play_init f1 f2 house] takes in a spells json [f1] and characters [f2], 
+    and a ANSITerminal.style [house] color, then starts the game.*)
 let play_init f1 f2 player house = 
   let j1 = Yojson.Basic.from_file f1 in
   let j2 = Yojson.Basic.from_file f2 in
   let hogwarts = Hogwarts.from_json j1 j2 in 
   let player_state = State.init_player_with_level_deck hogwarts player in
-  let enemy_state = State.init_enemy_with_level_deck hogwarts "Cho Chang" in (
-    ANSITerminal.(print_string [house] 
-                    ("\nYour opponent is "^
-                     (State.get_name enemy_state)^"!\n"));
-    play player_state enemy_state house hogwarts)
-
+  choose_opponent player_state hogwarts house play
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 
     player's name to be used in gameplay. 
@@ -224,21 +366,18 @@ let rec name house =
   no numbers or symbols. Just letters. Please.\n\n";
     print_string [magenta] "Enter your name > "
   );
-
-  let reg = Str.regexp "^[A-Za-z]+$" in
+  let reg = Str.regexp "^[A-Za-z]+[A-Za-z ]*$" in
   let player_name = read_line () in
   if Str.string_match reg player_name 0 then
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play_init "spells.json" "characters.json" player_name house 
+     play_init "spells.json" "characters.json" (String.trim player_name) house 
     ) else (ANSITerminal.(
       print_string [magenta] "Simple stuff, 
       I wonder how you will fare in Hogwarts if you struggle at even this... 
       Try again\n"
     ); name house)
-
-(*Below is all once-off used for starting the game*)
 
 (*ASCII Art FTW: http://patorjk.com/software/taag/*)
 let intro_text = [
@@ -252,6 +391,9 @@ let intro_text = [
   ["     ";"_____";" ___/";"(__  ) ";"____/  ";"       "]
 ]
 
+(** [get_color_code num] gets the respective color of house in accordance with
+    [num]. 0 or 1 is red, 2,3 yellow, 4,5 green, 6,7 blue. Any other number
+    will return white.*)
 let get_color_code (num:int) : ANSITerminal.style =
   match num with
   | 0 | 1 -> ANSITerminal.red
@@ -262,6 +404,8 @@ let get_color_code (num:int) : ANSITerminal.style =
 
 let ref_num = ref 0
 
+(** [print_arr arr] prints he first element of a non-empty list and returns
+    all non-printed elements (can be an empty list).*)
 let rec print_arr (arr:string list) : (string list)=
   let itr = (!ref_num mod 8) in
   let color = get_color_code itr in
@@ -272,6 +416,9 @@ let rec print_arr (arr:string list) : (string list)=
              if itr = 7 then print_string "\n";
              t)
 
+(** [print_arr_2d arr] prints all elements from a list of string lists.
+    The printing pattern is it prints the head element of each respective list
+    and iterates forward until all lists are empty.*)
 let rec print_arr_2d (arr:(string list) list) =
   match arr with
   | [] -> ()
@@ -291,8 +438,8 @@ let rec house () =
   print_arr_2d intro_text;
   ANSITerminal.(
     print_string [magenta] 
-      "\n\nThe sorting hat is at lunch so you'll have to choose your own house.\n
-    In case you forgot, the choices are:\n";
+      "\n\nThe sorting hat is at lunch so you'll have to choose your own house.
+      \nIn case you forgot, the choices are:\n";
     print_string [red] "Gryffindor "; print_string [green] "Slytherin ";
     print_string [yellow] "Hufflepuff "; print_string [blue] "Ravenclaw";
     print_string [magenta] "\n\nEnter house name > ";
