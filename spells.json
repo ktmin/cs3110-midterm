@@ -508,7 +508,7 @@
     },
     {
       "name": "Fumos",
-      "damage": 0,
+      "damage": 5,
       "target": "enemy",
       "description": "Causes explosions.",
       "level": 1,
