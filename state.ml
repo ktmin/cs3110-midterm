@@ -81,7 +81,7 @@ let init_player hogwarts name =
   }
 
 let init_player_with_level_deck hogwarts name = 
-  let player = init_player hogwarts name in print_int (List.length player.deck);
+  let player = init_player hogwarts name in
   get_level_deck player
 
 let init_enemy hogwarts name =
@@ -149,9 +149,7 @@ let rec drop n lst =
       | h :: t -> t 
     )
 
-(** [update_helper_dazed st prolonged_effect] is a helper for update for if dazed 
-    is true. *)
-let update_helper_dazed st = 
+let update_dazed st = 
   let new_dazed = (st.dazed - 1) in {
     st with
     dazed = new_dazed
@@ -204,15 +202,12 @@ let update_helper_health st  spell =
 
 
 let update spell st1 st2 =    
-  if st1.dazed > 0 then (update_helper_dazed st1 ) 
+  if st1.dazed > 0 then (update_dazed st1 ) 
   else (if Hogwarts.spell_block spell = true 
         then update_helper_block st1 
         else (if Hogwarts.spell_target spell = "self" 
               then (update_helper_health st1 spell) 
               else (update_helper_health st2 spell)))
-
-
-
 
 (*
 let update spell st1 st2 = 

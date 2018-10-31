@@ -30,11 +30,12 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
   (*Quick health check*)
   if (State.get_hp enemy) <= 0 then (enemy,player)
   else (
+    (*Either get 7 cards or maximum that is in deck*)
     let enemy_hand = State.to_list_hand enemy in
     let hand_size = (List.length enemy_hand) in
     if hand_size < 7 && not skip_draw then
       let new_hand = State.draw enemy in
-      if(List.length (State.to_list_hand enemy)) = hand_size then
+      if(List.length (State.to_list_hand new_hand)) = hand_size then
         enemy_turn ~skip_draw:(true) hogwarts new_hand player house
       else 
         enemy_turn hogwarts new_hand player house
@@ -43,36 +44,39 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
         ANSITerminal.(print_string [house] "\n\nEnemy is dazed and cannot cast!\n");
         State.cast (List.hd (State.to_list_hand enemy)) enemy player)
       else (
-        print_int (List.length enemy_hand);
-        (*What this does is either tries to kill the player if one spell exists
-          or does as much damage as possible. For milestone one I am not letting 
-          it use self spells because it will glitch the game out 
-          because of how state currently updates*)
-        let killers = List.filter (fun a -> 
-            (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
-        match killers with
-        | h::_ -> (
-            ANSITerminal.(print_string [house] 
-                            ("\nEnemy casts "^(Hogwarts.spell_name h)));
-            State.cast h enemy player)
-        | [] -> (
-            let max_damage = List.fold_left (fun max a -> 
-                let damage = Hogwarts.spell_damage a in
-                if max < damage then damage else max) 0 enemy_hand in 
-            let target_spell = 
-              List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) 
-                enemy_hand 
-            in (
-              if Hogwarts.spell_target target_spell = "self" then (
-                ANSITerminal.(print_string [house] "\n Opponent skips their go");
-                ((State.draw enemy),player))
-              else (
-                ANSITerminal.(print_string [house] 
-                                ("\nEnemy casts "^
-                                 (Hogwarts.spell_name target_spell)));
-                State.cast target_spell enemy player))
-          )
-      )))
+        if hand_size = 0 then (
+          ANSITerminal.(print_string [house] "\n Opponent skips their go");
+          ((State.draw enemy),player)
+        ) else (
+          (*What this does is either tries to kill the player if one spell exists
+            or does as much damage as possible. For milestone one I am not letting 
+            it use self spells because it will glitch the game out 
+            because of how state currently updates*)
+          let killers = List.filter (fun a -> 
+              (Hogwarts.spell_damage a) > State.get_hp player) enemy_hand in
+          match killers with
+          | h::_ -> (
+              ANSITerminal.(print_string [house] 
+                              ("\nEnemy casts "^(Hogwarts.spell_name h)));
+              State.cast h enemy player)
+          | [] -> (
+              let max_damage = List.fold_left (fun max a -> 
+                  let damage = Hogwarts.spell_damage a in
+                  if max < damage then damage else max) (-1000) enemy_hand in 
+              let target_spell = 
+                List.find (fun a -> (Hogwarts.spell_damage a) = max_damage) 
+                  enemy_hand 
+              in (
+                if Hogwarts.spell_target target_spell = "self" then (
+                  ANSITerminal.(print_string [house] "\n Opponent skips their go");
+                  ((State.draw enemy),player))
+                else (
+                  ANSITerminal.(print_string [house] 
+                                  ("\nEnemy casts "^
+                                   (Hogwarts.spell_name target_spell)));
+                  State.cast target_spell enemy player))
+            )
+        ))))
 
 (** [check_conditions player enemy] checks to see whether [player] or [enemy]
     is below 0 health and if so, produces a Loss or Win state respictively if 
@@ -312,7 +316,8 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
       if (State.get_dazed player) > 0 then (
         ANSITerminal.(print_string [house] 
                         "\nYou are dazed and unable to cast\n");
-        let tup = enemy_turn hogwarts enemy player house in
+        let step = State.update_dazed player in
+        let tup = enemy_turn hogwarts enemy step house in
         play (snd tup) (fst tup) house hogwarts)
 
       else (
