@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> e6932e3b7df6ae74f629ee1a0ab623abcf9dc768
 open Yojson.Basic 
 (* open Hogwarts *)
 type t = {
