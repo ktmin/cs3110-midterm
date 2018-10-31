@@ -106,7 +106,7 @@
       "long-effect": [
         {
           "damage": 15,
-          "turns": 5
+          "turns": 2
         }
       ]
     },
@@ -194,7 +194,7 @@
       "long-effect": [
         {
           "damage": 20,
-          "turns": 5
+          "turns": 2
         }
       ]
     },
@@ -238,7 +238,7 @@
       "long-effect": [
         {
           "damage": 10,
-          "turns": 5
+          "turns": 2
         }
       ]
     }
