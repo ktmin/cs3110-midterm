@@ -21,7 +21,6 @@ let assert_raises_test name input_exn expected_output : test =
 
 (** Used to test search *)
 (* type spell = Hogwarts.spell_info
-
    let (spell1 : spell) = {
    name = "Confringo";
    damage = 5;
@@ -64,27 +63,100 @@ let command_tests =
         assert_raises (Invalidcommand) f)
   ]
 
-let init_state = (init_player spells_json "Clarkson")
-let state_after_draw =
-  draw init_state
 
-let spell =
-  search spells_json "confringo"
+let spell1 =
+  search spells_json "avada kedavra"
 
-let state_after_cast =
-  cast spell init_state state_after_draw
+let spell2 = 
+  search spells_json "confringo" 
+
+let spell3 = 
+  search spells_json "confundo"
+
+let spell4 = 
+  search spells_json "episky"   
+
+let spell5 = 
+  search spells_json "crucio"  
+
+let spell6 = 
+  search spells_json "expelliarmus"
+
+let spell7 = 
+  search spells_json "ferula"
+
+
+let init_pl =
+  init_player spells_json "Bryan"
+
+let init_en = 
+  init_enemy spells_json "Oscar"
+
+let dazed_2 = 
+  update spell3 init_pl init_en 
+
+let dazed_1 = 
+  update spell1 dazed_2 init_pl 
+
+let dazed_0 = 
+  update spell1 dazed_1 init_pl
+
+let draw1 = 
+  draw init_pl
+
+let draw2 = 
+  draw draw1
+
+let draw3 = 
+  draw draw2
 
 let state_tests =
   [
     "test 1 " >:: (fun _ ->
-        assert_equal (init_state |> get_hp) (100));
+        assert_equal (update spell1 init_pl init_en 
+                      |> get_hp) (0));
 
     "test 2 " >:: (fun _ ->
-        assert_equal (state_after_draw |> get_hp) (100));
+        assert_equal (update spell2 init_pl init_en 
+                      |> get_hp) (95));
 
-    (* "test 3 " >:: (fun _ ->
-        assert_equal (state_after_cast |> get_hp)
-          (95)); *)
+    "test 3 " >:: (fun _ ->
+        assert_equal (update spell3 init_pl init_en 
+                      |> get_hp) (95));
+
+    "test 4 " >:: (fun _ ->
+        assert_equal (update spell3 init_pl init_en 
+                      |> get_dazed) (2));
+
+    "test 5 " >:: (fun _ ->
+        assert_equal (update spell1 dazed_2 init_pl 
+                      |> get_dazed) (1));
+
+    "test 6 " >:: (fun _ ->
+        assert_equal (update spell1 dazed_1 init_pl 
+                      |> get_dazed) (0));
+
+    "test 7 " >:: (fun _ ->
+        assert_equal (update spell1 dazed_0 init_pl 
+                      |> get_hp) (0));
+
+    "test 8 " >:: (fun _ ->
+        assert_equal (update spell4 init_pl init_en 
+                      |> get_hp) (110));
+
+    "test 9 " >:: (fun _ ->
+        assert_equal (update spell5 init_pl init_en 
+                      |> get_hp) (85));
+
+    "test 10 " >:: (fun _ ->
+        assert_equal (update spell6 init_pl draw2 
+                      |> get_hand |> List.length) 
+          (1));
+
+    "test 11 " >:: (fun _ ->
+        assert_equal (update spell7 init_pl init_en 
+                      |> get_hp) 
+          (110));
 
   ] 
 
