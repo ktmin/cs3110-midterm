@@ -84,7 +84,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
         enemy_turn hogwarts new_hand player house
     else (
       if (State.get_dazed enemy) > 0 then (
-        ANSITerminal.(print_string [house] "\n\nEnemy is dazed and cannot cast!\n");
+        ANSITerminal.(print_string [house] 
+                        "\n\nEnemy is dazed and cannot cast!\n");
         (State.update_dazed enemy, player))
       else (
         if hand_size = 0 then (
@@ -285,7 +286,8 @@ let inverse_colour (colour:ANSITerminal.style) : ANSITerminal.style list =
   | ANSITerminal.Foreground(Red) -> [ANSITerminal.white;ANSITerminal.on_red]
   | ANSITerminal.Foreground(Green) -> [ANSITerminal.white;ANSITerminal.on_green]
   | ANSITerminal.Foreground(Blue) -> [ANSITerminal.white;ANSITerminal.on_blue]
-  | ANSITerminal.Foreground(Yellow) -> [ANSITerminal.black;ANSITerminal.on_yellow]
+  | ANSITerminal.Foreground(Yellow) -> 
+    [ANSITerminal.black;ANSITerminal.on_yellow]
   | _ -> [ANSITerminal.default]
 
 (** [choose_opponenet player hogwarts house callback] gives the option for the 

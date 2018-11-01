@@ -20,20 +20,8 @@ let assert_equal_test name input expected_output : test =
 let assert_raises_test name input_exn expected_output : test =
   name >:: (fun _ -> assert_raises input_exn  expected_output)
 
-
-(** Used to test search_spells *)
-(* let spell = {
-   spell_name = "Confringo";
-   damage = 5;
-   target = "enemy";
-   description = "Blasting Charm; causes items the charm comes in contact with to burst into flames."
-   } *)
-
 let hogwarts_tests =
   [
-
-    (* search_spells *)
-    (* assert_equal_test "search_spells test 1" (spell1) search_spells spells_json "confringo"  *)
 
     (* description *)
     assert_equal_test "description test 1"
