@@ -336,7 +336,8 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
   try (
     let enemy_char = Hogwarts.search_characters hogwarts target_name in
     let enemy = (State.init_enemy_with_level_deck hogwarts 
-                   (Hogwarts.character_name enemy_char)) in
+                   (Hogwarts.character_name enemy_char) 
+                   (Hogwarts.character_house enemy_char)) in
 
     if(affirmation hogwarts enemy_char enemy) then (
       print_state player enemy house; print_state enemy player house;
@@ -405,18 +406,18 @@ let choose_house (h: string): ANSITerminal.style option =
 
 (** [play_init f1 f2 house] takes in a spells json [f1] and characters [f2], 
     and a ANSITerminal.style [house] color, then starts the game.*)
-let play_init f1 f2 player house = 
+let play_init f1 f2 player h_house house = 
   let j1 = Yojson.Basic.from_file f1 in
   let j2 = Yojson.Basic.from_file f2 in
   let hogwarts = Hogwarts.from_json j1 j2 in 
-  let player_state = State.init_player_with_level_deck hogwarts player in
+  let player_state = State.init_player_with_level_deck hogwarts player h_house in
   choose_opponent player_state hogwarts house play
 
 (** [name house] takes in the ANSITerminal colour [house] and records the 
     player's name to be used in gameplay. 
     The name specified should be regular ASCII alphabet with no numbers 
     or special characters. Method will repeat until a valid input is received.*)
-let rec name house =
+let rec name h_house house =
   ANSITerminal.(
     print_string [magenta] "Now, your name. Let's keep it simple, 
   no numbers or symbols. Just letters. Please.\n\n";
@@ -428,12 +429,12 @@ let rec name house =
     (ANSITerminal.(
         print_string [house] ("Welcome " ^ player_name ^ "!");
       );
-     play_init "spells.json" "characters.json" (String.trim player_name) house 
+     play_init "spells.json" "characters.json" (String.trim player_name) h_house house 
     ) else (ANSITerminal.(
       print_string [magenta] "Simple stuff, 
       I wonder how you will fare in Hogwarts if you struggle at even this... 
       Try again\n"
-    ); name house)
+    ); name h_house house)
 
 (*ASCII Art FTW: http://patorjk.com/software/taag/*)
 let intro_text = [
@@ -500,8 +501,9 @@ let rec house () =
     print_string [yellow] "Hufflepuff "; print_string [blue] "Ravenclaw";
     print_string [magenta] "\n\nEnter house name > ";
   );
-  match choose_house (read_line ()) with
-  | Some x -> name x
+  let chosen = read_line () in
+  match choose_house (chosen) with
+  | Some x -> name chosen x
   | None -> ANSITerminal.(print_string [magenta] "... That isn't a house. 
     They are literally in front of you. Let's try this again.\n"); house ()
 
