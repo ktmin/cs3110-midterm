@@ -269,7 +269,10 @@ let cast spell st1 st2 : (t*t) =
     (updated_self,update_prolong_damage spell st2) else 
   if st1.blocked = 1 then 
     let updated_pl = reset_blocked spell st1 in
-    (hand_after_cast spell updated_pl, st2) 
+    let self_updated_pl = if Hogwarts.spell_target spell = "self"
+      then update spell updated_pl st2 else 
+        updated_pl in  
+    (hand_after_cast spell self_updated_pl, st2) 
   else   
   if Hogwarts.spell_block spell = true then
     (hand_after_cast  spell (st1), 
