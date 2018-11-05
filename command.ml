@@ -21,7 +21,8 @@ let rec no_blank_elem list =
       no_blank_elem t else 
       h :: no_blank_elem t
 
-(**parse a given list and returns a command*)
+(** returns command from a list 
+    representation of line command*)
 let parse_list list = 
   match list with
   | [] -> raise Invalidcommand

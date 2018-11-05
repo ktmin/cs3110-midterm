@@ -93,7 +93,8 @@ let init_player_with_level_deck hogwarts name =
 let init_enemy hogwarts name =
   let enemy_info = Hogwarts.search_characters hogwarts name in 
   let enemy_level = Hogwarts.character_level enemy_info in 
-  {name=name; hp=100; level = enemy_level; dazed = 0;
+  let enemy_hp = Hogwarts.character_hp enemy_info in
+  {name=name; hp= enemy_hp; level = enemy_level; dazed = 0;
    prolong_effect = [];
    hand=[]; blocked = 0;
    deck=(QCheck.Gen.(generate1 (shuffle_l 
@@ -117,8 +118,10 @@ let draw (st:t) =
   | [] -> 
     let new_deck =  
       refresh_deck (Hogwarts.from_json (from_file "spells.json") 
-                      (from_file "characters.json")) st in 
-    {st with deck = new_deck.deck}
+                      (from_file "characters.json")) st in
+    let new_hand = List.hd new_deck.deck in    
+    {st with deck = new_deck.deck;
+             hand = new_hand :: st.hand }
   | h::t -> {st with hand=(h::st.hand); deck=t}
 
 
@@ -173,13 +176,15 @@ let update_dazed st =
     dazed = new_dazed
   }
 
-(** [update_helper_block st prolonged_effect] is a helper for update for if block
-    is true. *)
+(** [update_helper_block st prolonged_effect] is a helper for update for if 
+    block is true. *)
 let update_helper_block st  = 
-  let new_dazed = (st.dazed - 1) in {
-    st with
-    dazed = new_dazed
-  }
+  if st.dazed > 0 then 
+    let new_dazed = (st.dazed - 1) in {
+      st with
+      dazed = new_dazed
+    } else 
+    st
 
 (** [update_helper_hand st spell u_health u_dazed prolonged effect] is a helper 
     for update if hand is being updated. *)
@@ -203,8 +208,8 @@ let update_helper_deck st spell u_health u_dazed =
    dazed = u_dazed;
   } 
 
-(** [update_helper_health st prolonged_effect prolonged_damage spell] is a helper 
-    for updating the health of [st]. *)
+(** [update_helper_health st prolonged_effect prolonged_damage spell] is a 
+    helper for updating the health of [st]. *)
 let update_helper_health st  spell = 
   let new_dazed = st.dazed + (Hogwarts.spell_daze spell) in 
   let updated_health = st.hp - Hogwarts.spell_damage spell in 
@@ -222,7 +227,7 @@ let update_helper_health st  spell =
 let update spell st1 st2 =    
   if st1.dazed > 0 then (update_dazed st1 ) 
   else (if Hogwarts.spell_block spell = true 
-        then update_helper_block st1 
+        then update_helper_block st2 
         else (if Hogwarts.spell_target spell = "self" 
               then (update_helper_health st1 spell) 
               else (update_helper_health st2 spell)))
@@ -263,12 +268,13 @@ let cast spell st1 st2 : (t*t) =
     let updated_self =update spell st1 st2 in 
     (updated_self,update_prolong_damage spell st2) else 
   if st1.blocked = 1 then 
-    let updated_self = reset_blocked spell st1 in
-    (hand_after_cast spell updated_self, st2) 
+    let updated_pl = reset_blocked spell st1 in
+    (hand_after_cast spell updated_pl, st2) 
   else   
   if Hogwarts.spell_block spell = true then
-    (hand_after_cast  spell st1, update_blocked spell
-       (update_prolong_damage spell st2)) 
+    (hand_after_cast  spell (st1), 
+     update_blocked spell
+       (update_prolong_damage spell   (update spell st1  st2)   )) 
   else 
 
   if Hogwarts.spell_target spell = "self" then (
@@ -292,11 +298,6 @@ let level_up (player:t) : t =
   else player
 
 
-<<<<<<< HEAD
-
-
-<<<<<<< HEAD
-=======
 
 let update_blocked spell st = 
   if Hogwarts.spell_block spell = true then 
@@ -305,9 +306,8 @@ let update_blocked spell st =
      blocked = new_block} else
     st 
 
->>>>>>> d71a5c4d49be2bb480b3948de38c958404f48223
-=======
->>>>>>> 474eb6a9e35437a029b2468cafe7454ea088988b
 (*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
   pl.hand
+
+

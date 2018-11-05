@@ -5,49 +5,154 @@
       "house": "Ravenclaw",
       "level": 2,
       "description": "Cho is the Seeker for the Ravenclaw Quidditch team. She is also a part of Dumbledore's Army.",
-      "hp": 1
+      "hp": 50
     },
     {
       "name": "Luna Lovegood",
       "house": "Ravenclaw",
       "level": 1,
       "description": "Luna is often seen as being weird, but she is just unique. Not only is she great at spotting Nargles, she is a wonderful artist and true friend.",
-      "hp": 100
+      "hp": 30
     },
     {
       "name": "Gilderoy Lockhart",
       "house": "Ravenclaw",
       "level": 2,
       "description": "Careful with Professor Lockhart! While an author, professor, and five-time winner of Witch Weekly's Most Charming Smile Award, Gilderoy Lockhart is great at memory charms.",
-      "hp": 100
+      "hp": 50
     },
     {
       "name": "Quirinus Quirrell",
       "house": "Ravenclaw",
       "level": 3,
       "description": "Known for his stuttering, Professor Quirrell once held the role of Defense Against the Dark Arts professor...there's something suspicious about him.",
-      "hp": 150
+      "hp": 75
     },
     {
       "name": "Harry Potter",
       "house": "Gryffindor",
       "level": 3,
       "description": "Harry Potter is the boy who lived...He was singled out by Lord Voldemort at birth to be his greatest rival, and our hero.",
-      "hp": 150
+      "hp": 75
     },
     {
       "name": "Hermione Granger",
       "house": "Gryffindor",
       "level": 3,
       "description": "One of the smartest witches alive, Hermione Granger is not a force to be reckon with.",
-      "hp": 150
+      "hp": 75
     },
     {
       "name": "Ron Weasley",
       "house": "Gryffindor",
       "level": 3,
       "description": "Ron Weasley is one of Harry Potter's best friends. He is an excellent Wizard Chess player, and was the Gryffindor Quidditch team's goalkeeper for one year.",
-      "hp": 150
+      "hp": 75
+    },
+    {
+      "name": "Minerva McGonagall",
+      "house": "Gryffindor",
+      "level": 4,
+      "description": "The strict but fair Head of Gryffindor house and Transfiguration teacher.",
+      "hp": 85
+    },
+    {
+      "name": "Albus Dumbledore",
+      "house": "Gryffindor",
+      "level": 5,
+      "description": "An incredibly powerful wizard. Albus Dumbledore is the Headmaster of Hogwarts, founder of the Order of the Phoenix, and has a foundness for sherbet lemons and knitting patterns.",
+      "hp": 100
+    },
+    {
+      "name": "Neville Longbottom",
+      "house": "Gryffindor",
+      "level": 3,
+      "description": "A clumsy but keen Herbology student and shy Gryffindor with great inner strength.",
+      "hp": 75
+    },
+    {
+      "name": "Sirius Black",
+      "house": "Gryffindor",
+      "level": 4,
+      "description": "Harry's Animagus godfather who famously escaped from Azkaban. He is an old friend of James and Lily Potter.",
+      "hp": 85
+    },
+    {
+      "name": "Remus Lupin",
+      "house": "Gryffindor",
+      "level": 4,
+      "description": "He taught Harry Potter how to defend himself against the Dementors. Lupin is a member of the Order of the Phoenix, Hogwarts teacher, Tonks' husband, and a werewolf.",
+      "hp": 85
+    },
+    {
+      "name": "Ginny Weasley",
+      "house": "Gryffindor",
+      "level": 3,
+      "description": "The youngest Weasley child. Ginny is brave, tenacious, and an accomplished Quidditch player.",
+      "hp": 75
+    },
+    {
+      "name": "Nymphadora Tonks",
+      "house": "Hufflepuff",
+      "level": 4,
+      "description": "Tonks is a Metamorphmagus and Auror. She has distinctive hair and is a member of the Order of the Phoenix.",
+      "hp": 85
+    },
+    {
+      "name": "Cedric Diggory",
+      "house": "Hufflepuff",
+      "level": 3,
+      "description": "Popular Hufflepuff Seeker and competitor in the Triwizard Tournament.",
+      "hp": 75
+    },
+    {
+      "name": "Amelia Bones",
+      "house": "Hufflepuff",
+      "level": 2,
+      "description": "Niece of Ameila Bones, who was the Head of the Department of Magical Law Enforcement, and a member of Dumbledore's Army.",
+      "hp": 50
+    },
+    {
+      "name": "Justin Finch-Fletchley",
+      "house": "Hufflepuff",
+      "level": 2,
+      "description": "Muggle-born Hufflepuff student who was also accepted to Eton.",
+      "hp": 75
+    },
+    {
+      "name": "Severus Snape",
+      "house": "Slytherin",
+      "level": 4,
+      "description": "Hogwarts Potions master, Head of Slytherin house and former Death Eater. Holds a grudge against Harry Potter.",
+      "hp": 85
+    },
+    {
+      "name": "Draco Malfoy",
+      "house": "Slytherin",
+      "level": 3,
+      "description": "A pure-blood wizard, proud Slytherin, and Harry Potter's arch rival at Hogwarts.",
+      "hp": 75
+    },
+    {
+      "name": "Bellatrix Lestrange",
+      "house": "Slytherin",
+      "level": 4,
+      "description": "One of Voldemort's most loyal Death Eaters, sent to Azkaban for her crimes. A dangerous witch and duelist.",
+      "hp": 85
+    },
+    {
+      "name": "Lucius Malfoy",
+      "house": "Slytherin",
+      "level": 4,
+      "description": "Draco's father who serves Lord Voldemort as a Death Eater in both Wizarding Wars.",
+      "hp": 85
+    },
+    {
+      "name": "Lord Voldemort",
+      "house": "Slytherin",
+      "level": 5,
+      "description": "Formely known as Tom Marvolo Riddle, and commonly reffered to as He-Who-Must-Not-Be-Named. The most powerful Dark Wizard of all time.",
+      "hp": 100
     }
   ]
 }

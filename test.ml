@@ -20,20 +20,8 @@ let assert_equal_test name input expected_output : test =
 let assert_raises_test name input_exn expected_output : test =
   name >:: (fun _ -> assert_raises input_exn  expected_output)
 
-
-(** Used to test search_spells *)
-(* let spell = {
-   spell_name = "Confringo";
-   damage = 5;
-   target = "enemy";
-   description = "Blasting Charm; causes items the charm comes in contact with to burst into flames."
-   } *)
-
 let hogwarts_tests =
   [
-
-    (* search_spells *)
-    (* assert_equal_test "search_spells test 1" (spell1) search_spells spells_json "confringo"  *)
 
     (* description *)
     assert_equal_test "description test 1"
@@ -173,34 +161,24 @@ let state_tests =
 
     "prolong effect 1 " >:: (fun _ ->
         assert_equal ( 
-          cast crucio init_pl init_en |> snd |> get_hp)
+          cast crucio init_pl init_pl |> snd |> get_hp)
           (100 ) );
 
     "prolong effect 2 " >:: (fun _ ->
         assert_equal ( 
-          let prolong1 =  cast crucio init_pl init_en |> snd in
+          let prolong1 =  cast crucio init_pl init_pl |> snd in
           let prolong2 = cast confingo init_pl prolong1 |> snd in
           prolong2 |> get_hp)
           (80) );
 
     "prolong effect 3 " >:: (fun _ ->
         assert_equal ( 
-          let prolong1 =  cast crucio init_pl init_en |> snd in
+          let prolong1 =  cast crucio init_pl init_pl |> snd in
           let prolong2 = cast confingo init_pl prolong1 |> snd in
           let prolong3 = cast confingo init_pl prolong2 |> snd in 
           prolong3 |> get_hp)
           (60) );
 
-    "prolong effect 4 " >:: (fun _ ->
-        assert_equal ( 
-          let prolong1 =  cast crucio init_pl init_en |> snd in
-          let prolong2 = cast confingo init_pl prolong1 |> snd in
-          let prolong3 = cast confingo init_pl prolong2 |> snd in
-          let prolong4 = cast confingo init_pl prolong3 |> snd in 
-          let prolong5 = cast confingo init_pl prolong4 |> snd in
-          let prolong6 = cast confingo init_pl prolong5 |> snd in
-          prolong6 |> get_hp)
-          (0) );
 
     "remove test 1 " >:: (fun _  ->
         assert_equal ( (let drew = draw init_pl in 

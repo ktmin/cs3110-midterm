@@ -1,8 +1,8 @@
 type end_state = Win | Loss | Continue
 
-(** [print_state caster house] prints all of the status info on the [caster]
-    in [house] style. *)
-let print_state caster house = 
+(** [print_state caster target house] prints all of the status info on the 
+    [caster] in [house] style. *)
+let print_state caster target house = 
   ANSITerminal.(print_string [house]("\n"^
                                      (State.get_name caster)^"'s health: ");
                 print_string [magenta] (string_of_int 
@@ -21,8 +21,8 @@ let print_state caster house =
                         ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
       effects
   );
-  if (State.get_blocked caster) = 1 then
-    ANSITerminal.(print_string [house;ANSITerminal.Bold] "Is blocking\n")                             
+  if (State.get_blocked target) = 1 then
+    ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n")                             
 
 (** [cast_spell spell caster target house] prints the casting [spell] that
     affects the target and printed info is in [house] style *)
@@ -84,7 +84,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
         enemy_turn hogwarts new_hand player house
     else (
       if (State.get_dazed enemy) > 0 then (
-        ANSITerminal.(print_string [house] "\n\nEnemy is dazed and cannot cast!\n");
+        ANSITerminal.(print_string [house] 
+                        "\n\nEnemy is dazed and cannot cast!\n");
         (State.update_dazed enemy, player))
       else (
         if hand_size = 0 then (
@@ -104,8 +105,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
             if hp < 100 then (
               if is_healing && 
                  Hogwarts.spell_target max_heal = "self" then (
-                let tup = cast_spell max_heal enemy enemy house in
-                ((snd tup),player)
+                let tup = cast_spell max_heal enemy player house in
+                ((fst tup),player)
               ) else (
                 cast_spell min_damage enemy player house
               )
@@ -120,8 +121,8 @@ let rec enemy_turn ?skip_draw:(skip_draw=false)(hogwarts:Hogwarts.t)
                 cast_spell max_damage enemy player house) else (
                 if player_hp > hp then (
                   if is_healing then
-                    let tup = cast_spell max_heal enemy enemy house in
-                    ((snd tup),player)
+                    let tup = cast_spell max_heal enemy player house in
+                    ((fst tup),player)
                   else
                     cast_spell max_damage enemy player house
                 ) else (
@@ -225,7 +226,7 @@ let rec run_command (player:State.t) (enemy:State.t)
     - You play against an AI that takes its turn after you\n
     - Winner is the person who makes the other reach 0 or less health");
                     callback player enemy house hogwarts)
-  | Status -> print_state player house; print_state enemy house;
+  | Status -> print_state player enemy house; print_state enemy player house;
     callback player enemy house hogwarts
   | Cast lst -> (
       (*TODO: reduce this part into its own method*)
@@ -285,7 +286,8 @@ let inverse_colour (colour:ANSITerminal.style) : ANSITerminal.style list =
   | ANSITerminal.Foreground(Red) -> [ANSITerminal.white;ANSITerminal.on_red]
   | ANSITerminal.Foreground(Green) -> [ANSITerminal.white;ANSITerminal.on_green]
   | ANSITerminal.Foreground(Blue) -> [ANSITerminal.white;ANSITerminal.on_blue]
-  | ANSITerminal.Foreground(Yellow) -> [ANSITerminal.black;ANSITerminal.on_yellow]
+  | ANSITerminal.Foreground(Yellow) -> 
+    [ANSITerminal.black;ANSITerminal.on_yellow]
   | _ -> [ANSITerminal.default]
 
 (** [choose_opponenet player hogwarts house callback] gives the option for the 
@@ -337,7 +339,7 @@ let rec choose_opponent (player:State.t) (hogwarts:Hogwarts.t)
                    (Hogwarts.character_name enemy_char)) in
 
     if(affirmation hogwarts enemy_char enemy) then (
-      print_state player house; print_state enemy house;
+      print_state player enemy house; print_state enemy player house;
       callback player enemy house hogwarts
     ) else
       choose_opponent player hogwarts house callback
@@ -376,8 +378,8 @@ let rec play ?asked_state:(asked_state=true) (player:State.t) (enemy:State.t)
 
       else (
         (*This is to avoid double status description*)
-        if not asked_state then (print_state player house; 
-                                 print_state enemy house);
+        if not asked_state then (print_state player enemy house; 
+                                 print_state enemy player house);
         ANSITerminal.print_string [house] "\n\nEnter an action to perform > ";
         let cmd = read_line () in
         try (

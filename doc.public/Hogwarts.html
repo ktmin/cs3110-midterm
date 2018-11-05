@@ -48,10 +48,26 @@
 </div>
 
 
+<pre><span id="TYPEcharacter_name"><span class="keyword">type</span> <code class="type"></code>character_name</span> = <code class="type">string</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of a character name</p>
+</div>
+</div>
+
+
 <pre><span id="TYPEdamage"><span class="keyword">type</span> <code class="type"></code>damage</span> = <code class="type">int</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of a spell's damage</p>
+</div>
+</div>
+
+
+<pre><span id="TYPEturns"><span class="keyword">type</span> <code class="type"></code>turns</span> = <code class="type">int</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of a turns</p>
 </div>
 </div>
 
@@ -80,6 +96,14 @@
 </div>
 
 
+<pre><span id="TYPEcharacter_info"><span class="keyword">type</span> <code class="type"></code>character_info</span> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The abstract type of character information</p>
+</div>
+</div>
+
+
 <pre><span id="EXCEPTIONUnknownSpell"><span class="keyword">exception</span> UnknownSpell</span> <span class="keyword">of</span> <code class="type"><a href="Hogwarts.html#TYPEspell_name">spell_name</a></code></pre>
 <div class="info ">
 <div class="info-desc">
@@ -87,17 +111,33 @@
 </div>
 </div>
 
-<pre><span id="VALfrom_json"><span class="keyword">val</span> from_json</span> : <code class="type">Yojson.Basic.json -> <a href="Hogwarts.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="EXCEPTIONUnknownCharacter"><span class="keyword">exception</span> UnknownCharacter</span> <span class="keyword">of</span> <code class="type"><a href="Hogwarts.html#TYPEcharacter_name">character_name</a></code></pre>
+<div class="info ">
 <div class="info-desc">
-<p><code class="code">from_json j</code> is the organized spells that <code class="code">j</code> represents.
-    Requires: <code class="code">j</code> is a valid JSON spell representation.</p>
+<p>Raised when an unknown character is encountered</p>
 </div>
 </div>
 
-<pre><span id="VALsearch"><span class="keyword">val</span> search</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_name">spell_name</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a></code></pre><div class="info ">
+<pre><span id="VALfrom_json"><span class="keyword">val</span> from_json</span> : <code class="type">Yojson.Basic.json -> Yojson.Basic.json -> <a href="Hogwarts.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">search hogwarts spell</code> looks for the <code class="code">spell</code> and returns it.
-    Raises: UnknownSpell if <code class="code">spell</code> is not found in <code class="code">hogwarts</code></p>
+<p><code class="code">from_json j1 j2 </code> is the organized spells that <code class="code">j1</code> represents and the 
+    characters that <code class="code">j2</code> represents.
+    Requires: <code class="code">j1</code> and <code class="code">j2</code> are valid JSON spell and character 
+    representations.</p>
+</div>
+</div>
+
+<pre><span id="VALsearch_spells"><span class="keyword">val</span> search_spells</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_name">spell_name</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">search_spells t spell</code> looks for the <code class="code">spell</code> and returns it.
+    Raises: UnknownSpell if <code class="code">spell</code> is not found in <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALsearch_characters"><span class="keyword">val</span> search_characters</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEcharacter_name">character_name</a> -> <a href="Hogwarts.html#TYPEcharacter_info">character_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">search_characters t c</code> looks for the character <code class="code">c</code> and returns it.
+    Raises: UnknownCharacter if <code class="code">c</code> is not found in <code class="code">t</code></p>
 </div>
 </div>
 
@@ -120,6 +160,13 @@
 </div>
 </div>
 
+<pre><span id="VALcharacter_description"><span class="keyword">val</span> character_description</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">character_info</a> -> <a href="Hogwarts.html#TYPEdescription">description</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">character_description h c</code> is the description of character <code class="code">c</code> in <code class="code">h</code>. 
+    Raises: UnknownCharacter if character <code class="code">c</code> is not in <code class="code">h</code></p>
+</div>
+</div>
+
 <pre><span id="VALspell_damage"><span class="keyword">val</span> spell_damage</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEdamage">damage</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">spell_damage h s</code> is the amount of damage that spell <code class="code">s</code> in <code class="code">h</code> inflicts. 
@@ -133,15 +180,82 @@
 </div>
 </div>
 
+<pre><span id="VALcharacter_name"><span class="keyword">val</span> character_name</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">character_info</a> -> <a href="Hogwarts.html#TYPEcharacter_name">character_name</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">character_name c</code> is the name of the character <code class="code">c</code></p>
+</div>
+</div>
+
 <pre><span id="VALget_spells"><span class="keyword">val</span> get_spells</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEspell_info">spell_info</a> list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">get_spells t</code> is the list of spells in <code class="code">t</code></p>
 </div>
 </div>
 
+<pre><span id="VALget_characters"><span class="keyword">val</span> get_characters</span> : <code class="type"><a href="Hogwarts.html#TYPEt">t</a> -> <a href="Hogwarts.html#TYPEcharacter_info">character_info</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_characters t</code> is the list of characters in <code class="code">t</code></p>
+</div>
+</div>
+
 <pre><span id="VALspell_target"><span class="keyword">val</span> spell_target</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEtarget">target</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">spell_target s</code> is the target for the spell <code class="code">s</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_level"><span class="keyword">val</span> spell_level</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_level s</code> is the spell level for the spell <code class="code">s</code></p>
+</div>
+</div>
+
+<pre><span id="VALcharacter_level"><span class="keyword">val</span> character_level</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">character_info</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">character_level c</code> is the character level for character <code class="code">c</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_daze"><span class="keyword">val</span> spell_daze</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_daze s</code> is the dazing effect of spell <code class="code">s</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALspell_block"><span class="keyword">val</span> spell_block</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_block s</code> is the blocking time for spell <code class="code">s</code></p>
+</div>
+</div>
+
+<pre><span id="VALspell_remove"><span class="keyword">val</span> spell_remove</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> string * int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_remove s</code> is the removal effects of casting spell <code class="code">s</code>. 
+    Raises: UnknownSpell if spell <code class="code">s</code> is does not have any information.</p>
+</div>
+</div>
+
+<pre><span id="VALspell_long_effect"><span class="keyword">val</span> spell_long_effect</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> <a href="Hogwarts.html#TYPEdamage">damage</a> * <a href="Hogwarts.html#TYPEturns">turns</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_long_effect s</code> is the long-term effect of using spell <code class="code">s</code></p>
+</div>
+</div>
+
+<pre><span id="VALis_long_effect"><span class="keyword">val</span> is_long_effect</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">spell_info</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_long_effect s</code> is whether <code class="code">s</code> has a prolonged effect.</p>
+</div>
+</div>
+
+<pre><span id="VALcharacter_house"><span class="keyword">val</span> character_house</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">character_info</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">character_house c</code> is the house of character <code class="code">c</code></p>
+</div>
+</div>
+
+<pre><span id="VALcharacter_hp"><span class="keyword">val</span> character_hp</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">character_info</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">character_hp c</code> is the hp of character <code class="code">c</code></p>
 </div>
 </div>
 </body></html>

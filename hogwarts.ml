@@ -75,7 +75,8 @@ let create_spell j =
     daze = extract_json j "daze" to_int;
     block = extract_json j "block" to_bool;
     remove = (extract_json j "remove" to_list) |> List.map create_remove;
-    long_effect = (extract_json j "long-effect" to_list) |> List.map create_long_effect
+    long_effect = (extract_json j "long-effect" to_list) 
+                  |> List.map create_long_effect
   }
 
 (** [create_character j] extracts the character information from [j] *)
