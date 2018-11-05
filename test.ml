@@ -191,11 +191,6 @@ let state_tests =
                         cast expelliarmus init_pl drew2 ) |> snd 
                        |> get_hand |> List.length) 1 );     
 
-
-
-
-
-    >>>>>>> d71a5c4d49be2bb480b3948de38c958404f48223
   ] 
 
 let suite =
