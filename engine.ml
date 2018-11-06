@@ -264,17 +264,16 @@ let affirmation (hogwarts:Hogwarts.t)(enemy_info:Hogwarts.character_info)
     (enemy:State.t) : bool =
   ANSITerminal.(print_string [ANSITerminal.Bold; cyan] 
                   (Hogwarts.character_name enemy_info);
-                print_string [cyan] ("\n-=-=-=-=-\n"^
-                                     (Hogwarts.character_description enemy_info)
-                                     ^"\n-=-=-=-=-\n");
-                print_string [cyan] ("Level: "^
-                                     (string_of_int (State.get_level enemy)));
-                print_string [cyan] ("\nStarting Health: "^
-                                     (string_of_int (State.get_hp enemy)));
-                print_string [cyan] ("\nHouse: "^
-                                     (Hogwarts.character_house enemy_info)));
-  ANSITerminal.(print_string [magenta] 
-                  "\n\nDo you want to duel this opponent (Y/N)? ");
+                print_string [cyan] 
+                  ("\n-=-=-=-=-\n"^
+                   (Hogwarts.character_description enemy_info)^"\n-=-=-=-=-\n");
+                print_string [cyan] 
+                  ("Level: "^(string_of_int (State.get_level enemy)));
+                print_string [cyan] 
+                  ("\nStarting Health: "^(string_of_int (State.get_hp enemy)));
+                print_string [cyan] 
+                  ("\nHouse: "^(Hogwarts.character_house enemy_info)));
+  ANSITerminal.(print_string [magenta]"\n\nDo you want to duel this opponent (Y/N)? ");
   let ans = String.uppercase_ascii (read_line ()) in
   ans = "Y" || ans = "YES"
 

@@ -1,0 +1,1 @@
+type end_state = Win | Loss | Continue
