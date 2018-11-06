@@ -2,9 +2,6 @@ module type View = sig
   val print_state : State.t -> unit
   val list_cards : State.t -> unit
   val print_enemy : Hogwarts.character_info -> State.t -> unit
-  (*Internal commands:
-    choose_house, inverse_house, ref num, print_arr, print_arr2d, intro_text,
-    get_colour_codes*)
   val print_post_condition : string -> Model.end_state -> unit
   val print_cast : State.t  -> Hogwarts.spell_info -> unit
   val print_spell_details : string -> Hogwarts.t -> Hogwarts.spell_info -> unit
