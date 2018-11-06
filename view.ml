@@ -9,6 +9,7 @@ module type View = sig
   val print_cmd_input : string -> string -> unit
   val print_formatted_lst : string -> string list -> unit
   val print_enemy_lst : Hogwarts.t -> State.t -> unit
+  val print_house : string -> unit
 end
 
 module Make : View = struct
@@ -44,9 +45,9 @@ module Make : View = struct
     |"hufflepuff" -> [ANSITerminal.black;
                       ANSITerminal.on_yellow]
     | _ -> [ANSITerminal.default]
-  (*===End Util meMetho===*)
-  (*===Start Title Utils===*)
-  (*ASCII Art FTW: http://patorjk.com/software/taag/*)
+  (*===End Util Methods===*)
+  (*===Start ASCII Art Utils===*)
+  (*ASCII Art FTW: http://patorjk.com/software/taag/ (intro -> puff) *)
   let intro_text = [
     ["    __  __";"   / / / /";"  / /_/ /";" / __  /";"/_/ /_/";"       "];
     ["    ";"___ ";" __ \\";" /_/ /";"\\____/";"     "];
@@ -58,45 +59,110 @@ module Make : View = struct
     ["     ";"_____";" ___/";"(__  ) ";"____/  ";"       "]
   ]
 
+  let slyth = [
+    [" _____"; "/  ___|"; "\\ `--."; " `--. \\"; "/\\__/ /"; "\\____/"; "      "; 
+     "      "];
+    [" _ "; " |"; "| |"; " |"; " |"; "|_|"; "   "; "   "];
+    ["      "; "     "; "_   _"; " | | |"; " |_| |"; "\\__, |"; " __/ |"; 
+     "|___/ "];
+    ["_   "; "| | "; "| |_"; " __|"; " |_"; "\\__|"; "    "; "     "];
+    ["_    "; "| |    "; "| |__ "; " '_  \\"; "| | | |"; "_| |_|"; "      "; 
+     "      "];
+    ["      "; "     "; "  ___ ";"/ _ \\";"  __/";"\\___|";"     "; "     "];
+    ["    "; 
+     "     "; 
+     "_ __"; 
+     " '__|"; 
+     " |  "; 
+     "_|  "; "    "; "    "];
+    ["  _ "; "(_)"; " _ "; " |"; "| |"; "|_|"; "   "; "   "];
+    ["      "; "      "; "_ __  "; " '_  \\ "; " | | |"; "_| |_|"; "      "; 
+     "      "]
+  ]
+
+  let gryff = [
+    [" .---. "; "/   __}"; "\\  {_ }"; " `---' "];
+    [".----."; "| {}  }"; "| .-. \\"; "`-' `-' "];
+    [".-.  .-."; "\\ \\/ / "; " }  {  "; "`--'  "];
+    [".----."; "| {_  "; "| |   "; "`-'   "];
+    [".----."; "| {_  "; "| |   "; "`-'   "];
+    [".-."; "| |"; "| |"; "`-'"];
+    [".-. .-."; "|  `| |"; "| |\\  |"; "`-' `-'"];
+    [".----. "; "| {}  \\"; "|     /"; "`----' "];
+    [" .----. "; "/  {}  \\"; "\\      /"; " `----' "];
+    [".----. "; "| {}  }"; "| .-. \\"; "`-' `-'"]
+  ]
+
+  let claw = [
+    ["█▄▄▄▄ "; "█  ▄▀ "; "█▀▀▌  "; "█  █  "; "  █   "; " ▀    "; "      "];
+    ["██   "; "█ █  "; "█▄▄█ "; "█  █  "; "   █ "; "  █  "; " ▀   "];
+    ["     ▄   "; "     █  "; "█     █ "; "█    █ "; "  █  █  "; "   █▐   "; "   ▐    "];
+    ["▄███▄   "; "█▀   ▀  "; "██▄▄    "; "█▄   ▄▀ "; "▀███▀   "; "        "; "        "];
+    ["   ▄   "; "    █  "; "██   █ "; "█ █  █ "; "█  █ █ "; "█   ██ "; "       "];
+    ["▄█▄    "; "█▀ ▀▄  "; "█   ▀  "; "█▄  ▄▀ "; "▀███▀  "; "       "; "       "];
+    ["█    "; "█    "; "█    "; "███▄ "; "    ▀"; "     "; "     "];
+    ["██   "; "█ █  "; "█▄▄█ "; "█  █  "; "   █ "; "  █  "; " ▀   "];
+    ["  ▄ ▄   "; " █   █  "; "█  ▄  █ "; "█  █  █ "; " █ █ █ █"; "  ▀   ▀ "; "        "]
+  ]
+
+  let puff = [
+    ["       "; " ,---. "; "| .-. |"; "| '-' '"; "|  |-' "; "`--'   "];
+    ["       "; " ,---. "; "| .-. |"; "' '-' '"; " `---' "; "       "];
+    ["  ,--.  "; ",-'  '-."; "'-.  .-'"; "  |  |  "; "  `--'  "; "        "];
+    ["        "; " ,--,--."; "' ,-.  |"; "\\ '-'  |"; " `--`--'"; "        "];
+    ["  ,--.  "; ",-'  '-."; "'-.  .-'"; "  |  |  "; "  `--'  "; "        "];
+    ["       "; " ,---. "; "| .-. |"; "' '-' '"; " `---' "; "       "]
+  ]
+
+  let even_odd (even:ANSITerminal.style list) (odd:ANSITerminal.style list) (num:int) :
+    ANSITerminal.style list=
+    if(num mod 2) = 0 then
+      even
+    else
+      odd
+
   (** [get_color_code num] gets the respective color of house in accordance with
       [num]. 0 or 1 is red, 2,3 yellow, 4,5 green, 6,7 blue. Any other number
       will return white.*)
-  let get_color_code (num:int) : ANSITerminal.style =
+  let get_color_code (num:int) : ANSITerminal.style list =
     match num with
-    | 0 | 1 -> ANSITerminal.red
-    | 2 | 3 -> ANSITerminal.yellow
-    | 4 | 5 -> ANSITerminal.green
-    | 6 | 7 -> ANSITerminal.blue 
-    | _ -> ANSITerminal.white
+    | 0 | 1 -> [ANSITerminal.red]
+    | 2 | 3 -> [ANSITerminal.yellow]
+    | 4 | 5 -> [ANSITerminal.green]
+    | 6 | 7 -> [ANSITerminal.blue]
+    | _ -> [ANSITerminal.white]
 
   (* [ref_num] counts the current iteration for color coding the title. *)
   let ref_num = ref 0
 
   (** [print_arr arr] prints he first element of a non-empty list and returns
       all non-printed elements (can be an empty list).*)
-  let rec print_arr (arr:string list) : (string list)=
-    let itr = (!ref_num mod 8) in
-    let color = get_color_code itr in
+  let rec print_arr (modd:int) (fn: int -> ANSITerminal.style list) 
+      (arr:string list) : (string list)=
+    let itr = (!ref_num mod modd) in
+    let color = fn itr in
     match arr with
     | [] -> []
-    | h::t -> (ANSITerminal.(print_string [color] (h)); 
+    | h::t -> (ANSITerminal.(print_string color (h)); 
                ref_num := !ref_num + 1;
-               if itr = 7 then print_string "\n";
+               if itr = (modd-1) then print_string "\n";
                t)
 
-  (** [print_arr_2d arr] prints all elements from a list of string lists.
-      The printing pattern is it prints the head element of each respective list
-      and iterates forward until all lists are empty.*)
-  let rec print_arr_2d (arr:(string list) list) =
+  (** [print_arr_2d modd fn arr] prints all elements from a list of string 
+      lists. The printing pattern is it prints the head element of each 
+      respective list and iterates forward until all lists are empty.*)
+  let rec print_arr_2d (modd:int) (fn: int -> ANSITerminal.style list) 
+      (arr:(string list) list) =
     match arr with
     | [] -> ()
-    | h::t -> ( let printed = print_arr h in
+    | h::t -> ( let printed = print_arr modd fn h in
                 if List.length printed > 0 then
-                  print_arr_2d (t@[printed])
+                  print_arr_2d modd fn (t@[printed])
                 else
-                  print_arr_2d t
+                  print_arr_2d modd fn t
               )
-  (*===End Title Utils===*)      
+
+  (*===End ASCII Art Utils===*)      
   (*===Start State Dependant Methods===*)
   (*TODO: ASCII character card*)
   let print_enemy (enemy:Hogwarts.character_info) (enemy_state:State.t) 
@@ -152,7 +218,7 @@ module Make : View = struct
           ANSITerminal.(print_string [magenta] 
                           ((Hogwarts.spell_name h ^ 
                             "\n\nEnter: Describe spell_name to see spell 
-                        description."))))
+    description."))))
       | h::t -> (
           ANSITerminal.(print_string [magenta] 
                           ((Hogwarts.spell_name h) ^ ", "));
@@ -215,10 +281,27 @@ module Make : View = struct
         ()
     )
 
+  let print_house (house:string) =
+    ref_num := 0;
+    match (String.lowercase_ascii house) with
+    | "gryffindor" -> print_arr_2d 10
+                        (even_odd [ANSITerminal.red]
+                           [ANSITerminal.yellow]) gryff
+    | "slytherin" -> print_arr_2d 9
+                       (even_odd [ANSITerminal.green]
+                          [ANSITerminal.white]) slyth
+    | "hufflepuff" -> print_arr_2d 6
+                        (even_odd [ANSITerminal.black; ANSITerminal.on_yellow]
+                           [ANSITerminal.yellow; ANSITerminal.on_black]) puff
+    | "ravenclaw" -> print_arr_2d 9
+                       (even_odd [ANSITerminal.blue]
+                          [ANSITerminal.white]) claw
+    | _ -> ()
+
   let print_title (_:unit) : unit =
     ANSITerminal.(
       print_string [magenta] "\nWelcome to \n");
-    print_arr_2d intro_text
+    print_arr_2d 8 get_color_code intro_text
 
   let print_cmd_input (house_name:string) (input:string) : unit =
     print_clear 2;

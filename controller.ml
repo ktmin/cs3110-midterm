@@ -132,13 +132,15 @@ let get_files (_:unit) : (string*string)=
 let rec init_game (_:unit) =
   View.print_title ();
   View.print_formatted_lst "" ["\nInput Quit at any point to exit game"];
-  let files = get_files () in
+  let files = (*get_files ()*) ("spells.json", "characters.json") in
   try (
     let hogwarts = Menu.play_init (fst files) (snd files) in
-    let name = get_name ()  in
+    let name = (*get_name ()*) "Nik"  in
     let house = get_house () in
-    let player = Menu.create_player hogwarts name house in
-    play_game hogwarts player
+    let player = Menu.create_player hogwarts name house in (
+      View.print_house house;
+      play_game hogwarts player
+    )
   ) with _ -> (
       View.print_formatted_lst "gryffindor" ["Files were invalid. Try again."];
       init_game ()

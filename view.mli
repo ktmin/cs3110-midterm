@@ -40,6 +40,10 @@ module type View = sig
   (** [print_enemy_lst hogwarts player] prints the list of enemies with 
       influence on styling provided by [player] state. *)
   val print_enemy_lst : Hogwarts.t -> State.t -> unit
+
+  (** [print_house house] prints a house in ASCII art (or nothing if house does
+      not match presets.*)
+  val print_house : string -> unit
 end
 
 (** [Make] creates a view structure for usage. *)
