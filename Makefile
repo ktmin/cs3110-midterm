@@ -1,9 +1,9 @@
-MODULES=hogwarts command state engine authors
+MODULES=hogwarts command state engine authors model controller view
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
-MAIN=engine.byte
+MAIN=controller.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 PKGS=yojson,ANSITerminal,str,qcheck
 
@@ -34,7 +34,3 @@ docs-private: build
 	ocamlfind ocamldoc -I _build -package $(PKGS) \
 		-html -stars -d doc.private \
 		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
-	
-
-play:
-		$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
