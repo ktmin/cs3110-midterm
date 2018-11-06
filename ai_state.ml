@@ -1,41 +1,61 @@
-open Engine
-
-exception NoSpellFound of Hogwarts.spell_info list
-
-type  descision_tree = 
+type  decision_tree = 
   | Leaf of (Hogwarts.spell_info -> State.t -> State.t -> State.t * State.t )
-  | Node of descision_tree * (unit -> bool) * descision_tree
+  | Node of decision_tree * (unit -> decision_tree) * decision_tree
 
 
 let execute_action spell pl_st ai_st =
   State.cast spell ai_st pl_st
 
-(** [hand_search hand spell_type] searches [hand] for spell that matches the 
-    [spell_type] being taken into consideration. 
-    Raises: NoSpellFound if no spell is founding matching [spell_type] in 
-    [hand]. *)
-let rec hand_search hand spell_type = 
-  match hand with 
-  | [] -> None
-  | h::t -> if Hogwarts.spell_type h = spell_type then Some h 
-    else hand_search t spell_type
+(** [find_killing_spell lst cmp] returns the best spell in [lst] by 
+    comparing [f]. *)
+let rec find_best_spell lst cmp f op = 
+  match lst with 
+  | [] -> cmp
+  | h::t -> if (op (f h) (f cmp))
+    then find_best_spell t h f op
+    else find_best_spell t cmp f op
 
-(** [is_full_health ai_state] returns true if the ai [ai_state] is at full 
-    health. *)
-let is_full_health ai_state spell pl_state = 
+(** [hand_search hand spell_type] searches [hand] for best spell that matches 
+    the [spell_type] being taken into consideration. *)
+let rec hand_search hand spell_type f op = 
+  let filtered_hand = 
+    List.filter (fun x -> Hogwarts.spell_type x = spell_type) hand in
+  match filtered_hand with 
+  | [] -> None
+  | h::t -> Some (find_best_spell filtered_hand (List.hd filtered_hand) f op)
+
+let has_attack ai_hand spell_type pl_state ai_state =
+  let spell = hand_search ai_hand "attack" Hogwarts.spell_damage (>) in 
+  match spell with 
+  | None -> execute_action (List.hd ai_hand) pl_state ai_state
+  | Some s -> execute_action s pl_state ai_state
+
+let has_healing ai_hand spell_type pl_state ai_state =
+  let spell = hand_search ai_hand "healing" Hogwarts.spell_damage (<) in 
+  match spell with 
+  | None -> has_attack ai_hand spell_type pl_state ai_state
+  | Some s -> execute_action s pl_state ai_state
+
+(** [is_full_health ai_state pl_state] is the cast of the [ai_state] on 
+    [pl_state] dependant on its current health. *)
+let is_full_health ai_state pl_state = 
+  let ai_hand = State.get_hand ai_state in 
   if State.get_hp ai_state = State.get_full_hp ai_state 
-  then execute_action spell pl_state ai_state 
-  else execute_action spell pl_state ai_state
+  then has_attack ai_hand "attack" pl_state ai_state
+  else has_healing ai_hand "healing" pl_state ai_state 
 
 (** [is_game_ending ai_state pl_state] determines if [ai_state] can win right 
     away against [pl_state]. *)
-let is_game_ending ai_hand pl_state = 
+let is_game_ending ai_hand ai_state pl_state = 
   let selected_spell = hand_search ai_hand "attack" in 
   match selected_spell with 
-  (* need to keep calling hand_search until killing spell is found *)
-  | None -> false
-  | Some spell -> if Hogwarts.spell_damage spell >= State.get_hp pl_state 
-    then true else failwith("need to find killing spell still")
+  | None -> failwith("call stunning function")
+  | Some spell -> 
+    let killing_spell = find_best_spell ai_hand spell Hogwarts.spell_damage 
+    in  
+    if Hogwarts.spell_damage killing_spell >= State.get_hp pl_state 
+    then execute_action spell ai_state pl_state 
+    else failwith("call stunning function")
 
 (** [traverse_right ai_hand spell_type] is a helper to check if the ai should 
     traverse to the right child. It's based on the [ai_hand] and the 
@@ -59,18 +79,12 @@ let can_prolong_effect ai_hand =
   traverse_right ai_hand "persistent"
 
 
-(** [is_blocked ai_state] returns true if the ai [ai_state] is currently being 
+(** [enemy_decision ai_state] returns true if the ai [ai_state] is currently being 
     blocked. *)
-let is_blocked ai_state = 
+let enemy_decision ai_state = 
   if State.get_blocked ai_state > 0 
   then is_full_health ai_state
   else failwith("call function that returns subtree?")
-
-
-
-
-let constructed_decision_tree ai_state pl_state= 
-  Node( ,is_blocked , )
 
 (* let construct_descision_tree pl_spell = 
    check pl_spell *)
