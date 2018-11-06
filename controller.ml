@@ -2,6 +2,8 @@
 
 exception InvalidInput of string
 
+(**[default_condition str] is the default predicate for input parsing and 
+   returns true no matter what is provided for [str]. *)
 let default_condition (str:string) : bool =
   true
 
