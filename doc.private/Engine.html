@@ -57,7 +57,29 @@
 
 
 
-<pre><span id="VALenemy_turn"><span class="keyword">val</span> enemy_turn</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<pre><span id="VALprint_state"><span class="keyword">val</span> print_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_state caster target house</code> prints all of the status info on the 
+    <code class="code">caster</code> in <code class="code">house</code> style.</p>
+</div>
+</div>
+
+<pre><span id="VALcast_spell"><span class="keyword">val</span> cast_spell</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -><br>       <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">cast_spell spell caster target house</code> prints the casting <code class="code">spell</code> that
+    affects the target and printed info is in <code class="code">house</code> style</p>
+</div>
+</div>
+
+<pre><span id="VALspell_finder"><span class="keyword">val</span> spell_finder</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -><br>       int -> int -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> * <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">spell_finder spells min_threshold max_threshold</code> takes a non-empty <code class="code">spells</code>
+    list and returns a tuple of the (minim*maximum) damaging spell in the given 
+    thresholds (inclusive).</p>
+</div>
+</div>
+
+<pre><span id="VALenemy_turn"><span class="keyword">val</span> enemy_turn</span> : <code class="type">?skip_draw:bool -><br>       <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">enemy_turn hogwarts enemy player house</code> takes in the arguments with enemy
     as the caster and performs a basic naive action (attacking with as much 
@@ -83,11 +105,48 @@
 </div>
 </div>
 
-<pre><span id="VALplay"><span class="keyword">val</span> play</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALrun_command"><span class="keyword">val</span> run_command</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -><br>       <a href="State.html#TYPEt">State.t</a> -><br>       ANSITerminal.style -><br>       <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -><br>       <a href="Command.html#TYPEcommand">Command.command</a> -><br>       (?asked_state:bool -><br>        <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> unit) -><br>       unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">run_command player enemy house hogwarts cmd callback</code> runs a valid <code class="code">cmd</code> 
+    and mitigates possible errors that are thrown through Hogwarts.UnknownSpell.
+    Post command, the callback function is called and takes in <code class="code">player</code> <code class="code">enemy</code>
+    <code class="code">house</code> <code class="code">hogwarts</code> in that respective order.</p>
+</div>
+</div>
+
+<pre><span id="VALaffirmation"><span class="keyword">val</span> affirmation</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="Hogwarts.html#TYPEcharacter_info">Hogwarts.character_info</a> -> <a href="State.html#TYPEt">State.t</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">affirmation hogwarts enemy_info enemy</code> takes in the enemy for the info 
+    output and returns a boolean if the player chooses to fight that enemy.
+    Y or YES will fight, any other input (N or invalid) will return to character
+    menu.</p>
+</div>
+</div>
+
+<pre><span id="VALinverse_colour"><span class="keyword">val</span> inverse_colour</span> : <code class="type">ANSITerminal.style -> ANSITerminal.style list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">inverse_colour colour</code> takes in a colour and returns the inverse (if it was
+    in the background. If not one of four house clours 
+    (red, green, blue, yellow) then default ANSITerminal style is returned.</p>
+</div>
+</div>
+
+<pre><span id="VALchoose_opponent"><span class="keyword">val</span> choose_opponent</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -><br>       <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -><br>       ANSITerminal.style -><br>       (?asked_state:bool -><br>        <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> unit) -><br>       unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">choose_opponenet player hogwarts house callback</code> gives the option for the 
+    player to choose from the range of opponents to face. <code class="code">callback</code> is 
+    called when player chooses a character and affirms that they want 
+    to battle them.</p>
+</div>
+</div>
+
+<pre><span id="VALplay"><span class="keyword">val</span> play</span> : <code class="type">?asked_state:bool -><br>       <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> ANSITerminal.style -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">play player enemy house name</code> is the main game loop that takes in <code class="code">player</code>
     and <code class="code">enemy</code> states, <code class="code">house</code> text color and <code class="code">name</code> hogwarts game state and 
-    progresses based on player inputs until a win/loss condition is fulfilled.</p>
+    progresses based on player inputs until a win/loss condition is fulfilled.
+    The <code class="code">asked_state</code> is an optional argument that if set to false will by 
+    default print out the statuses of <code class="code">player</code> and <code class="code">enemy</code></p>
 </div>
 </div>
 
@@ -99,8 +158,14 @@
 </div>
 </div>
 
-<pre><span id="VALplay_init"><span class="keyword">val</span> play_init</span> : <code class="type">string -> string -> ANSITerminal.style -> 'a</code></pre>
-<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">ANSITerminal.style -> 'a</code></pre><div class="info ">
+<pre><span id="VALplay_init"><span class="keyword">val</span> play_init</span> : <code class="type">string -> string -> string -> ANSITerminal.style -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">play_init f1 f2 house</code> takes in a spells json <code class="code">f1</code> and characters <code class="code">f2</code>, 
+    and a ANSITerminal.style <code class="code">house</code> color, then starts the game.</p>
+</div>
+</div>
+
+<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">ANSITerminal.style -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">name house</code> takes in the ANSITerminal colour <code class="code">house</code> and records the 
     player's name to be used in gameplay. 
@@ -109,7 +174,32 @@
 </div>
 </div>
 
-<pre><span id="VALhouse"><span class="keyword">val</span> house</span> : <code class="type">unit -> 'a</code></pre><div class="info ">
+<pre><span id="VALintro_text"><span class="keyword">val</span> intro_text</span> : <code class="type">string list list</code></pre>
+<pre><span id="VALget_color_code"><span class="keyword">val</span> get_color_code</span> : <code class="type">int -> ANSITerminal.style</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_color_code num</code> gets the respective color of house in accordance with
+    <code class="code">num</code>. 0 or 1 is red, 2,3 yellow, 4,5 green, 6,7 blue. Any other number
+    will return white.</p>
+</div>
+</div>
+
+<pre><span id="VALref_num"><span class="keyword">val</span> ref_num</span> : <code class="type">int Pervasives.ref</code></pre>
+<pre><span id="VALprint_arr"><span class="keyword">val</span> print_arr</span> : <code class="type">string list -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_arr arr</code> prints he first element of a non-empty list and returns
+    all non-printed elements (can be an empty list).</p>
+</div>
+</div>
+
+<pre><span id="VALprint_arr_2d"><span class="keyword">val</span> print_arr_2d</span> : <code class="type">string list list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_arr_2d arr</code> prints all elements from a list of string lists.
+    The printing pattern is it prints the head element of each respective list
+    and iterates forward until all lists are empty.</p>
+</div>
+</div>
+
+<pre><span id="VALhouse"><span class="keyword">val</span> house</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">house</code> begins the game by asking the player for their chose Harry Potter
     house. It will progress to name and gameplay if a valid name is provided

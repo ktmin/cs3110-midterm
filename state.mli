@@ -19,6 +19,9 @@ val get_name: t -> string
     player in [t] *)
 val get_hp: t -> int
 
+(** [get_full_hp] is the full hp of player in [t] *)
+val get_full_hp: t -> int
+
 (** [get_level t] is the level of 
     player in [t] *)
 val get_level: t -> int

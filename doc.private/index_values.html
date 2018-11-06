@@ -20,17 +20,70 @@
 <h1>Index of values</h1>
 <table>
 <tr><td align="left"><div>A</div></td></tr>
+<tr><td><a href="State.html#VALadd_defeated_enemy">add_defeated_enemy</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">add_defeated_enemy st enemy hogwarts</code> is an updated state with defeated 
+    enemies.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Hogwarts.html#VALadd_spell">add_spell</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
 <p><code class="code">add_spell t s</code> adds the spell <code class="code">s</code> to hogwarts <code class="code">t</code></p>
 
 </div>
 </td></tr>
+<tr><td><a href="Engine.html#VALaffirmation">affirmation</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">affirmation hogwarts enemy_info enemy</code> takes in the enemy for the info 
+    output and returns a boolean if the player chooses to fight that enemy.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALappend_prolong">append_prolong</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
 <tr><td align="left"><div>C</div></td></tr>
 <tr><td><a href="State.html#VALcast">cast</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t*t.</p>
+<p><code class="code">cast Hogwarts.spell_info</code> 
+    returns an updated verison of type t*t.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Engine.html#VALcast_spell">cast_spell</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">cast_spell spell caster target house</code> prints the casting <code class="code">spell</code> that
+    affects the target and printed info is in <code class="code">house</code> style</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcharacter_description">character_description</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">character_description h c</code> is the description of character <code class="code">c</code> in <code class="code">h</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcharacter_house">character_house</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">character_house c</code> is the house of character <code class="code">c</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcharacter_hp">character_hp</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">character_hp c</code> is the hp of character <code class="code">c</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcharacter_level">character_level</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">character_level c</code> is the character level for character <code class="code">c</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcharacter_name">character_name</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">character_name c</code> is the name of the character <code class="code">c</code></p>
 
 </div>
 </td></tr>
@@ -49,6 +102,31 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Engine.html#VALchoose_opponent">choose_opponent</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">choose_opponenet player hogwarts house callback</code> gives the option for the 
+    player to choose from the range of opponents to face.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcreate_character">create_character</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">create_character j</code> extracts the character information from <code class="code">j</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcreate_long_effect">create_long_effect</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">create_long_effect j</code> extracts the long_effect information from <code class="code">j</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALcreate_remove">create_remove</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">create_remove</code> extracts the remove information from <code class="code">j</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Hogwarts.html#VALcreate_spell">create_spell</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
 <p><code class="code">create_spell j</code> extracts the spell information from <code class="code">j</code></p>
@@ -56,9 +134,20 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>D</div></td></tr>
+<tr><td><a href="State.html#VALdamage_from_prolong">damage_from_prolong</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
 <tr><td><a href="State.html#VALdraw">draw</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">draw t</code> updates hand and deck of statue <code class="code">t</code></p>
+<p><code class="code">draw t</code> updates the deck of a state <code class="code">t</code>
+   after draw</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdrop">drop</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">drop n</code> is a helper function
+    to remove n number of elements from a given 
+    list</p>
 
 </div>
 </td></tr>
@@ -71,17 +160,58 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hogwarts.html#VALextract_json">extract_json</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">extract_json j field f</code> is a helper to extract the information from <code class="code">j</code> 
+    with field name <code class="code">field</code> and using function <code class="code">f</code> to format correctly.</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>F</div></td></tr>
 <tr><td><a href="Hogwarts.html#VALfrom_json">from_json</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
-<p><code class="code">from_json j</code> is the organized spells that <code class="code">j</code> represents.</p>
+<p><code class="code">from_json j1 j2 </code> is the organized spells that <code class="code">j1</code> represents and the 
+    characters that <code class="code">j2</code> represents.</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>G</div></td></tr>
+<tr><td><a href="State.html#VALget_blocked">get_blocked</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_blocked t</code> is the representation of 
+    how many times a player is blocked</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALget_characters">get_characters</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">get_characters t</code> is the list of characters in <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Engine.html#VALget_color_code">get_color_code</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">get_color_code num</code> gets the respective color of house in accordance with
+    <code class="code">num</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_dazed">get_dazed</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_dazed t</code> is the number of
+    turns player is dazed in <code class="code">t</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALget_deck">get_deck</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">get_deck t</code> is the deck of a state <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_defeated_enemies">get_defeated_enemies</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_defeated_enemies st</code> is the list of defeated enemies.</p>
 
 </div>
 </td></tr>
@@ -93,13 +223,55 @@
 </td></tr>
 <tr><td><a href="State.html#VALget_hp">get_hp</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>Given type t, returns
-    hp</p>
+<p><code class="code">get_hp t</code> is the hp of 
+    player in <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_level">get_level</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_level t</code> is the level of 
+    player in <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_level_deck">get_level_deck</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_level_deck t</code> is the 
+    updated deck of a state <code class="code">t</code>, 
+    filtered out by removing 
+    cards that have greater 
+    level than the level of player in <code class="code">t</code></p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALget_name">get_name</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_name t</code> is the name of 
+    player in <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_prolong_damage">get_prolong_damage</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>returns a list of prolong 
+    damage that will be applied</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_prolong_tupes">get_prolong_tupes</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rpolong_tupes t</code> gets all prolonged effects of input caster</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_prolong_turn">get_prolong_turn</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>returns a list of prolong 
+    turns that will be applied</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Hogwarts.html#VALget_spells">get_spells</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
 <p><code class="code">get_spells t</code> is the list of spells in <code class="code">t</code></p>
@@ -107,6 +279,12 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>H</div></td></tr>
+<tr><td><a href="State.html#VALhand_after_cast">hand_after_cast</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>updates state after drawing</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Authors.html#VALhours_worked">hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
 <td><div class="info">
 <p><code class="code">hours_worked</code> is a list of the number of hours each team member
@@ -124,19 +302,54 @@
 <tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="State.html#VALinit_enemy">init_enemy</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>Given hogwarts state outputs
-    outputs type t</p>
+<p><code class="code">init_enemy Hogwarts.t name</code> in the initial 
+    state of <code class="code">t</code> of enemy</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALinit_enemy_with_level_deck">init_enemy_with_level_deck</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">init_enemy_with_level_deck Hogwarts.t name</code> is an enemy initialized with a 
+    leveled deck.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALinit_player">init_player</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>Given hogwarts state and player name
-    outputs type t</p>
+<p><code class="code">init_player Hogwarts.t name</code> in the initial 
+    state of <code class="code">t</code> of player</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALinit_player_with_level_deck">init_player_with_level_deck</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">init_player_with_level_deck Hogwarts.t name</code> is a player initialized with a 
+    leveled deck.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Engine.html#VALintro_text">intro_text</a> [<a href="Engine.html">Engine</a>]</td>
+<td></td></tr>
+<tr><td><a href="Engine.html#VALinverse_colour">inverse_colour</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">inverse_colour colour</code> takes in a colour and returns the inverse (if it was
+    in the background.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALis_long_effect">is_long_effect</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">is_long_effect s</code> is whether <code class="code">s</code> has a prolonged effect.</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>L</div></td></tr>
+<tr><td><a href="State.html#VALlevel_up">level_up</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">level_up t</code> attempts to level up player.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Engine.html#VALlist_cards">list_cards</a> [<a href="Engine.html">Engine</a>]</td>
 <td><div class="info">
 <p><code class="code">list_cards spells house</code> prints the names of all <code class="code">spells</code> in the colour
@@ -161,12 +374,18 @@
 <tr><td align="left"><div>P</div></td></tr>
 <tr><td><a href="Command.html#VALparse">parse</a> [<a href="Command.html">Command</a>]</td>
 <td><div class="info">
-<p>prase a string and outputs its corresponding command.</p>
+<p><code class="code">parse string</code> prases a string and outputs its corresponding
+   command.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Command.html#VALparse_list">parse_list</a> [<a href="Command.html">Command</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p>returns command from a list 
+    representation of line command</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Engine.html#VALplay">play</a> [<a href="Engine.html">Engine</a>]</td>
 <td><div class="info">
 <p><code class="code">play player enemy house name</code> is the main game loop that takes in <code class="code">player</code>
@@ -176,18 +395,84 @@
 </div>
 </td></tr>
 <tr><td><a href="Engine.html#VALplay_init">play_init</a> [<a href="Engine.html">Engine</a>]</td>
-<td></td></tr>
-<tr><td align="left"><div>S</div></td></tr>
-<tr><td><a href="Hogwarts.html#VALsearch">search</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
-<p><code class="code">search hogwarts spell</code> looks for the <code class="code">spell</code> and returns it.</p>
+<p><code class="code">play_init f1 f2 house</code> takes in a spells json <code class="code">f1</code> and characters <code class="code">f2</code>, 
+    and a ANSITerminal.style <code class="code">house</code> color, then starts the game.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Hogwarts.html#VALsearch_helper">search_helper</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<tr><td><a href="Engine.html#VALprint_arr">print_arr</a> [<a href="Engine.html">Engine</a>]</td>
 <td><div class="info">
-<p><code class="code">search_helper spells spell</code> is a helper to search for <code class="code">spell</code> in <code class="code">spells</code> 
+<p><code class="code">print_arr arr</code> prints he first element of a non-empty list and returns
+    all non-printed elements (can be an empty list).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Engine.html#VALprint_arr_2d">print_arr_2d</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">print_arr_2d arr</code> prints all elements from a list of string lists.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Engine.html#VALprint_state">print_state</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">print_state caster target house</code> prints all of the status info on the 
+    <code class="code">caster</code> in <code class="code">house</code> style.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>R</div></td></tr>
+<tr><td><a href="Engine.html#VALref_num">ref_num</a> [<a href="Engine.html">Engine</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALrefresh_deck">refresh_deck</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">refresh_deck Hogwarts.t t</code> refreshes the deck
+   of a state <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALrequired_wins">required_wins</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">required_wins t</code> returns amount of wins required to 
+    progress to next level.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALreset_blocked">reset_blocked</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Engine.html#VALrun_command">run_command</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">run_command player enemy house hogwarts cmd callback</code> runs a valid <code class="code">cmd</code> 
+    and mitigates possible errors that are thrown through Hogwarts.UnknownSpell.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>S</div></td></tr>
+<tr><td><a href="Hogwarts.html#VALsearch_characters">search_characters</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">search_characters t c</code> looks for the character <code class="code">c</code> and returns it.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALsearch_characters_helper">search_characters_helper</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">search_characters_helper chars char</code> is a helper to search for <code class="code">char</code> in 
+    <code class="code">chars</code> 
+    Raies UnknownCharacter if <code class="code">char</code> is not found in <code class="code">chars</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALsearch_spell_helper">search_spell_helper</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">search_spells_helper spells spell</code> is a helper to search for <code class="code">spell</code> in 
+    <code class="code">spells</code> 
     Raies UnknownSpell if <code class="code">spell</code> is not found in <code class="code">spells</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALsearch_spells">search_spells</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">search_spells t spell</code> looks for the <code class="code">spell</code> and returns it.</p>
 
 </div>
 </td></tr>
@@ -197,9 +482,21 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hogwarts.html#VALspell_block">spell_block</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_block s</code> is the blocking time for spell <code class="code">s</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Hogwarts.html#VALspell_damage">spell_damage</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
 <p><code class="code">spell_damage h s</code> is the amount of damage that spell <code class="code">s</code> in <code class="code">h</code> inflicts.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALspell_daze">spell_daze</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_daze s</code> is the dazing effect of spell <code class="code">s</code>.</p>
 
 </div>
 </td></tr>
@@ -209,9 +506,35 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Engine.html#VALspell_finder">spell_finder</a> [<a href="Engine.html">Engine</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_finder spells min_threshold max_threshold</code> takes a non-empty <code class="code">spells</code>
+    list and returns a tuple of the (minim*maximum) damaging spell in the given 
+    thresholds (inclusive).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALspell_level">spell_level</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_level s</code> is the spell level for the spell <code class="code">s</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALspell_long_effect">spell_long_effect</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_long_effect s</code> is the long-term effect of using spell <code class="code">s</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Hogwarts.html#VALspell_name">spell_name</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
 <p><code class="code">spell_name s</code> is the name of the spell <code class="code">s</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hogwarts.html#VALspell_remove">spell_remove</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_remove s</code> is the removal effects of casting spell <code class="code">s</code>.</p>
 
 </div>
 </td></tr>
@@ -229,19 +552,84 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>U</div></td></tr>
+<tr><td><a href="State.html#VALupdate">update</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update spell st1 st2</code> updates a state <code class="code">t</code>
+    of player and a state <code class="code">t</code> of enemy according to
+    the casted spell</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_blocked">update_blocked</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
 <tr><td><a href="State.html#VALupdate_caster">update_caster</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t that removes the 
-    spell card from the target user</p>
+<p><code class="code">update_caster t</code> updates the 
+    deck and hand of a state <code class="code">t</code> after cast</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALupdate_damage">update_damage</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>Given Hogwarts state, spell info, and
-    type t, returns an updated verison of type t that reduces/increases the 
-    health of the target user</p>
+<p><code class="code">update_damage t</code> updates the 
+    hp of a state <code class="code">t</code> after cast</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_dazed">update_dazed</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_dazed st</code> is a helper for update for if dazed 
+    is true.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_helper_block">update_helper_block</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_helper_block st prolonged_effect</code> is a helper for update for if block
+    is true.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_helper_deck">update_helper_deck</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_helper_deck st spell u_health u_dazed prolonged effect</code> is a helper 
+    for update if deck is being updated.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_helper_hand">update_helper_hand</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_helper_hand st spell u_health u_dazed prolonged effect</code> is a helper 
+    for update if hand is being updated.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_helper_health">update_helper_health</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_helper_health st prolonged_effect prolonged_damage spell</code> is a helper 
+    for updating the health of <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_prolong">update_prolong</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_prolong Hogwarts.spell_info</code> returns 
+   the list of prolonged damaged after one turn</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_prolong_damage">update_prolong_damage</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>everytime one casts a spell prolong_damage is 
+   updated</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_prolong_list">update_prolong_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">update_prolong_list t</code> returns 
+    the list of prolonged damage after
+    one turn</p>
 
 </div>
 </td></tr>

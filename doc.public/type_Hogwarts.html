@@ -17,19 +17,39 @@
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;spell_name&nbsp;=&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;character_name&nbsp;=&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;damage&nbsp;=&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;turns&nbsp;=&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;target&nbsp;=&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;description&nbsp;=&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;spell_info<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;character_info<br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">UnknownSpell</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_name<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_json&nbsp;:&nbsp;<span class="constructor">Yojson</span>.<span class="constructor">Basic</span>.json&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;search&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_name&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_info<br>
+&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">UnknownCharacter</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Hogwarts</span>.character_name<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_json&nbsp;:&nbsp;<span class="constructor">Yojson</span>.<span class="constructor">Basic</span>.json&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Yojson</span>.<span class="constructor">Basic</span>.json&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;search_spells&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_name&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_info<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;search_characters&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.character_name&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.character_info<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shuffle&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_spell&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_description&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_name&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.description<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;character_description&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.character_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.description<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_damage&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.damage<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_name&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_name<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;character_name&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.character_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.character_name<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_spells&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_characters&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.character_info&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_target&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.target<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_level&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;character_level&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.character_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_daze&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_block&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_remove&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;*&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;spell_long_effect&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Hogwarts</span>.damage&nbsp;*&nbsp;<span class="constructor">Hogwarts</span>.turns<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_long_effect&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.spell_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;character_house&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.character_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;character_hp&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.character_info&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 <span class="keyword">end</span></code></body></html>

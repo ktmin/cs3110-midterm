@@ -2,11 +2,11 @@
   "spells": [
     {
       "name": "Avada Kedavra",
-      "damage": 1,
+      "damage": 100,
       "target": "enemy",
       "description": "also known as the Killing Curse, kills a person instantaneously and without injury",
       "level": 5,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -28,7 +28,7 @@
       "target": "enemy",
       "description": "Blasting Charm; causes items the charm comes in contact with to burst into flames.",
       "level": 1,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -50,7 +50,7 @@
       "target": "enemy",
       "description": "Confundus Charm; causes the victim to become confused and disoriented.",
       "level": 1,
-      "type": "spell",
+      "type": "stunning",
       "daze": 2,
       "block": false,
       "remove": [
@@ -72,7 +72,7 @@
       "target": "self",
       "description": "Used to heal minor injuries.",
       "level": 1,
-      "type": "spell",
+      "type": "healing",
       "daze": 0,
       "block": false,
       "remove": [
@@ -94,7 +94,7 @@
       "target": "enemy",
       "description": "The Second Unforgivable Curse, the Cruciatus Curse; Tortures your opponent mercilessly.",
       "level": 5,
-      "type": "spell",
+      "type": "persistent",
       "daze": 0,
       "block": false,
       "remove": [
@@ -116,7 +116,7 @@
       "target": "enemy",
       "description": "Disarms the target of the spell, such as knocking their wand out of their hand.",
       "level": 2,
-      "type": "spell",
+      "type": "stunning",
       "daze": 1,
       "block": false,
       "remove": [
@@ -138,7 +138,7 @@
       "target": "self",
       "description": "Binds a broken limb with a splint and bandages, tightly wrapped.",
       "level": 2,
-      "type": "spell",
+      "type": "healing",
       "daze": 0,
       "block": false,
       "remove": [
@@ -160,7 +160,7 @@
       "target": "enemy",
       "description": "Conjures up ropes, which then bind an opponent.",
       "level": 3,
-      "type": "spell",
+      "type": "persistent",
       "daze": 0,
       "block": false,
       "remove": [
@@ -182,7 +182,7 @@
       "target": "enemy",
       "description": "Causes lacerations to appear all over an opponent’s body, as if they had been cut by an invisible sword.",
       "level": 4,
-      "type": "spell",
+      "type": "persistent",
       "daze": 0,
       "block": false,
       "remove": [
@@ -204,7 +204,7 @@
       "target": "enemy",
       "description": "Stupefies an opponent, or knocks them insensible temporarily.",
       "level": 1,
-      "type": "spell",
+      "type": "stunning",
       "daze": 2,
       "block": false,
       "remove": [
@@ -226,7 +226,7 @@
       "target": "enemy",
       "description": "Makes a person 'oblivious', erasing their memories of an event.",
       "level": 3,
-      "type": "spell",
+      "type": "stunning",
       "daze": 1,
       "block": false,
       "remove": [
@@ -248,7 +248,7 @@
       "target": "enemy",
       "description": "Also known as The Full Body-Bind, this spell paralyses the victim.",
       "level": 2,
-      "type": "spell",
+      "type": "stunning",
       "daze": 1,
       "block": false,
       "remove": [
@@ -267,10 +267,10 @@
     {
       "name": "Protego",
       "damage": 0,
-      "target": "self",
+      "target": "enemy",
       "description": "A shield charm that can fend off spells.",
       "level": 1,
-      "type": "spell",
+      "type": "blocking",
       "daze": 0,
       "block": true,
       "remove": [
@@ -292,7 +292,7 @@
       "target": "enemy",
       "description": "The Severing Charm, which can be used to cut absolutely anything.",
       "level": 3,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -314,7 +314,7 @@
       "target": "enemy",
       "description": "A spell for starting fires.",
       "level": 2,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -336,7 +336,7 @@
       "target": "enemy",
       "description": "Impediment Jinx; prevents the victim from approaching the caster.",
       "level": 2,
-      "type": "spell",
+      "type": "stunning",
       "daze": 1,
       "block": true,
       "remove": [
@@ -358,7 +358,7 @@
       "target": "enemy",
       "description": "Reductor Cure; breaks objects and in its strongest form has the ability to disintegrate them.",
       "level": 3,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -380,7 +380,7 @@
       "target": "enemy",
       "description": "Launches birds from your wand.",
       "level": 1,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -402,7 +402,7 @@
       "target": "enemy",
       "description": "Damages opponent or creatures.",
       "level": 1,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -424,7 +424,7 @@
       "target": "enemy",
       "description": "Shoots blue flames at opponent.",
       "level": 1,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -446,7 +446,7 @@
       "target": "enemy",
       "description": "Causes explosions.",
       "level": 1,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -468,7 +468,7 @@
       "target": "enemy",
       "description": "Causes large explosions.",
       "level": 2,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -490,7 +490,7 @@
       "target": "enemy",
       "description": "Wind damaging spell.",
       "level": 2,
-      "type": "spell",
+      "type": "attack",
       "daze": 0,
       "block": false,
       "remove": [
@@ -508,13 +508,189 @@
     },
     {
       "name": "Fumos",
-      "damage": 0,
+      "damage": 5,
       "target": "enemy",
       "description": "Causes explosions.",
       "level": 1,
-      "type": "spell",
+      "type": "attack",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Lumos",
+      "damage": -7,
+      "target": "self",
+      "description": "Magical elixir that heals yourself",
+      "level": 1,
+      "type": "healing",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Arania Exumai",
+      "damage": 10,
+      "target": "enemy",
+      "description": "Blasts away Spiders",
+      "level": 2,
+      "type": "attack",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Cheering",
+      "damage": -15,
+      "target": "self",
+      "description": "Makes yourself happy and giddy ",
+      "level": 3,
+      "type": "healing",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Conjunctivitis",
+      "damage": 6,
+      "target": "enemy",
+      "description": "Damages opponents eyesight ",
+      "level": 2,
+      "type": "stunning",
+      "daze": 2,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Depulso",
+      "damage": 0,
+      "target": "enemy",
+      "description": "Drives an object away ",
+      "level": 2,
+      "type": "attack",
       "daze": 0,
       "block": true,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Duro",
+      "damage": -15,
+      "target": "self",
+      "description": "Make yourself stronger.",
+      "level": 1,
+      "type": "healing",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Ear Shriveling",
+      "damage": 6,
+      "target": "enemy",
+      "description": "Cause a person’s ears to shrivel.",
+      "level": 1,
+      "type": "attack",
+      "daze": 0,
+      "block": false,
+      "remove": [
+        {
+          "loc": "hand",
+          "count": 0
+        }
+      ],
+      "long-effect": [
+        {
+          "damage": 0,
+          "turns": 0
+        }
+      ]
+    },
+    {
+      "name": "Harmonia Nectere Passus",
+      "damage": -10,
+      "target": "self",
+      "description": "Mends broken things ",
+      "level": 1,
+      "type": "healing",
+      "daze": 0,
+      "block": false,
       "remove": [
         {
           "loc": "hand",
