@@ -48,6 +48,7 @@ module Make : View = struct
   (*===End Util Methods===*)
   (*===Start ASCII Art Utils===*)
   (*ASCII Art FTW: http://patorjk.com/software/taag/ (intro -> puff) *)
+  (** The ASCII art for intro text*)
   let intro_text = [
     ["    __  __";"   / / / /";"  / /_/ /";" / __  /";"/_/ /_/";"       "];
     ["    ";"___ ";" __ \\";" /_/ /";"\\____/";"     "];
@@ -59,6 +60,7 @@ module Make : View = struct
     ["     ";"_____";" ___/";"(__  ) ";"____/  ";"       "]
   ]
 
+  (** The ASCII art for slytherin*)
   let slyth = [
     [" _____"; "/  ___|"; "\\ `--."; " `--. \\"; "/\\__/ /"; "\\____/"; "      "; 
      "      "];
@@ -80,6 +82,7 @@ module Make : View = struct
      "      "]
   ]
 
+  (** The ASCII art for gryffindor*)
   let gryff = [
     [" .---. "; "/   __}"; "\\  {_ }"; " `---' "];
     [".----."; "| {}  }"; "| .-. \\"; "`-' `-' "];
@@ -93,18 +96,25 @@ module Make : View = struct
     [".----. "; "| {}  }"; "| .-. \\"; "`-' `-'"]
   ]
 
+  (** The ASCII art for ravenclaw*)
   let claw = [
     ["█▄▄▄▄ "; "█  ▄▀ "; "█▀▀▌  "; "█  █  "; "  █   "; " ▀    "; "      "];
     ["██   "; "█ █  "; "█▄▄█ "; "█  █  "; "   █ "; "  █  "; " ▀   "];
-    ["     ▄   "; "     █  "; "█     █ "; "█    █ "; "  █  █  "; "   █▐   "; "   ▐    "];
-    ["▄███▄   "; "█▀   ▀  "; "██▄▄    "; "█▄   ▄▀ "; "▀███▀   "; "        "; "        "];
-    ["   ▄   "; "    █  "; "██   █ "; "█ █  █ "; "█  █ █ "; "█   ██ "; "       "];
-    ["▄█▄    "; "█▀ ▀▄  "; "█   ▀  "; "█▄  ▄▀ "; "▀███▀  "; "       "; "       "];
+    ["     ▄   "; "     █  "; "█     █ "; "█    █ "; "  █  █  "; "   █▐   "; 
+     "   ▐    "];
+    ["▄███▄   "; "█▀   ▀  "; "██▄▄    "; "█▄   ▄▀ "; "▀███▀   "; "        "; 
+     "        "];
+    ["   ▄   "; "    █  "; "██   █ "; "█ █  █ "; "█  █ █ "; "█   ██ "; 
+     "       "];
+    ["▄█▄    "; "█▀ ▀▄  "; "█   ▀  "; "█▄  ▄▀ "; "▀███▀  "; "       "; 
+     "       "];
     ["█    "; "█    "; "█    "; "███▄ "; "    ▀"; "     "; "     "];
     ["██   "; "█ █  "; "█▄▄█ "; "█  █  "; "   █ "; "  █  "; " ▀   "];
-    ["  ▄ ▄   "; " █   █  "; "█  ▄  █ "; "█  █  █ "; " █ █ █ █"; "  ▀   ▀ "; "        "]
+    ["  ▄ ▄   "; " █   █  "; "█  ▄  █ "; "█  █  █ "; " █ █ █ █"; "  ▀   ▀ "; 
+     "        "]
   ]
 
+  (** The ASCII art for hufflepuff*)
   let puff = [
     ["       "; " ,---. "; "| .-. |"; "| '-' '"; "|  |-' "; "`--'   "];
     ["       "; " ,---. "; "| .-. |"; "' '-' '"; " `---' "; "       "];
@@ -114,6 +124,8 @@ module Make : View = struct
     ["       "; " ,---. "; "| .-. |"; "' '-' '"; " `---' "; "       "]
   ]
 
+  (** [even_odd even odd num] returns a list of styles based on if the [num] is 
+      even or odd*)
   let even_odd (even:ANSITerminal.style list) (odd:ANSITerminal.style list) (num:int) :
     ANSITerminal.style list=
     if(num mod 2) = 0 then

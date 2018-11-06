@@ -1,7 +1,11 @@
 #require "oUnit";;
 #require "yojson";;
 #require "ANSITerminal";;
+#require "str";;
 #directory "_build";;
 #load "hogwarts.cmo";;
 #load "command.cmo";;
 #load "state.cmo";;
+#load "ai_state.cmo";;
+#load "view.cmo";;
+#load "model.cmo";;

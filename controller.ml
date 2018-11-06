@@ -1,7 +1,11 @@
+(** Raised if string in parse_input fails predicate test. *)
 exception InvalidInput of string
 
+(** Menu model for game menu logic. *)
 module Menu = Model.MakeMenu
+(**View is for displaying text to the user. *)
 module View = View.Make
+(** Game model for game logic. *)
 module Game = Model.MakeGame (View)
 
 (** Simple var to hold command to quit game at any point. *)
@@ -26,6 +30,10 @@ let parse_input ?pred:(pred=default_condition) (_:unit) : string =
   else
     raise (InvalidInput input)
 
+(** [battle hogwarts player enemy] runs through the game loop for [player] and
+    [enemy] until a win or loss condition is achieved. In the case of win, the 
+    player is returned to choose another opponent, but loss will end the game
+    entirely. *)
 let rec battle (hogwarts:Hogwarts.t) (player:State.t) (enemy:State.t) : 
   State.t =
   let p_house = State.get_house player in
@@ -40,7 +48,8 @@ let rec battle (hogwarts:Hogwarts.t) (player:State.t) (enemy:State.t) :
       exit 0;
     )
   | Continue -> (
-      Game.run_cmd hogwarts Command.Status player enemy;
+      View.print_state player;
+      View.print_state enemy;
 
       View.print_cmd_input p_house "Enter command";
       try (
@@ -54,6 +63,9 @@ let rec battle (hogwarts:Hogwarts.t) (player:State.t) (enemy:State.t) :
         )
     )
 
+(** [play_game hogwarts player] is the main game loop that initiates
+    battle, and keeps track of player inputs for choosing opponent. Will keep
+    recurring until a player either dies in battle or manually quits.*)
 let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
   let p_house = State.get_house player in (
     View.print_enemy_lst hogwarts player;
@@ -85,6 +97,9 @@ let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
       )
   )
 
+(** [get_name] returns the name of a person from terminal input.
+    The predicate is that the name must be alphabetical (with spaces allowed) 
+    only.*)
 let get_name _ : string =
   View.print_formatted_lst "" 
     ["\n\nWelcome! Welcome!";
@@ -97,11 +112,15 @@ let get_name _ : string =
     ) with InvalidInput input -> (
         View.print_formatted_lst "" 
           ["Simple stuff,";
-           "I wonder how you will fare in Hogwarts if you struggle at even this...";
+           "I wonder how you will fare in Hogwarts if you struggle at even 
+           this...";
            "Try again"];
         parse_name ()
       ) in parse_name ()
 
+(** [get_house] returns the house of a person from terminal input.
+    The predicate is that the house must be one of four canon homes:
+    Gryffindor, Slytherin, Ravenclaw, Hufflepuff. It is case insensitive. *)
 let get_house _ : string =
   View.print_formatted_lst "" ["\n\nAlso the sorting hat is out for lunch";
                                "So you'll need to choose your own house.";
@@ -122,6 +141,8 @@ let get_house _ : string =
         choose_house ()
       ) in choose_house ()
 
+(** [get_files] returns the player input of spell and character JSON files in a 
+    tuple of (spells,charaacters) *)
 let get_files (_:unit) : (string*string)=
   View.print_cmd_input "" "Enter name of spells file";
   let spells = parse_input () in
@@ -129,13 +150,14 @@ let get_files (_:unit) : (string*string)=
   let chars = parse_input () in
   (spells,chars)
 
+(** [init_game] is the entry point into the game. *)
 let rec init_game (_:unit) =
   View.print_title ();
   View.print_formatted_lst "" ["\nInput Quit at any point to exit game"];
-  let files = (*get_files ()*) ("spells.json", "characters.json") in
+  let files = get_files () in
   try (
     let hogwarts = Menu.play_init (fst files) (snd files) in
-    let name = (*get_name ()*) "Nik"  in
+    let name = get_name ()  in
     let house = get_house () in
     let player = Menu.create_player hogwarts name house in (
       View.print_house house;
