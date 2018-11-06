@@ -23,7 +23,7 @@ module Make : View = struct
   (** [get_house house_name] gets the respective color code for the house of
       [house_name]. Defaults to [white] if house is not found*)
   let get_house (house_name:string) : ANSITerminal.style =
-    match house_name with
+    match (String.lowercase_ascii house_name) with
     | "gryffindor" -> ANSITerminal.red
     | "slytherin" -> ANSITerminal.green
     | "ravenclaw" -> ANSITerminal.blue
@@ -34,7 +34,7 @@ module Make : View = struct
       usual. If not one of four house colours (red, green, blue, yellow) 
       then default ANSITerminal style is returned. *)
   let inverse_colour (house:string) : ANSITerminal.style list =
-    match house with
+    match (String.lowercase_ascii house) with
     |"gryffindor" -> [ANSITerminal.yellow;
                       ANSITerminal.on_red]
     |"slytherin" -> [ANSITerminal.white;
@@ -209,7 +209,8 @@ module Make : View = struct
                       print_string [house] "\nCongrats you win!\n";
                       print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n")
       else if condition < 0 then
-        ANSITerminal.(print_string [house] "\nYou lose :( and die\n")
+        ANSITerminal.(print_string [house] 
+                        "\nYou lose :( everything goes dark...\nand silence")
       else
         ()
     )
@@ -220,8 +221,9 @@ module Make : View = struct
     print_arr_2d intro_text
 
   let print_cmd_input (house_name:string) (input:string) : unit =
+    print_clear 2;
     let house = get_house house_name in
-    ANSITerminal.(print_string [house] (input^" > "))
+    ANSITerminal.(print_string [Bold;house] (input^" > "))
 
   let print_formatted_lst (house_name:string) (lst:string list) : unit =
     let house = get_house house_name in

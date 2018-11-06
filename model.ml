@@ -23,8 +23,11 @@ module MakeMenu : MenuModel = struct
 
   let choose_opponent (hogwarts:Hogwarts.t) (enemy_name:string) : 
     Hogwarts.character_info option =
-    try (
-      let enemy = Hogwarts.search_characters hogwarts enemy_name in
+    let target_name_lst = String.split_on_char ' ' enemy_name in
+    let target_name = String.concat " " (List.map (fun str -> 
+        String.capitalize_ascii (String.lowercase_ascii str)) target_name_lst) 
+    in try (
+      let enemy = Hogwarts.search_characters hogwarts target_name in
       Some enemy
     ) with Hogwarts.UnknownCharacter target_name -> (
         None
@@ -66,7 +69,6 @@ module MakeGame (V:View) : GameModel = struct
     Printer.print_cast caster spell;
     State.cast spell caster target
 
-  (*TODO: this one is weird that it needs to have msgs inside it*)
   let run_cmd (hogwarts:Hogwarts.t) (cmd:Command.command) (player:State.t) 
       (enemy:State.t) : (State.t*State.t) =
     let p_house = State.get_house player in
@@ -109,7 +111,7 @@ module MakeGame (V:View) : GameModel = struct
         (player,enemy)
       )
     | Draw -> (
-        let can_get = List.length (State.to_list_hand player) >= 5 in
+        let can_get = List.length (State.to_list_hand player) < 5 in
         if can_get then (
           let new_hand = State.draw player in
           let new_card =  List.hd(State.to_list_hand new_hand) in (
@@ -117,6 +119,8 @@ module MakeGame (V:View) : GameModel = struct
               [("You drew "^(Hogwarts.spell_name new_card))];
             (new_hand,enemy))
         ) else (
+          Printer.print_formatted_lst p_house ["You already have 5 spells...";
+                                               "Don't get greedy"];
           (player,enemy)
         )
       )
@@ -137,8 +141,6 @@ module MakeGame (V:View) : GameModel = struct
     | Cast lst -> (
         let sp_name = String.concat " " lst in (
           try (
-            (*Note to self: the str->spell->str is to make the exception happen
-              here rather than printer. Experiment later*)
             let spell = Hogwarts.search_spells hogwarts sp_name in
             let updated = cast_spell spell player enemy in 
             let enemy_updated = (
@@ -148,8 +150,9 @@ module MakeGame (V:View) : GameModel = struct
               else 
                 (snd updated)
                 (*TODO: this will change with new AI*)
-            ) in Ai_state.enemy_turn hogwarts enemy_updated (fst updated) 
-              ANSITerminal.red cast_spell
+            ) in let en,pl = Ai_state.enemy_turn hogwarts enemy_updated 
+                     (fst updated) ANSITerminal.red cast_spell in
+            (pl,en)
           ) with Hogwarts.UnknownSpell sp_name -> (
               Printer.print_formatted_lst p_house 
                 [(sp_name ^ " incorrectly spelled. Try again\n")];

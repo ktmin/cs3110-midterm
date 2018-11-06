@@ -37,8 +37,8 @@ module type MenuModel = sig
 
   (** [choose_opponent hogwarts enemy_name] tries to get a an enemy of input
       name. Returns none if such named character is not found.
-      Precondition: all names are stored as lowercase ASCII so any name in other
-      cases will always return None (method is case sensitive). *)
+      Precondition: all names are stored as camelcase ASCII so any names are
+      parsed in and formatted this way (case insensitive input). *)
   val choose_opponent : Hogwarts.t -> string -> Hogwarts.character_info option
 
   (** [create_player hogwarts name house] creates a starting player state based
