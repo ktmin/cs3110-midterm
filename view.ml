@@ -2,7 +2,7 @@ module type View = sig
   val print_state : State.t -> unit
   val list_cards : State.t -> unit
   val print_enemy : Hogwarts.character_info -> State.t -> unit
-  val print_post_condition : string -> Model.end_state -> unit
+  val print_post_condition : string -> int -> unit
   val print_cast : State.t  -> Hogwarts.spell_info -> unit
   val print_spell_details : string -> Hogwarts.t -> string -> unit
   val print_title : unit -> unit
@@ -201,15 +201,18 @@ module Make : View = struct
                     ("Description for "^spell^":\n"
                      ^(Hogwarts.spell_description hogwarts spell)))
 
-  let print_post_condition (house_name:string) (condition:Model.end_state) 
+  let print_post_condition (house_name:string) (condition:int) 
     : unit =
-    let house = get_house house_name in
-    match condition with
-    | Win -> ANSITerminal.(print_string [Bold; cyan] "\n\n-=-=-=-=-=-=-=-=-";
-                           print_string [house] "\nCongrats you win!\n";
-                           print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n")
-    | Loss -> ANSITerminal.(print_string [house] "\nYou lose :( and die\n")
-    | Continue -> ()
+    let house = get_house house_name in (
+      if condition > 0 then
+        ANSITerminal.(print_string [Bold; cyan] "\n\n-=-=-=-=-=-=-=-=-";
+                      print_string [house] "\nCongrats you win!\n";
+                      print_string [Bold; cyan] "-=-=-=-=-=-=-=-=-\n")
+      else if condition < 0 then
+        ANSITerminal.(print_string [house] "\nYou lose :( and die\n")
+      else
+        ()
+    )
 
   let print_title (_:unit) : unit =
     ANSITerminal.(
@@ -226,7 +229,7 @@ module Make : View = struct
       match lst with 
       | [] -> print_string "\n";
       | h::t -> (
-          ANSITerminal.(print_string [house] h);
+          ANSITerminal.(print_string [house] (h^"\n"));
           run_through house t
         ) in run_through house lst
 end

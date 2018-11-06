@@ -13,8 +13,10 @@ module type View = sig
   val print_enemy : Hogwarts.character_info -> State.t -> unit
 
   (** [print_post_condition house_name condition] prints an applicable message 
-      to the respective condition (Win/Loss) and nothing for continue. *)
-  val print_post_condition : string -> Model.end_state -> unit
+      to the respective condition (Win/Loss) and nothing for continue.
+      Positive condition is a win, negative is a loss and 0 means 
+      to continue. *)
+  val print_post_condition : string -> int -> unit
 
   (** [print_cast caster spell] prints what [spell] the [caster] has just 
       done. *)
@@ -39,3 +41,6 @@ module type View = sig
       influence on styling provided by [player] state. *)
   val print_enemy_lst : Hogwarts.t -> State.t -> unit
 end
+
+(** [Make] creates a view structure for usage. *)
+module Make : View

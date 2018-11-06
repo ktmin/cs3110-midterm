@@ -1,6 +1,9 @@
+open View
+
 type end_state = Win | Loss | Continue
 
 module type GameModel = sig
+  module Printer : View 
   val run_cmd : Hogwarts.t -> Command.command -> State.t -> State.t -> 
     (State.t*State.t)
   val check_conditions : State.t -> State.t -> end_state
@@ -47,7 +50,7 @@ module MakeMenu : MenuModel = struct
     State.init_player_with_level_deck hogwarts name house
 end
 
-module MakeGame (V: View.View) : GameModel = struct
+module MakeGame (V:View) : GameModel = struct
   module Printer = V
 
   let check_conditions (player:State.t) (enemy:State.t) : end_state =

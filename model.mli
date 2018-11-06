@@ -1,10 +1,11 @@
+open View
 (** [end_state] is the possible state that occurs after each possible turn 
     (player and enemy is 1 turn together). *)
 type end_state = Win | Loss | Continue
 
 (** [GameModel] is the model run when in battle *)
 module type GameModel = sig
-
+  module Printer: View
   (** [run_cmd hogwarts cmd player enemy] runs a given command and returns
       a tuple of updated states in the order of player, then enemy. *)
   val run_cmd : Hogwarts.t -> Command.command -> State.t -> State.t -> 
@@ -44,3 +45,10 @@ module type MenuModel = sig
       on the input [name] and [house]. *)
   val create_player : Hogwarts.t -> string -> string -> State.t
 end
+
+(** [MakeMenu] creates a menumodel for usage in menu. *)
+module MakeMenu : MenuModel
+
+(** [MakeGame V] uses [View.View] as a printer in a game scenario and contains
+    all game logic to be used. *)
+module MakeGame (V:View) : GameModel
