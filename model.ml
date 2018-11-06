@@ -6,13 +6,48 @@ module type GameModel = sig
   val check_conditions : State.t -> State.t -> end_state
   val cast_spell : Hogwarts.spell_info -> State.t -> State.t -> 
     (State.t*State.t)
-    (*val affirmation : Hogwarts.t -> Hogwarts.character_info -> bool*)
 end
 
 module type MenuModel = sig
+  val affirmation : bool -> Hogwarts.t -> Hogwarts.character_info 
+    -> State.t option
+  val play_init : string -> string -> Hogwarts.t
+  val choose_opponent : Hogwarts.t -> string -> Hogwarts.character_info option
+  val create_player : Hogwarts.t -> string -> string -> State.t
 end
 
-module Make (V: View.View) : GameModel = struct
+module MakeMenu : MenuModel = struct
+
+  let choose_opponent (hogwarts:Hogwarts.t) (enemy_name:string) : 
+    Hogwarts.character_info option =
+    try (
+      let enemy = Hogwarts.search_characters hogwarts enemy_name in
+      Some enemy
+    ) with Hogwarts.UnknownCharacter target_name -> (
+        None
+      )
+
+  let affirmation (progress:bool) (hogwarts:Hogwarts.t) 
+      (enemy:Hogwarts.character_info) : State.t option =
+    if progress then
+      let enemy_state = (State.init_enemy_with_level_deck hogwarts 
+                           (Hogwarts.character_name enemy) 
+                           (Hogwarts.character_house enemy)) in
+      Some enemy_state
+    else
+      None
+
+  let play_init (spells_file:string) (char_file:string) : Hogwarts.t =
+    let spells = Yojson.Basic.from_file spells_file in
+    let chars = Yojson.Basic.from_file char_file in
+    Hogwarts.from_json spells chars
+
+  let create_player (hogwarts:Hogwarts.t) (name:string) (house:string) : 
+    State.t = 
+    State.init_player_with_level_deck hogwarts name house
+end
+
+module MakeGame (V: View.View) : GameModel = struct
   module Printer = V
 
   let check_conditions (player:State.t) (enemy:State.t) : end_state =
@@ -63,8 +98,7 @@ module Make (V: View.View) : GameModel = struct
           try (
             (*Note to self: the str->spell->str is to make the exception happen
               here rather than printer. Experiment later*)
-            let spell = Hogwarts.search_spells hogwarts sp_name in
-            Printer.print_spell_details p_house hogwarts spell
+            Printer.print_spell_details p_house hogwarts sp_name
           ) with Hogwarts.UnknownSpell sp_name -> (
               Printer.print_formatted_lst p_house 
                 [(sp_name ^ " incorrectly spelled. Try again\n")]

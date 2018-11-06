@@ -22,7 +22,7 @@ module type View = sig
 
   (** [print_spell_details house_name hogwarts spell] prints an ASCII card for a
       given [spell] in the style of a player's house. *)
-  val print_spell_details : string -> Hogwarts.t -> Hogwarts.spell_info -> unit
+  val print_spell_details : string -> Hogwarts.t -> string -> unit
 
   (** [print_title ()] prints the ASCII art title of the game*)
   val print_title : unit -> unit

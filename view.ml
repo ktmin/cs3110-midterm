@@ -4,7 +4,7 @@ module type View = sig
   val print_enemy : Hogwarts.character_info -> State.t -> unit
   val print_post_condition : string -> Model.end_state -> unit
   val print_cast : State.t  -> Hogwarts.spell_info -> unit
-  val print_spell_details : string -> Hogwarts.t -> Hogwarts.spell_info -> unit
+  val print_spell_details : string -> Hogwarts.t -> string -> unit
   val print_title : unit -> unit
   val print_cmd_input : string -> string -> unit
   val print_formatted_lst : string -> string list -> unit
@@ -195,11 +195,11 @@ module Make : View = struct
   (*===End State Dependant Methods===*)
   (*TODO: ASCII spell card*)
   let print_spell_details (house_name:string) (hogwarts:Hogwarts.t) 
-      (spell: Hogwarts.spell_info) : unit =
-    let house, sp_name = (get_house house_name), (Hogwarts.spell_name spell) in
+      (spell: string) : unit =
+    let house = (get_house house_name) in
     ANSITerminal.(print_string [house] 
-                    ("Description for "^sp_name^":\n"
-                     ^(Hogwarts.spell_description hogwarts sp_name)))
+                    ("Description for "^spell^":\n"
+                     ^(Hogwarts.spell_description hogwarts spell)))
 
   let print_post_condition (house_name:string) (condition:Model.end_state) 
     : unit =
