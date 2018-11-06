@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="Up" href="Model.GameModel.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Hogwarts" rel="Chapter" href="Hogwarts.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Model" rel="Chapter" href="Model.html">
+<link title="Controller" rel="Chapter" href="Controller.html">
+<link title="View" rel="Chapter" href="View.html"><title>Model.GameModel.Printer</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="Model.GameModel.html" title="Model.GameModel">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Model.GameModel.Printer.html">Model.GameModel.Printer</a></h1>
+
+<pre><span id="MODULEPrinter"><span class="keyword">module</span> Printer</span>: <code class="type"><a href="View.View.html">View.View</a></code><code class="type"> </code></pre><div class="info module top">
+<div class="info-desc">
+<p><code class="code">run_cmd hogwarts cmd player enemy</code> runs a given command and returns
+      a tuple of updated states in the order of player, then enemy.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="VALprint_state"><span class="keyword">val</span> print_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_state caster</code> prints all of the status info on the 
+      <code class="code">caster</code> in their house style.</p>
+</div>
+</div>
+
+<pre><span id="VALlist_cards"><span class="keyword">val</span> list_cards</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">list_cards caster</code> prints the names of all <code class="code">spells</code> in <code class="code">caster</code>'s 
+      hand in the colour of their respective house.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_enemy"><span class="keyword">val</span> print_enemy</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">Hogwarts.character_info</a> -> <a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_enemy enemy enemy_state</code> prints a character info card for given 
+      enemy.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_post_condition"><span class="keyword">val</span> print_post_condition</span> : <code class="type">string -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_post_condition house_name condition</code> prints an applicable message 
+      to the respective condition (Win/Loss) and nothing for continue.
+      Positive condition is a win, negative is a loss and 0 means 
+      to continue.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_cast"><span class="keyword">val</span> print_cast</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_cast caster spell</code> prints what <code class="code">spell</code> the <code class="code">caster</code> has just 
+      done.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_spell_details"><span class="keyword">val</span> print_spell_details</span> : <code class="type">string -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_spell_details house_name hogwarts spell</code> prints an ASCII card for a
+      given <code class="code">spell</code> in the style of a player's house.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_title"><span class="keyword">val</span> print_title</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_title ()</code> prints the ASCII art title of the game</p>
+</div>
+</div>
+
+<pre><span id="VALprint_cmd_input"><span class="keyword">val</span> print_cmd_input</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_cmd_input house_name input</code> prints out <code class="code">input</code> 
+      on the the line that requires player input in <code class="code">house</code> colour.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_formatted_lst"><span class="keyword">val</span> print_formatted_lst</span> : <code class="type">string -> string list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_formatted_lst house_name lst</code> prints a list of text in the styling
+      of the provided <code class="code">house_name</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_enemy_lst"><span class="keyword">val</span> print_enemy_lst</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_enemy_lst hogwarts player</code> prints the list of enemies with 
+      influence on styling provided by <code class="code">player</code> state.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_house"><span class="keyword">val</span> print_house</span> : <code class="type">string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_house house</code> prints a house in ASCII art (or nothing if house does
+      not match presets.</p>
+</div>
+</div>
+</body></html>

@@ -12,11 +12,15 @@
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="Hogwarts" rel="Chapter" href="Hogwarts.html">
 <link title="Command" rel="Chapter" href="Command.html">
 <link title="State" rel="Chapter" href="State.html">
 <link title="Engine" rel="Chapter" href="Engine.html">
-<link title="Authors" rel="Chapter" href="Authors.html"><title>Engine</title>
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Model" rel="Chapter" href="Model.html">
+<link title="Controller" rel="Chapter" href="Controller.html">
+<link title="View" rel="Chapter" href="View.html"><title>Engine</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="State.html" title="State">Previous</a>
@@ -158,14 +162,14 @@
 </div>
 </div>
 
-<pre><span id="VALplay_init"><span class="keyword">val</span> play_init</span> : <code class="type">string -> string -> string -> ANSITerminal.style -> unit</code></pre><div class="info ">
+<pre><span id="VALplay_init"><span class="keyword">val</span> play_init</span> : <code class="type">string -> string -> string -> string -> ANSITerminal.style -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">play_init f1 f2 house</code> takes in a spells json <code class="code">f1</code> and characters <code class="code">f2</code>, 
     and a ANSITerminal.style <code class="code">house</code> color, then starts the game.</p>
 </div>
 </div>
 
-<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">ANSITerminal.style -> unit</code></pre><div class="info ">
+<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">string -> ANSITerminal.style -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">name house</code> takes in the ANSITerminal colour <code class="code">house</code> and records the 
     player's name to be used in gameplay. 
