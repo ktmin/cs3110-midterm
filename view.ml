@@ -172,8 +172,9 @@ module Make : View = struct
     let p_house = State.get_house player in
     let house = get_house p_house in
     (*map enemies to name,level pair*)
-    let mapped = List.map (fun c -> (Hogwarts.character_name c),
-                                    (string_of_int (Hogwarts.character_level c))) 
+    let mapped = List.map (fun c -> 
+        (Hogwarts.character_name c),
+        (string_of_int (Hogwarts.character_level c))) 
         (Hogwarts.get_characters hogwarts) in (
       ANSITerminal.(print_string [magenta] 
                       "\n\nHere are the possible opponents you may face:\n\n");
