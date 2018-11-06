@@ -87,7 +87,7 @@ let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
 
 let get_name _ : string =
   View.print_formatted_lst "" 
-    ["Welcome! Welcome!";
+    ["\n\nWelcome! Welcome!";
      "I lost my list of names... So remind me who are you? "];
   let reg = Str.regexp "^[A-Za-z]+[A-Za-z ]*$" in 
   let rec parse_name _ = 
@@ -103,13 +103,13 @@ let get_name _ : string =
       ) in parse_name ()
 
 let get_house _ : string =
-  View.print_formatted_lst "" ["Also the sorting hat is out for lunch";
+  View.print_formatted_lst "" ["\n\nAlso the sorting hat is out for lunch";
                                "So you'll need to choose your own house.";
                                "As a reminder the houses are: "];
-  View.print_formatted_lst "gryffindor" ["Gryffindor "];
+  View.print_formatted_lst "gryffindor" ["Gryffindor"];
   View.print_formatted_lst "slytherin" ["Slytherin"];
-  View.print_formatted_lst "ravenclaw" ["Ravenclaw "];
-  View.print_formatted_lst "hufflepuff" ["Hufflepuff "];
+  View.print_formatted_lst "ravenclaw" ["Ravenclaw"];
+  View.print_formatted_lst "hufflepuff" ["Hufflepuff"];
   let rec choose_house _ =
     View.print_cmd_input "" "Enter your house choice";
     try (
@@ -131,7 +131,7 @@ let get_files (_:unit) : (string*string)=
 
 let rec init_game (_:unit) =
   View.print_title ();
-  View.print_formatted_lst "" ["Input Quit at any point to exit game"];
+  View.print_formatted_lst "" ["\nInput Quit at any point to exit game"];
   let files = get_files () in
   try (
     let hogwarts = Menu.play_init (fst files) (snd files) in
@@ -140,7 +140,7 @@ let rec init_game (_:unit) =
     let player = Menu.create_player hogwarts name house in
     play_game hogwarts player
   ) with _ -> (
-      View.print_formatted_lst "" ["Files were invalid. Try again."];
+      View.print_formatted_lst "gryffindor" ["Files were invalid. Try again."];
       init_game ()
     )
 

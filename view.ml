@@ -28,7 +28,7 @@ module Make : View = struct
     | "slytherin" -> ANSITerminal.green
     | "ravenclaw" -> ANSITerminal.blue
     | "hufflepuff" -> ANSITerminal.yellow
-    | _ -> ANSITerminal.white
+    | _ -> ANSITerminal.magenta
 
   (** [inverse_colour house] takes in a house and returns the inverse of the 
       usual. If not one of four house colours (red, green, blue, yellow) 
