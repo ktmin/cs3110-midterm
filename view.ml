@@ -1,4 +1,4 @@
-module type View = sig
+module type Mainview = sig
   val print_state : State.t -> unit
   val list_cards : State.t -> unit
   val print_enemy : Hogwarts.character_info -> State.t -> unit
@@ -12,8 +12,9 @@ module type View = sig
   val print_house : string -> unit
 end
 
-module Make : View = struct
+module Make : Mainview = struct
   (*===Start Util Methods===*)
+  (** [print_clear len] prints out [len] number of newlines on screen. *)
   let rec print_clear (len:int) : unit =
     if len <= 0 then
       ()
@@ -60,7 +61,7 @@ module Make : View = struct
     ["     ";"_____";" ___/";"(__  ) ";"____/  ";"       "]
   ]
 
-  (** The ASCII art for slytherin*)
+  (** The ASCII art for slytherin. *)
   let slyth = [
     [" _____"; "/  ___|"; "\\ `--."; " `--. \\"; "/\\__/ /"; "\\____/"; "      "; 
      "      "];
@@ -82,7 +83,7 @@ module Make : View = struct
      "      "]
   ]
 
-  (** The ASCII art for gryffindor*)
+  (** The ASCII art for gryffindor. *)
   let gryff = [
     [" .---. "; "/   __}"; "\\  {_ }"; " `---' "];
     [".----."; "| {}  }"; "| .-. \\"; "`-' `-' "];
@@ -96,7 +97,7 @@ module Make : View = struct
     [".----. "; "| {}  }"; "| .-. \\"; "`-' `-'"]
   ]
 
-  (** The ASCII art for ravenclaw*)
+  (** The ASCII art for ravenclaw. *)
   let claw = [
     ["█▄▄▄▄ "; "█  ▄▀ "; "█▀▀▌  "; "█  █  "; "  █   "; " ▀    "; "      "];
     ["██   "; "█ █  "; "█▄▄█ "; "█  █  "; "   █ "; "  █  "; " ▀   "];
@@ -114,7 +115,7 @@ module Make : View = struct
      "        "]
   ]
 
-  (** The ASCII art for hufflepuff*)
+  (** The ASCII art for hufflepuff. *)
   let puff = [
     ["       "; " ,---. "; "| .-. |"; "| '-' '"; "|  |-' "; "`--'   "];
     ["       "; " ,---. "; "| .-. |"; "' '-' '"; " `---' "; "       "];
@@ -144,7 +145,7 @@ module Make : View = struct
     | 6 | 7 -> [ANSITerminal.blue]
     | _ -> [ANSITerminal.white]
 
-  (* [ref_num] counts the current iteration for color coding the title. *)
+  (** [ref_num] counts the current iteration for color coding the title. *)
   let ref_num = ref 0
 
   (** [print_arr arr] prints he first element of a non-empty list and returns
@@ -193,6 +194,8 @@ module Make : View = struct
                   print_string [house] 
                     ("\nHouse: "^(Hogwarts.character_house enemy)))
 
+  (** Prints state of caster. For more details go to 
+      {{: View.View.html#VALprint_state} View.View.print_state}. *)
   let print_state (caster:State.t) : unit =
     let house = get_house (State.get_house caster) in
     ANSITerminal.(print_string [house]
@@ -218,6 +221,8 @@ module Make : View = struct
       ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n") 
 
   (*TODO: change this to be better sorted*)
+  (** Prints cards of caster. For more details go to 
+      {{: View.View.html#VALlist_cards} View.View.list_cards}. *)
   let list_cards (caster:State.t) : unit = 
     let house, spells = (get_house (State.get_house caster)), 
                         (State.to_list_hand caster) in
@@ -237,12 +242,16 @@ module Make : View = struct
           list_all_cards house t
         ) in list_all_cards house spells
 
+  (** Prints cast of caster. For more details go to 
+      {{: View.View.html#VALprint_cast} View.View.print_cast}. *)
   let print_cast (caster:State.t) (spell:Hogwarts.spell_info) : unit =
     let name, house = (State.get_name caster), 
                       (get_house (State.get_house caster)) in
     ANSITerminal.(print_string [house]
                     ("\n"^name^" casts "^(Hogwarts.spell_name spell)))
 
+  (** Prints list of enemies. For more details go to 
+        {{: View.View.html#VALprint_enemy_lst} View.View.print_enemy_lst}. *)
   let print_enemy_lst (hogwarts:Hogwarts.t) (player:State.t) : unit =
     let p_house = State.get_house player in
     let house = get_house p_house in
@@ -272,6 +281,9 @@ module Make : View = struct
 
   (*===End State Dependant Methods===*)
   (*TODO: ASCII spell card*)
+  (** Prints details of spell. For more details go to 
+        {{: View.View.html#VALprint_spell_details} 
+        View.View.print_spell_details}. *)
   let print_spell_details (house_name:string) (hogwarts:Hogwarts.t) 
       (spell: string) : unit =
     let house = (get_house house_name) in
@@ -279,6 +291,9 @@ module Make : View = struct
                     ("Description for "^spell^":\n"
                      ^(Hogwarts.spell_description hogwarts spell)))
 
+  (** Prints win/loss condition output. For more details go to 
+          {{: View.View.html#VALprint_post_condition} 
+          View.View.print_post_condition}. *)
   let print_post_condition (house_name:string) (condition:int) 
     : unit =
     let house = get_house house_name in (
@@ -292,7 +307,8 @@ module Make : View = struct
       else
         ()
     )
-
+  (** Prints ASCII house. For more details go to 
+            {{: View.View.html#VALprint_house} View.View.print_house}. *)
   let print_house (house:string) =
     ref_num := 0;
     match (String.lowercase_ascii house) with
@@ -310,16 +326,25 @@ module Make : View = struct
                           [ANSITerminal.white]) claw
     | _ -> ()
 
+  (** Prints game title. For more details go to 
+                  {{: View.View.html#VALprint_title} 
+                  View.View.print_title}. *)
   let print_title (_:unit) : unit =
     ANSITerminal.(
       print_string [magenta] "\nWelcome to \n");
     print_arr_2d 8 get_color_code intro_text
 
+  (** Prints string before cmd input. For more details go to 
+                {{: View.View.html#VALprint_cmd_input} 
+                View.View.print_cmd_input}. *)
   let print_cmd_input (house_name:string) (input:string) : unit =
     print_clear 2;
     let house = get_house house_name in
     ANSITerminal.(print_string [Bold;house] (input^" > "))
 
+  (** Prints formatted list. For more details go to 
+              {{: View.View.html#VALprint_formatted_lst} 
+              View.View.print_formatted_lst}. *)
   let print_formatted_lst (house_name:string) (lst:string list) : unit =
     let house = get_house house_name in
     let rec run_through house lst =

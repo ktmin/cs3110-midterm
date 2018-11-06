@@ -1,11 +1,18 @@
+(** Model contains two logic modules, one for the game and one for the menu.
+    This is all for inner game logic to be processed and returned to Controller.
+*)
+
 open View
+
 (** [end_state] is the possible state that occurs after each possible turn 
     (player and enemy is 1 turn together). *)
 type end_state = Win | Loss | Continue
 
 (** [GameModel] is the model run when in battle *)
 module type GameModel = sig
-  module Printer: View
+  (** The main instance of [Mainview] used to print out all game actions *)
+  module Printer: Mainview
+
   (** [run_cmd hogwarts cmd player enemy] runs a given command and returns
       a tuple of updated states in the order of player, then enemy. *)
   val run_cmd : Hogwarts.t -> Command.command -> State.t -> State.t -> 
@@ -51,4 +58,4 @@ module MakeMenu : MenuModel
 
 (** [MakeGame V] uses [View.View] as a printer in a game scenario and contains
     all game logic to be used. *)
-module MakeGame (V:View) : GameModel
+module MakeGame (V:Mainview) : GameModel

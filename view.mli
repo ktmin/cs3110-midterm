@@ -1,5 +1,9 @@
-(**The [View] component keeps all methods that are to be output to the screen*)
-module type View = sig
+(** This contains the module and implementation for the View component
+    of the MVC*)
+
+(**The [Mainview] component keeps all methods that are to be output to the 
+   screen*)
+module type Mainview = sig
   (** [print_state caster] prints all of the status info on the 
       [caster] in their house style. *)
   val print_state : State.t -> unit
@@ -47,4 +51,4 @@ module type View = sig
 end
 
 (** [Make] creates a view structure for usage. *)
-module Make : View
+module Make : Mainview

@@ -21,7 +21,7 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;end_state&nbsp;=&nbsp;<span class="constructor">Win</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Loss</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Continue</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="constructor">GameModel</span>&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Printer</span>&nbsp;:&nbsp;<span class="constructor">View</span>.<span class="constructor">View</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Printer</span>&nbsp;:&nbsp;<span class="constructor">View</span>.<span class="constructor">Mainview</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;run_cmd&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Command</span>.command&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.t&nbsp;*&nbsp;<span class="constructor">State</span>.t<br>
@@ -39,5 +39,5 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_player&nbsp;:&nbsp;<span class="constructor">Hogwarts</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">MakeMenu</span>&nbsp;:&nbsp;<span class="constructor">MenuModel</span><br>
-&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">MakeGame</span>&nbsp;:&nbsp;<span class="keyword">functor</span>&nbsp;(<span class="constructor">V</span>&nbsp;:&nbsp;<span class="constructor">View</span>.<span class="constructor">View</span>)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">GameModel</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">MakeGame</span>&nbsp;:&nbsp;<span class="keyword">functor</span>&nbsp;(<span class="constructor">V</span>&nbsp;:&nbsp;<span class="constructor">View</span>.<span class="constructor">Mainview</span>)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">GameModel</span><br>
 <span class="keyword">end</span></code></body></html>

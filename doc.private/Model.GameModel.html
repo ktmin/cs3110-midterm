@@ -33,13 +33,18 @@
 </div>
 <hr width="100%">
 
-<pre><span id="MODULEPrinter"><span class="keyword">module</span> <a href="Model.GameModel.Printer.html">Printer</a></span>: <code class="type"><a href="View.View.html">View.View</a></code><code class="type"> </code></pre><div class="info">
-<p><code class="code">run_cmd hogwarts cmd player enemy</code> runs a given command and returns
-      a tuple of updated states in the order of player, then enemy.</p>
+<pre><span id="MODULEPrinter"><span class="keyword">module</span> <a href="Model.GameModel.Printer.html">Printer</a></span>: <code class="type"><a href="View.Mainview.html">View.Mainview</a></code><code class="type"> </code></pre><div class="info">
+<p>The main instance of <code class="code">Mainview</code> used to print out all game actions</p>
 
 </div>
 
-<pre><span id="VALrun_cmd"><span class="keyword">val</span> run_cmd</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="Command.html#TYPEcommand">Command.command</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre>
+<pre><span id="VALrun_cmd"><span class="keyword">val</span> run_cmd</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="Command.html#TYPEcommand">Command.command</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">run_cmd hogwarts cmd player enemy</code> runs a given command and returns
+      a tuple of updated states in the order of player, then enemy.</p>
+</div>
+</div>
+
 <pre><span id="VALcheck_conditions"><span class="keyword">val</span> check_conditions</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="Model.html#TYPEend_state">Model.end_state</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">check_conditions player enemy</code> returns the end_state based on player and

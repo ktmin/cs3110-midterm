@@ -1,4 +1,4 @@
-(** Raised if string in parse_input fails predicate test. *)
+(** Raised if [string] in parse_input fails predicate test. *)
 exception InvalidInput of string
 
 (** Menu model for game menu logic. *)

@@ -31,7 +31,12 @@
 </div>
 <hr width="100%">
 
-<pre><span id="VALprint_clear"><span class="keyword">val</span> print_clear</span> : <code class="type">int -> unit</code></pre>
+<pre><span id="VALprint_clear"><span class="keyword">val</span> print_clear</span> : <code class="type">int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_clear len</code> prints out <code class="code">len</code> number of newlines on screen.</p>
+</div>
+</div>
+
 <pre><span id="VALget_house"><span class="keyword">val</span> get_house</span> : <code class="type">string -> ANSITerminal.style</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">get_house house_name</code> gets the respective color code for the house of
@@ -55,25 +60,25 @@
 
 <pre><span id="VALslyth"><span class="keyword">val</span> slyth</span> : <code class="type">string list list</code></pre><div class="info ">
 <div class="info-desc">
-<p>The ASCII art for slytherin</p>
+<p>The ASCII art for slytherin.</p>
 </div>
 </div>
 
 <pre><span id="VALgryff"><span class="keyword">val</span> gryff</span> : <code class="type">string list list</code></pre><div class="info ">
 <div class="info-desc">
-<p>The ASCII art for gryffindor</p>
+<p>The ASCII art for gryffindor.</p>
 </div>
 </div>
 
 <pre><span id="VALclaw"><span class="keyword">val</span> claw</span> : <code class="type">string list list</code></pre><div class="info ">
 <div class="info-desc">
-<p>The ASCII art for ravenclaw</p>
+<p>The ASCII art for ravenclaw.</p>
 </div>
 </div>
 
 <pre><span id="VALpuff"><span class="keyword">val</span> puff</span> : <code class="type">string list list</code></pre><div class="info ">
 <div class="info-desc">
-<p>The ASCII art for hufflepuff</p>
+<p>The ASCII art for hufflepuff.</p>
 </div>
 </div>
 
@@ -92,7 +97,12 @@
 </div>
 </div>
 
-<pre><span id="VALref_num"><span class="keyword">val</span> ref_num</span> : <code class="type">int Pervasives.ref</code></pre>
+<pre><span id="VALref_num"><span class="keyword">val</span> ref_num</span> : <code class="type">int Pervasives.ref</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">ref_num</code> counts the current iteration for color coding the title.</p>
+</div>
+</div>
+
 <pre><span id="VALprint_arr"><span class="keyword">val</span> print_arr</span> : <code class="type">int -> (int -> ANSITerminal.style list) -> string list -> string list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">print_arr arr</code> prints he first element of a non-empty list and returns
@@ -109,13 +119,78 @@
 </div>
 
 <pre><span id="VALprint_enemy"><span class="keyword">val</span> print_enemy</span> : <code class="type"><a href="Hogwarts.html#TYPEcharacter_info">Hogwarts.character_info</a> -> <a href="State.html#TYPEt">State.t</a> -> unit</code></pre>
-<pre><span id="VALprint_state"><span class="keyword">val</span> print_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre>
-<pre><span id="VALlist_cards"><span class="keyword">val</span> list_cards</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre>
-<pre><span id="VALprint_cast"><span class="keyword">val</span> print_cast</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> unit</code></pre>
-<pre><span id="VALprint_enemy_lst"><span class="keyword">val</span> print_enemy_lst</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">State.t</a> -> unit</code></pre>
-<pre><span id="VALprint_spell_details"><span class="keyword">val</span> print_spell_details</span> : <code class="type">string -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> unit</code></pre>
-<pre><span id="VALprint_post_condition"><span class="keyword">val</span> print_post_condition</span> : <code class="type">string -> int -> unit</code></pre>
-<pre><span id="VALprint_house"><span class="keyword">val</span> print_house</span> : <code class="type">string -> unit</code></pre>
-<pre><span id="VALprint_title"><span class="keyword">val</span> print_title</span> : <code class="type">unit -> unit</code></pre>
-<pre><span id="VALprint_cmd_input"><span class="keyword">val</span> print_cmd_input</span> : <code class="type">string -> string -> unit</code></pre>
-<pre><span id="VALprint_formatted_lst"><span class="keyword">val</span> print_formatted_lst</span> : <code class="type">string -> string list -> unit</code></pre></body></html>
+<pre><span id="VALprint_state"><span class="keyword">val</span> print_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints state of caster. For more details go to 
+      <a href=" View.View.html#VALprint_state"> View.View.print_state</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALlist_cards"><span class="keyword">val</span> list_cards</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints cards of caster. For more details go to 
+      <a href=" View.View.html#VALlist_cards"> View.View.list_cards</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_cast"><span class="keyword">val</span> print_cast</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints cast of caster. For more details go to 
+      <a href=" View.View.html#VALprint_cast"> View.View.print_cast</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_enemy_lst"><span class="keyword">val</span> print_enemy_lst</span> : <code class="type"><a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> <a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints list of enemies. For more details go to 
+        <a href=" View.View.html#VALprint_enemy_lst"> View.View.print_enemy_lst</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_spell_details"><span class="keyword">val</span> print_spell_details</span> : <code class="type">string -> <a href="Hogwarts.html#TYPEt">Hogwarts.t</a> -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints details of spell. For more details go to 
+        <a href=" View.View.html#VALprint_spell_details"> 
+        View.View.print_spell_details</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_post_condition"><span class="keyword">val</span> print_post_condition</span> : <code class="type">string -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints win/loss condition output. For more details go to 
+          <a href=" View.View.html#VALprint_post_condition"> 
+          View.View.print_post_condition</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_house"><span class="keyword">val</span> print_house</span> : <code class="type">string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints ASCII house. For more details go to 
+            <a href=" View.View.html#VALprint_house"> View.View.print_house</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_title"><span class="keyword">val</span> print_title</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints game title. For more details go to 
+                  <a href=" View.View.html#VALprint_title"> 
+                  View.View.print_title</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_cmd_input"><span class="keyword">val</span> print_cmd_input</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints string before cmd input. For more details go to 
+                <a href=" View.View.html#VALprint_cmd_input"> 
+                View.View.print_cmd_input</a>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_formatted_lst"><span class="keyword">val</span> print_formatted_lst</span> : <code class="type">string -> string list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints formatted list. For more details go to 
+              <a href=" View.View.html#VALprint_formatted_lst"> 
+              View.View.print_formatted_lst</a>.</p>
+</div>
+</div>
+</body></html>

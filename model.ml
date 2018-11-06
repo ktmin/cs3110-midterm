@@ -3,7 +3,7 @@ open View
 type end_state = Win | Loss | Continue
 
 module type GameModel = sig
-  module Printer : View 
+  module Printer : Mainview 
   val run_cmd : Hogwarts.t -> Command.command -> State.t -> State.t -> 
     (State.t*State.t)
   val check_conditions : State.t -> State.t -> end_state
@@ -20,7 +20,9 @@ module type MenuModel = sig
 end
 
 module MakeMenu : MenuModel = struct
-
+  (** Finds opponent specified by name. For more details go to 
+                    {{: Model.MenuModel.html#VALchoose_opponent} 
+                    Model.MenuModel.choose_opponent}. *)
   let choose_opponent (hogwarts:Hogwarts.t) (enemy_name:string) : 
     Hogwarts.character_info option =
     let target_name_lst = String.split_on_char ' ' enemy_name in
@@ -32,7 +34,9 @@ module MakeMenu : MenuModel = struct
     ) with Hogwarts.UnknownCharacter target_name -> (
         None
       )
-
+  (** Asserts that player wants to face set enemy. For more details go to 
+                      {{: Model.MenuModel.html#VALaffirmation} 
+                      Model.MenuModel.affirmation}. *)
   let affirmation (progress:bool) (hogwarts:Hogwarts.t) 
       (enemy:Hogwarts.character_info) : State.t option =
     if progress then
@@ -43,19 +47,29 @@ module MakeMenu : MenuModel = struct
     else
       None
 
+  (** Initializes json play files. For more details go to 
+                        {{: Model.MenuModel.html#VALplay_init} 
+                        Model.MenuModel.play_init}. *)
   let play_init (spells_file:string) (char_file:string) : Hogwarts.t =
     let spells = Yojson.Basic.from_file spells_file in
     let chars = Yojson.Basic.from_file char_file in
     Hogwarts.from_json spells chars
 
+  (** Creates player state from parameters. For more details go to 
+                          {{: Model.MenuModel.html#VALcreate_player} 
+                          Model.MenuModel.create_player}. *)
   let create_player (hogwarts:Hogwarts.t) (name:string) (house:string) : 
     State.t = 
     State.init_player_with_level_deck hogwarts name house
 end
 
-module MakeGame (V:View) : GameModel = struct
+module MakeGame (V:Mainview) : GameModel = struct
+  (** [Mainview] module used for printing events. *)
   module Printer = V
 
+  (** Checks win/loss conditions. For more details go to 
+                {{: Model.GameModel.html#VALcheck_conditions} 
+                Model.GameModel.check_conditions}. *)
   let check_conditions (player:State.t) (enemy:State.t) : end_state =
     if State.get_hp enemy <= 0 then
       Win
@@ -64,11 +78,17 @@ module MakeGame (V:View) : GameModel = struct
     else
       Continue
 
+  (** Casts spell. For more details go to 
+                  {{: Model.GameModel.html#VALcast_spell} 
+                  Model.GameModel.cast_spell}. *)
   let cast_spell (spell:Hogwarts.spell_info) (caster:State.t) (target:State.t) :
     (State.t*State.t) =
     Printer.print_cast caster spell;
     State.cast spell caster target
 
+  (** Casts spell. For more details go to 
+                  {{: Model.GameModel.html#VALrun_cmd} 
+                  Model.GameModel.run_cmd}. *)
   let run_cmd (hogwarts:Hogwarts.t) (cmd:Command.command) (player:State.t) 
       (enemy:State.t) : (State.t*State.t) =
     let p_house = State.get_house player in

@@ -14,6 +14,9 @@ type spell_name = string
 (** The type of a character name *)
 type character_name = string
 
+(** The type of a player's house *)
+type house = string
+
 (** The type of a spell's damage *)
 type damage = int 
 

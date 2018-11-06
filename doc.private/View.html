@@ -28,12 +28,18 @@
 
 <pre><span id="MODULEView"><span class="keyword">module</span> View</span>: <code class="code">sig</code> <a href="View.html">..</a> <code class="code">end</code></pre><div class="info module top">
 <div class="info-desc">
-<p>The <code class="code">View</code> component keeps all methods that are to be output to the screen</p>
+<p>This contains the module and implementation for the View component
+    of the MVC</p>
 </div>
 </div>
 <hr width="100%">
 
-<pre><span id="MODULETYPEView"><span class="keyword">module type</span> <a href="View.View.html">View</a></span> = <code class="code">sig</code> <a href="View.View.html">..</a> <code class="code">end</code></pre>
+<pre><span id="MODULETYPEMainview"><span class="keyword">module type</span> <a href="View.Mainview.html">Mainview</a></span> = <code class="code">sig</code> <a href="View.Mainview.html">..</a> <code class="code">end</code></pre><div class="info">
+<p>The <code class="code">Mainview</code> component keeps all methods that are to be output to the 
+   screen</p>
+
+</div>
+
 <pre><span id="MODULEMake"><span class="keyword">module</span> <a href="View.Make.html">Make</a></span>: <code class="code">sig</code> <a href="View.Make.html">..</a> <code class="code">end</code></pre><div class="info">
 <p><code class="code">Make</code> creates a view structure for usage.</p>
 
