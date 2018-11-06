@@ -12,6 +12,8 @@ module type View = sig
   val print_cast : State.t  -> Hogwarts.spell_info -> unit
   val print_spell_details : string -> Hogwarts.t -> Hogwarts.spell_info -> unit
   val print_title : unit -> unit
-  val print_cmd_in : string -> unit
-  val print_validity : string -> string -> unit
+  val print_cmd_input : string -> string -> unit
+  val print_validity : string -> bool -> string -> string -> unit
+  val print_formatted_lst : string -> string list -> unit
+  val print_enemy_lst : Hogwarts.t -> State.t -> unit
 end
