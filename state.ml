@@ -2,6 +2,7 @@ open Yojson.Basic
 (* open Hogwarts *)
 type t = {
   name : string;
+  full_hp: int;
   hp: int;
   level: int;
   dazed: int;
@@ -14,6 +15,9 @@ type t = {
 
 let get_name st =
   st.name
+
+let get_full_hp st = 
+  st.full_hp
 
 let get_hp st =
   st.hp
@@ -78,7 +82,7 @@ let get_level_deck  st =
 
 
 let init_player hogwarts name =
-  {name=name; hp=100; level = 1; dazed = 0; blocked = 0;
+  {name=name; full_hp = 100; hp=100; level = 1; dazed = 0; blocked = 0;
    prolong_effect = []; hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l
                                   (Hogwarts.get_spells hogwarts))));
@@ -94,7 +98,7 @@ let init_enemy hogwarts name =
   let enemy_info = Hogwarts.search_characters hogwarts name in 
   let enemy_level = Hogwarts.character_level enemy_info in 
   let enemy_hp = Hogwarts.character_hp enemy_info in
-  {name=name; hp= enemy_hp; level = enemy_level; dazed = 0;
+  {name=name; full_hp =enemy_hp; hp= enemy_hp; level = enemy_level; dazed = 0;
    prolong_effect = [];
    hand=[]; blocked = 0;
    deck=(QCheck.Gen.(generate1 (shuffle_l 
