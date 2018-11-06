@@ -7,7 +7,6 @@ module type View = sig
   val print_spell_details : string -> Hogwarts.t -> Hogwarts.spell_info -> unit
   val print_title : unit -> unit
   val print_cmd_input : string -> string -> unit
-  val print_validity : string -> bool -> string -> string -> unit
   val print_formatted_lst : string -> string list -> unit
   val print_enemy_lst : Hogwarts.t -> State.t -> unit
 end
@@ -70,6 +69,7 @@ module Make : View = struct
     | 6 | 7 -> ANSITerminal.blue 
     | _ -> ANSITerminal.white
 
+  (* [ref_num] counts the current iteration for color coding the title. *)
   let ref_num = ref 0
 
   (** [print_arr arr] prints he first element of a non-empty list and returns
@@ -194,8 +194,8 @@ module Make : View = struct
 
   (*===End State Dependant Methods===*)
   (*TODO: ASCII spell card*)
-  let print_spell_details (house_name:string) (hogwarts:Hogwarts.t) (
-      spell: Hogwarts.spell_info) : unit =
+  let print_spell_details (house_name:string) (hogwarts:Hogwarts.t) 
+      (spell: Hogwarts.spell_info) : unit =
     let house, sp_name = (get_house house_name), (Hogwarts.spell_name spell) in
     ANSITerminal.(print_string [house] 
                     ("Description for "^sp_name^":\n"
@@ -219,15 +219,6 @@ module Make : View = struct
   let print_cmd_input (house_name:string) (input:string) : unit =
     let house = get_house house_name in
     ANSITerminal.(print_string [house] (input^" > "))
-
-  let print_validity (house_name:string) (b:bool) (if_true:string) 
-      (if_false:string) : unit =
-    let house = get_house house_name in (
-      if b then
-        ANSITerminal.(print_string [house] if_true)
-      else
-        ANSITerminal.(print_string [house] if_false)
-    )
 
   let print_formatted_lst (house_name:string) (lst:string list) : unit =
     let house = get_house house_name in

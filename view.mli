@@ -31,11 +31,6 @@ module type View = sig
       on the the line that requires player input in [house] colour. *)
   val print_cmd_input : string -> string -> unit
 
-  (** [print_validity house b if_true if_false] takes in [house] for 
-      styling and value [b], and outputs [if_true] if [b] evaluates to true 
-      and [if_false] otherwise. *)
-  val print_validity : string -> bool -> string -> string -> unit
-
   (** [print_formatted_lst house_name lst] prints a list of text in the styling
       of the provided [house_name]. *)
   val print_formatted_lst : string -> string list -> unit
