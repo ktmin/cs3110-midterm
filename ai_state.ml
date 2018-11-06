@@ -24,16 +24,20 @@ let rec hand_search hand spell_type f op =
   | [] -> None
   | h::t -> Some (find_best_spell filtered_hand (List.hd filtered_hand) f op)
 
-let has_attack ai_hand spell_type pl_state ai_state =
+(** [has_attack hand player ai] is the cast on [player] dependant on whether if 
+    an attack spell is in the [hand] of the [ai]. *)
+let has_attack ai_hand pl_state ai_state =
   let spell = hand_search ai_hand "attack" Hogwarts.spell_damage (>) in 
   match spell with 
   | None -> execute_action (List.hd ai_hand) pl_state ai_state
   | Some s -> execute_action s pl_state ai_state
 
-let has_healing ai_hand spell_type pl_state ai_state =
+(** [has_healing hand player ai] is the cast on [player] dependant on whether 
+    a healing spell is in the [hand] of the [ai]. *)
+let has_healing ai_hand pl_state ai_state =
   let spell = hand_search ai_hand "healing" Hogwarts.spell_damage (<) in 
   match spell with 
-  | None -> has_attack ai_hand spell_type pl_state ai_state
+  | None -> has_attack ai_hand pl_state ai_state
   | Some s -> execute_action s pl_state ai_state
 
 (** [is_full_health ai_state pl_state] is the cast of the [ai_state] on 
@@ -41,8 +45,8 @@ let has_healing ai_hand spell_type pl_state ai_state =
 let is_full_health ai_state pl_state = 
   let ai_hand = State.get_hand ai_state in 
   if State.get_hp ai_state = State.get_full_hp ai_state 
-  then has_attack ai_hand "attack" pl_state ai_state
-  else has_healing ai_hand "healing" pl_state ai_state 
+  then has_attack ai_hand pl_state ai_state
+  else has_healing ai_hand pl_state ai_state 
 
 (** [is_game_ending ai_state pl_state] determines if [ai_state] can win right 
     away against [pl_state]. *)
