@@ -264,7 +264,6 @@ module Make : Mainview = struct
   (*===End ASCII Card Methods===*)
 
   (*===Start State Dependant Methods===*)
-  (*TODO: ASCII character card*)
   let print_enemy (enemy:Hogwarts.character_info) (enemy_state:State.t) 
     : unit =
     let name = Hogwarts.character_name enemy in
@@ -307,11 +306,10 @@ module Make : Mainview = struct
     );
     let effects = State.get_prolong_tupes caster in
     if List.length effects > 0 then (
-      ANSITerminal.(print_string [magenta] "\nEffects: Turns Left");
-      List.iter (fun (a,b) -> 
-          ANSITerminal.(print_string [house]
-                          ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
-        effects
+      let out_arr = List.map (fun (d,t) ->  
+          (string_of_int d)^": "^(string_of_int t)) effects in
+      print_formatted_lst (State.get_house caster) 
+        ("\nEffect Damage: Turns Left"::out_arr)
     );
     if blocking then
       ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n") 
@@ -376,7 +374,6 @@ module Make : Mainview = struct
 
   (*===End State Dependant Methods===*)
 
-  (*TODO: ASCII spell card*)
   (** Prints details of spell. For more details go to 
         {{: View.View.html#VALprint_spell_details} 
         View.View.print_spell_details}. *)
