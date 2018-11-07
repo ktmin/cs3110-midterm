@@ -358,13 +358,12 @@ module Make : Mainview = struct
     let rim, header = (get_lines width), (get_centered_text width header) in
     let top, bottom, mid = ("."^rim^"."), ("'"^rim^"'"), 
                            (get_lines ~pattern:("=") width) in
-    let arr = [header;mid] in
-    let final_lst =  List.map (fun s -> "|"^s^"|") arr in
-    (* let body_lst = partition_list width body in
-       let width_adjust = List.map (pad width) body_lst in
-       let mapped = List.map (fun s -> "|"^s^"|") width_adjust in
-    *)
-    print_formatted_lst house ([top]@final_lst@[bottom])
+    let body_lst = partition_list width body in
+    let width_adjust = List.map (pad width) body_lst in
+    let final_lst = [header;mid]@width_adjust in
+    let mapped = List.map (fun s -> "|"^s^"|") final_lst in
+
+    print_formatted_lst house (top::(mapped@[bottom]))
   (*===End ASCII Card Methods===*)
 
   (*TODO: ASCII spell card*)
@@ -373,14 +372,16 @@ module Make : Mainview = struct
         View.View.print_spell_details}. *)
   let print_spell_details (house_name:string) (hogwarts:Hogwarts.t) 
       (spell: string) : unit =
+    let len = (String.length spell)+12 in
     let info = Hogwarts.search_spells hogwarts spell in
     let dmg = "Damage: "^(string_of_int (Hogwarts.spell_damage info)) in
     let lvl = "Level: "^(string_of_int (Hogwarts.spell_level info)) in
     let t = "Type: "^(Hogwarts.spell_type info) in
+    let break = get_lines ~pattern:(" ") (len-1) in
     let desc = Str.split (Str.regexp " ")
         (Hogwarts.spell_description hogwarts spell) in
-    print_card house_name ((String.length spell)+8) spell 
-      ([dmg; lvl; t; ""]@desc)
+    print_card house_name len spell 
+      ([dmg; lvl; t; break]@desc)
 
   (** Prints win/loss condition output. For more details go to 
           {{: View.View.html#VALprint_post_condition} 
