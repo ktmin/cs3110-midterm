@@ -48,6 +48,11 @@ module type Mainview = sig
   (** [print_house house] prints a house in ASCII art (or nothing if house does
       not match presets.*)
   val print_house : string -> unit
+
+  (** [print_card house width header body] prints an ASCII card of size [width] 
+      with a centered [header] and body filling up the main part. This is in 
+      colour of [house]. *)
+  val print_card : string -> int -> string -> string list -> unit
 end
 
 (** [Make] creates a view structure for usage. *)

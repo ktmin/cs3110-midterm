@@ -96,99 +96,99 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
                   Model.GameModel.run_cmd}. *)
   let run_cmd (hogwarts:Hogwarts.t) (cmd:Command.command) (player:State.t) 
       (enemy:State.t) : (State.t*State.t) =
-    if (State.get_dazed player) > 0 then (
-      Printer.print_formatted_lst (State.get_house player)
-        ["You are dazed and cannot attack"];
-      let step = State.update_dazed player in
-      let en,pl = Enemy_Logic.enemy_decision enemy step in
-      (pl,en)
-    )
-    else
-      let p_house = State.get_house player in
-      match cmd with
-      | Forfeit -> (
-          Printer.print_formatted_lst p_house 
-            ["Turns out you weren't so tough and brave..."];
-          exit 0
-        )
-      | Status -> (
-          Printer.print_state player;
-          Printer.print_state enemy;
-          (player,enemy)
-        )
-      | View -> (
-          Printer.print_formatted_lst p_house 
-            ["The following spells can be cast: \n"];
-          Printer.list_cards player;
-          (player, enemy)
-        )
-      | Instruction  -> (
-          Printer.print_formatted_lst p_house 
-            ["Rules are simple:";
-             "- You have a deck and spell cards that attack the opponent or heal you";
-             "- Each turn you can just cast or draw and cast";
-             "- You play against an AI that takes its turn after you";
-             "- Winner is the person who makes the other reach 0 or less health"];
-          (player, enemy)
-        )
-      | Describe lst -> (
-          let sp_name = String.concat " " lst in (
-            try (
-              (*Note to self: the str->spell->str is to make the exception happen
-                here rather than printer. Experiment later*)
-              Printer.print_spell_details p_house hogwarts sp_name
-            ) with Hogwarts.UnknownSpell sp_name -> (
-                Printer.print_formatted_lst p_house 
-                  [(sp_name ^ " incorrectly spelled. Try again\n")]
-              ));
-          (player,enemy)
-        )
-      | Draw -> (
-          let can_get = List.length (State.to_list_hand player) < 5 in
-          if can_get then (
-            let new_hand = State.draw player in
-            let new_card =  List.hd(State.to_list_hand new_hand) in (
+    let p_house = State.get_house player in
+    match cmd with
+    | Forfeit -> (
+        Printer.print_formatted_lst p_house 
+          ["Turns out you weren't so tough and brave..."];
+        exit 0
+      )
+    | Status -> (
+        Printer.print_state player;
+        Printer.print_state enemy;
+        (player,enemy)
+      )
+    | View -> (
+        Printer.print_formatted_lst p_house 
+          ["The following spells can be cast: \n"];
+        Printer.list_cards player;
+        (player, enemy)
+      )
+    | Instruction  -> (
+        Printer.print_formatted_lst p_house 
+          ["Rules are simple:";
+           "- You have a deck and spell cards that attack the opponent or heal you";
+           "- Each turn you can just cast or draw and cast";
+           "- You play against an AI that takes its turn after you";
+           "- Winner is the person who makes the other reach 0 or less health"];
+        (player, enemy)
+      )
+    | Describe lst -> (
+        let sp_name = String.concat " " lst in (
+          try (
+            (*Note to self: the str->spell->str is to make the exception happen
+              here rather than printer. Experiment later*)
+            Printer.print_spell_details p_house hogwarts sp_name
+          ) with Hogwarts.UnknownSpell sp_name -> (
               Printer.print_formatted_lst p_house 
-                [("You drew "^(Hogwarts.spell_name new_card))];
-              (new_hand,enemy))
-          ) else (
-            Printer.print_formatted_lst p_house ["You already have 5 spells...";
-                                                 "Don't get greedy"];
-            (player,enemy)
-          )
-        )
-      | Help -> (
-          Printer.print_formatted_lst p_house [
-            "Possible Commands:";
-            "- Cast [card name] -> casts the card";
-            "- Describe [card name] -> gives a description of the card";
-            "- Draw -> draws a spell from your deck";
-            "- Forfeit -> give up and quit the game";
-            "- Help -> displays a list of possible commands";
-            "- Instruction -> explains how spell duels work";
-            "- View -> views all spells you can currently cast";
-            "- Status -> displays the status of both you and the enemy"
-          ];
+                [(sp_name ^ " incorrectly spelled. Try again\n")]
+            ));
+        (player,enemy)
+      )
+    | Draw -> (
+        let can_get = List.length (State.to_list_hand player) < 5 in
+        if can_get then (
+          let new_hand = State.draw player in
+          let new_card =  List.hd(State.to_list_hand new_hand) in (
+            Printer.print_formatted_lst p_house 
+              [("You drew "^(Hogwarts.spell_name new_card))];
+            (new_hand,enemy))
+        ) else (
+          Printer.print_formatted_lst p_house ["You already have 5 spells...";
+                                               "Don't get greedy"];
           (player,enemy)
         )
-      | Cast lst -> (
-          let sp_name = String.concat " " lst in (
-            try (
-              let spell = Hogwarts.search_spells hogwarts sp_name in
-              let updated = cast_spell spell player enemy in 
-              let enemy_updated = (
-                if(Hogwarts.spell_target spell) = "self" 
-                then 
-                  enemy
-                else 
-                  (snd updated)
-              ) in let en,pl = Enemy_Logic.enemy_decision enemy_updated 
-                       (fst updated) in
-              (pl,en)
-            ) with Hogwarts.UnknownSpell sp_name -> (
-                Printer.print_formatted_lst p_house 
-                  [(sp_name ^ " incorrectly spelled. Try again\n")];
-                (player,enemy)
-              ))
-        )
+      )
+    | Help -> (
+        Printer.print_formatted_lst p_house [
+          "Possible Commands:";
+          "- Cast [card name] -> casts the card";
+          "- Describe [card name] -> gives a description of the card";
+          "- Draw -> draws a spell from your deck";
+          "- Forfeit -> give up and quit the game";
+          "- Help -> displays a list of possible commands";
+          "- Instruction -> explains how spell duels work";
+          "- View -> views all spells you can currently cast";
+          "- Status -> displays the status of both you and the enemy"
+        ];
+        (player,enemy)
+      )
+    | Cast lst -> (
+        let sp_name = String.concat " " lst in (
+          try (
+            let spell = Hogwarts.search_spells hogwarts sp_name in
+            let updated = cast_spell spell player enemy in 
+            let enemy_updated = (
+              if(Hogwarts.spell_target spell) = "self" 
+              then 
+                enemy
+              else 
+                (snd updated)
+            ) in let rec enemy_batter enemy player = 
+                   let en,pl = Enemy_Logic.enemy_decision enemy_updated 
+                       (fst updated) in (
+                     if (State.get_dazed pl) > 0 then (
+                       Printer.print_formatted_lst (State.get_house player)
+                         ["You are dazed and cannot attack"];
+                       enemy_batter en (State.update_dazed pl)
+                     ) else (
+                       (pl,en)
+                     )
+                   ) in enemy_batter enemy_updated (fst updated)
+          ) with Hogwarts.UnknownSpell sp_name -> (
+              Printer.print_formatted_lst p_house 
+                [(sp_name ^ " incorrectly spelled. Try again\n")];
+              (player,enemy)
+            ))
+      )
 end
