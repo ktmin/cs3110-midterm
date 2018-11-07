@@ -3,6 +3,7 @@
 *)
 
 open View
+open Ai_controller
 
 (** [end_state] is the possible state that occurs after each possible turn 
     (player and enemy is 1 turn together). *)
@@ -10,8 +11,11 @@ type end_state = Win | Loss | Continue
 
 (** [GameModel] is the model run when in battle *)
 module type GameModel = sig
-  (** The main instance of [Mainview] used to print out all game actions *)
+  (** The main instance of [Mainview] used to print out all game actions. *)
   module Printer: Mainview
+
+  (** The Enemy logic module. *)
+  module Enemy_Logic: AI
 
   (** [run_cmd hogwarts cmd player enemy] runs a given command and returns
       a tuple of updated states in the order of player, then enemy. *)
@@ -56,6 +60,6 @@ end
 (** [MakeMenu] creates a menumodel for usage in menu. *)
 module MakeMenu : MenuModel
 
-(** [MakeGame V] uses [View.View] as a printer in a game scenario and contains
-    all game logic to be used. *)
-module MakeGame (V:Mainview) : GameModel
+(** [MakeGame V A] uses [View.View] as a printer in a game scenario and contains
+    all game logic to be used. [A] is the enemy logic to be used in battle. *)
+module MakeGame (V:Mainview) (A:AI) : GameModel

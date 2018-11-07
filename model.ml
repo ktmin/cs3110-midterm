@@ -1,9 +1,11 @@
+open Ai_controller
 open View
 
 type end_state = Win | Loss | Continue
 
 module type GameModel = sig
-  module Printer : Mainview 
+  module Printer : Mainview
+  module Enemy_Logic : AI
   val run_cmd : Hogwarts.t -> Command.command -> State.t -> State.t -> 
     (State.t*State.t)
   val check_conditions : State.t -> State.t -> end_state
@@ -63,9 +65,12 @@ module MakeMenu : MenuModel = struct
     State.init_player_with_level_deck hogwarts name house
 end
 
-module MakeGame (V:Mainview) : GameModel = struct
+module MakeGame (V:Mainview) (A:AI) : GameModel = struct
   (** [Mainview] module used for printing events. *)
   module Printer = V
+
+  (** The enemy logic that is used for the enemy turn. *)
+  module Enemy_Logic = A
 
   (** Checks win/loss conditions. For more details go to 
                 {{: Model.GameModel.html#VALcheck_conditions} 
@@ -169,8 +174,7 @@ module MakeGame (V:Mainview) : GameModel = struct
                 enemy
               else 
                 (snd updated)
-                (*TODO: this will change with new AI*)
-            ) in let en,pl = Ai_controller.enemy_decision enemy_updated 
+            ) in let en,pl = Enemy_Logic.enemy_decision enemy_updated 
                      (fst updated) in
             (pl,en)
           ) with Hogwarts.UnknownSpell sp_name -> (

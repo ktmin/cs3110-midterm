@@ -3,10 +3,12 @@ exception InvalidInput of string
 
 (** Menu model for game menu logic. *)
 module Menu = Model.MakeMenu
-(**View is for displaying text to the user. *)
+(** View is for displaying text to the user. *)
 module View = View.Make
+(** The AI Logic in use of the games. *)
+module Ai = Ai_controller.MakeAI (View)
 (** Game model for game logic. *)
-module Game = Model.MakeGame (View)
+module Game = Model.MakeGame (View) (Ai)
 
 (** Simple var to hold command to quit game at any point. *)
 let quit_cmd = "quit"
