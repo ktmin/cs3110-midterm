@@ -175,11 +175,10 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
               else 
                 (snd updated)
             ) in let rec enemy_batter enemy player = 
-                   let en,pl = Enemy_Logic.enemy_decision enemy_updated 
-                       (fst updated) in (
+                   let en,pl = Enemy_Logic.enemy_decision enemy player in (
                      if (State.get_dazed pl) > 0 then (
                        Printer.print_formatted_lst (State.get_house player)
-                         ["You are dazed and cannot attack"];
+                         ["\nYou are dazed and cannot attack"];
                        enemy_batter en (State.update_dazed pl)
                      ) else (
                        (pl,en)
