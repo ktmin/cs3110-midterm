@@ -1,5 +1,6 @@
 module type Mainview = sig
-  val print_state : State.t -> unit
+  val print_clear : int -> unit
+  val print_state : State.t -> bool -> unit
   val list_cards : State.t -> unit
   val print_enemy : Hogwarts.character_info -> State.t -> unit
   val print_post_condition : string -> int -> unit
@@ -263,7 +264,6 @@ module Make : Mainview = struct
   (*===End ASCII Card Methods===*)
 
   (*===Start State Dependant Methods===*)
-  (*TODO: ASCII character card*)
   let print_enemy (enemy:Hogwarts.character_info) (enemy_state:State.t) 
     : unit =
     let name = Hogwarts.character_name enemy in
@@ -292,8 +292,9 @@ module Make : Mainview = struct
 
   (** Prints state of caster. For more details go to 
       {{: View.View.html#VALprint_state} View.View.print_state}. *)
-  let print_state (caster:State.t) : unit =
+  let print_state (caster:State.t) (blocking:bool) : unit =
     let house = get_house (State.get_house caster) in
+    print_string "\n";
     ANSITerminal.(print_string [house]
                     ("\n"^(State.get_name caster)^"'s health: ");
                   print_string [magenta] 
@@ -306,17 +307,17 @@ module Make : Mainview = struct
     );
     let effects = State.get_prolong_tupes caster in
     if List.length effects > 0 then (
-      ANSITerminal.(print_string [magenta] "\nEffects: Turns Left");
-      List.iter (fun (a,b) -> 
-          ANSITerminal.(print_string [house]
-                          ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
-        effects
+      let out_arr = List.map (fun (d,t) ->  let notifier = (
+          if d > 0 then "Damage: " else "Healing: "
+        ) in
+          notifier^(string_of_int d)^" Turns Left: "^(string_of_int t)) 
+          effects in
+      print_formatted_lst (State.get_house caster) 
+        ("\nLong Effects"::out_arr)
     );
-    (*TODO: this is broken*)
-    if (State.get_blocked caster) = 1 then
+    if blocking then
       ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n") 
 
-  (*TODO: change this to be better sorted*)
   (** Prints cards of caster. For more details go to 
       {{: View.View.html#VALlist_cards} View.View.list_cards}. *)
   let list_cards (caster:State.t) : unit = 
@@ -331,7 +332,7 @@ module Make : Mainview = struct
           ANSITerminal.(print_string [magenta] 
                           ((Hogwarts.spell_name h ^ 
                             "\n\nEnter: Describe spell_name to see spell 
-    description."))))
+    description.\n"))))
       | h::t -> (
           ANSITerminal.(print_string [magenta] 
                           ((Hogwarts.spell_name h) ^ ", "));
@@ -377,7 +378,6 @@ module Make : Mainview = struct
 
   (*===End State Dependant Methods===*)
 
-  (*TODO: ASCII spell card*)
   (** Prints details of spell. For more details go to 
         {{: View.View.html#VALprint_spell_details} 
         View.View.print_spell_details}. *)
