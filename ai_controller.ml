@@ -103,7 +103,15 @@ let is_game_ending ai_state pl_state =
     then execute_action spell ai_state pl_state 
     else has_healing ai_hand pl_state ai_state ""
 
-let enemy_decision ai_state pl_state = 
-  if State.get_blocked ai_state > 0 
-  then is_full_health ai_state pl_state
-  else is_game_ending ai_state pl_state
+let rec enemy_decision enemy player = 
+  if (State.get_hp enemy) <= 0 then (enemy,player)
+  else (
+    if List.length (State.to_list_hand enemy) < 7 
+    then enemy_decision (State.draw enemy) player
+    else
+      (
+        if State.get_blocked enemy > 0 
+        then is_full_health enemy player
+        else is_game_ending enemy player
+      )
+  )
