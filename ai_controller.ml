@@ -105,7 +105,7 @@ module MakeAI (V:Mainview) : AI = struct
       [pl_state] dependant on its current health. *)
   let is_full_health ai_state pl_state = 
     let ai_hand = State.get_hand ai_state in 
-    if State.get_hp ai_state = State.get_full_hp ai_state 
+    if (State.get_hp ai_state) >= ((State.get_full_hp ai_state) * (1/2))
     then has_attack ai_hand pl_state ai_state
     else has_healing ai_hand pl_state ai_state "attack"
 
