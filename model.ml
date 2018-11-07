@@ -170,8 +170,8 @@ module MakeGame (V:Mainview) : GameModel = struct
               else 
                 (snd updated)
                 (*TODO: this will change with new AI*)
-            ) in let en,pl = Ai_state.enemy_turn hogwarts enemy_updated 
-                     (fst updated) ANSITerminal.red cast_spell in
+            ) in let en,pl = Ai_controller.enemy_decision enemy_updated 
+                     (fst updated) in
             (pl,en)
           ) with Hogwarts.UnknownSpell sp_name -> (
               Printer.print_formatted_lst p_house 
