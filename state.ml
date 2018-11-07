@@ -2,6 +2,7 @@ open Yojson.Basic
 (* open Hogwarts *)
 type t = {
   name : string;
+  house : string;
   full_hp: int;
   hp: int;
   level: int;
@@ -12,6 +13,9 @@ type t = {
   deck: Hogwarts.spell_info list;
   defeated_enemies: Hogwarts.character_name list
 }
+
+let get_house st =
+  st.house
 
 let get_name st =
   st.name
@@ -81,20 +85,20 @@ let get_level_deck  st =
   }
 
 
-let init_player hogwarts name =
+let init_player hogwarts name house =
   {name=name; full_hp = 100; hp=100; level = 1; dazed = 0; blocked = 0;
    prolong_effect = []; hand=[]; 
    deck=(QCheck.Gen.(generate1 (shuffle_l
                                   (Hogwarts.get_spells hogwarts))));
-
+   house=house;
    defeated_enemies = []
   }
 
-let init_player_with_level_deck hogwarts name = 
-  let player = init_player hogwarts name in
+let init_player_with_level_deck hogwarts name house = 
+  let player = init_player hogwarts name house in
   get_level_deck player
 
-let init_enemy hogwarts name =
+let init_enemy hogwarts name house =
   let enemy_info = Hogwarts.search_characters hogwarts name in 
   let enemy_level = Hogwarts.character_level enemy_info in 
   let enemy_hp = Hogwarts.character_hp enemy_info in
@@ -103,11 +107,12 @@ let init_enemy hogwarts name =
    hand=[]; blocked = 0;
    deck=(QCheck.Gen.(generate1 (shuffle_l 
                                   (Hogwarts.get_spells hogwarts))));
+   house=house;
    defeated_enemies = []
   }
 
-let init_enemy_with_level_deck hogwarts name =
-  get_level_deck (init_enemy hogwarts name)
+let init_enemy_with_level_deck hogwarts name house =
+  get_level_deck (init_enemy hogwarts name house)
 
 let refresh_deck hogwarts (st:t) = 
   let new_deck = (QCheck.Gen.(generate1 (shuffle_l 

@@ -11,6 +11,9 @@
     state. *)
 type t
 
+(** [get_name t] is the house of [t] *)
+val get_house : t -> string
+
 (** [get_name t] is the name of 
     player in [t] *)
 val get_name: t -> string
@@ -57,21 +60,21 @@ val get_blocked: t -> int
     level than the level of player in [t]*)
 val get_level_deck: t -> t
 
-(** [init_player Hogwarts.t name] in the initial 
+(** [init_player Hogwarts.t name house] in the initial 
     state of [t] of player *)
-val init_player: Hogwarts.t -> string -> t
+val init_player: Hogwarts.t -> string -> string -> t
 
 (** [init_player_with_level_deck Hogwarts.t name] is a player initialized with a 
     leveled deck. *)
-val init_player_with_level_deck : Hogwarts.t -> string -> t
+val init_player_with_level_deck : Hogwarts.t -> string -> string -> t
 
 (** [init_enemy Hogwarts.t name] in the initial 
     state of [t] of enemy *)
-val init_enemy: Hogwarts.t -> string -> t
+val init_enemy: Hogwarts.t -> string -> string -> t
 
 (** [init_enemy_with_level_deck Hogwarts.t name] is an enemy initialized with a 
     leveled deck. *)
-val init_enemy_with_level_deck : Hogwarts.t -> string -> t
+val init_enemy_with_level_deck : Hogwarts.t -> string -> string -> t
 
 (**[draw t] updates the deck of a state [t]
    after draw*)
