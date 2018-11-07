@@ -4,9 +4,10 @@
 (**The [Mainview] component keeps all methods that are to be output to the 
    screen*)
 module type Mainview = sig
-  (** [print_state caster] prints all of the status info on the 
-      [caster] in their house style. *)
-  val print_state : State.t -> unit
+  (** [print_state caster blocking] prints all of the status info on the 
+      [caster] in their house style. [blocking] is if the caster has an active
+      blocking spell. *)
+  val print_state : State.t -> bool -> unit
 
   (** [list_cards caster] prints the names of all [spells] in [caster]'s 
       hand in the colour of their respective house. *)

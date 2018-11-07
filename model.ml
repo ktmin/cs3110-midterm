@@ -104,8 +104,8 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
         exit 0
       )
     | Status -> (
-        Printer.print_state player;
-        Printer.print_state enemy;
+        Printer.print_state player ((State.get_blocked enemy) = 1);
+        Printer.print_state enemy ((State.get_blocked player) = 1);
         (player,enemy)
       )
     | View -> (

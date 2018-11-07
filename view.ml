@@ -1,5 +1,5 @@
 module type Mainview = sig
-  val print_state : State.t -> unit
+  val print_state : State.t -> bool -> unit
   val list_cards : State.t -> unit
   val print_enemy : Hogwarts.character_info -> State.t -> unit
   val print_post_condition : string -> int -> unit
@@ -292,7 +292,7 @@ module Make : Mainview = struct
 
   (** Prints state of caster. For more details go to 
       {{: View.View.html#VALprint_state} View.View.print_state}. *)
-  let print_state (caster:State.t) : unit =
+  let print_state (caster:State.t) (blocking:bool) : unit =
     let house = get_house (State.get_house caster) in
     ANSITerminal.(print_string [house]
                     ("\n"^(State.get_name caster)^"'s health: ");
@@ -312,11 +312,9 @@ module Make : Mainview = struct
                           ((string_of_int a)^": "^(string_of_int b)^"\n"))) 
         effects
     );
-    (*TODO: this is broken*)
-    if (State.get_blocked caster) = 1 then
+    if blocking then
       ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n") 
 
-  (*TODO: change this to be better sorted*)
   (** Prints cards of caster. For more details go to 
       {{: View.View.html#VALlist_cards} View.View.list_cards}. *)
   let list_cards (caster:State.t) : unit = 
