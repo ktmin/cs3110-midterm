@@ -32,12 +32,12 @@ let parse_input ?pred:(pred=default_condition) (_:unit) : string =
   else
     raise (InvalidInput input)
 
-(** [battle hogwarts player enemy] runs through the game loop for [player] and
-    [enemy] until a win or loss condition is achieved. In the case of win, the 
-    player is returned to choose another opponent, but loss will end the game
-    entirely. *)
-let rec battle (hogwarts:Hogwarts.t) (player:State.t) (enemy:State.t) : 
-  State.t =
+(** [battle skip_states hogwarts player enemy] runs through the game loop for 
+    [player] and [enemy] until a win or loss condition is achieved. In the case 
+    of win, the player is returned to choose another opponent, but loss will end 
+    the game entirely. *)
+let rec battle (skip_states:bool) (hogwarts:Hogwarts.t) 
+    (player:State.t) (enemy:State.t) : State.t =
   let p_house = State.get_house player in
   match Game.check_conditions player enemy with
   | Win -> (
@@ -50,18 +50,19 @@ let rec battle (hogwarts:Hogwarts.t) (player:State.t) (enemy:State.t) :
       exit 0;
     )
   | Continue -> (
-      View.print_state player;
-      View.print_state enemy;
+      if not skip_states then (
+        View.print_state player ((State.get_blocked enemy) = 1);
+        View.print_state enemy ((State.get_blocked player) = 1));
 
       View.print_cmd_input p_house "Enter command";
       try (
         let cmd = Command.parse (parse_input ()) in
         let new_states = Game.run_cmd hogwarts cmd player enemy in
-        battle hogwarts (fst new_states) (snd new_states)
+        battle (cmd = Command.Status) hogwarts (fst new_states) (snd new_states)
       ) with Command.Invalidcommand -> (
           View.print_formatted_lst p_house 
             ["not a command buddy.";"Type in help to get a list of commands"];
-          battle hogwarts player enemy
+          battle false hogwarts player enemy
         )
     )
 
@@ -70,6 +71,10 @@ let rec battle (hogwarts:Hogwarts.t) (player:State.t) (enemy:State.t) :
     recurring until a player either dies in battle or manually quits.*)
 let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
   let p_house = State.get_house player in (
+    View.print_formatted_lst p_house 
+      [("Hey, "^(State.get_name player)); 
+       ("Current Level: "^(string_of_int (State.get_level player)))];
+    View.print_house p_house;
     View.print_enemy_lst hogwarts player;
     View.print_cmd_input p_house "Enter enemy choice";
 
@@ -81,6 +86,7 @@ let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
         play_game hogwarts player
       )
     | Some enemy -> (
+        View.print_clear 50;
         View.print_enemy enemy (State.init_enemy_with_level_deck hogwarts 
                                   (Hogwarts.character_name enemy) 
                                   (Hogwarts.character_house enemy));
@@ -88,12 +94,13 @@ let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
         let yes_no = String.uppercase_ascii (parse_input ()) in
         let confirm = Menu.affirmation (yes_no = "Y" || yes_no = "YES") 
             hogwarts enemy in
+        View.print_clear 50;
         match confirm with
         | None -> play_game hogwarts player
         | Some enemy_state -> (
             View.print_formatted_lst p_house 
               [("You are battling with "^(Hogwarts.character_name enemy))];
-            let new_state = battle hogwarts player enemy_state in
+            let new_state = battle false hogwarts player enemy_state in
             play_game hogwarts new_state
           )
       )
@@ -153,11 +160,12 @@ let get_files (_:unit) : (string*string)=
   (spells,chars)
 
 (** [init_game] is the entry point into the game. *)
-let rec init_game (_:unit) =
+let rec init_game ?skip_clear:(skip_clear=false) (_:unit) =
+  if not skip_clear then View.print_clear 50;
   View.print_title ();
   View.print_formatted_lst "" ["\nInput Quit at any point to exit game"];
   View.print_formatted_lst "" 
-    ["\nRules are simple:";
+    ["\nRules of the game are simple:";
      "- You have a deck and spell cards that attack the opponent or heal you";
      "- Each turn you can just cast or draw and cast";
      "- You play against an AI that takes its turn after you";
@@ -165,15 +173,18 @@ let rec init_game (_:unit) =
   let files = get_files () in
   try (
     let hogwarts = Menu.play_init (fst files) (snd files) in
+    View.print_clear 50;
     let name = get_name ()  in
+    View.print_clear 50;
     let house = get_house () in
     let player = Menu.create_player hogwarts name house in (
-      View.print_house house;
+      View.print_clear 50;
       play_game hogwarts player
     )
   ) with _ -> (
+      View.print_clear 50;
       View.print_formatted_lst "gryffindor" ["Files were invalid. Try again."];
-      init_game ()
+      init_game ~skip_clear:(true) ()
     )
 
 (**/**)

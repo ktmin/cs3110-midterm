@@ -99,22 +99,26 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
     let p_house = State.get_house player in
     match cmd with
     | Forfeit -> (
+        Printer.print_clear 50;
         Printer.print_formatted_lst p_house 
           ["Turns out you weren't so tough and brave..."];
         exit 0
       )
     | Status -> (
-        Printer.print_state player;
-        Printer.print_state enemy;
+        Printer.print_clear 50;
+        Printer.print_state player ((State.get_blocked enemy) = 1);
+        Printer.print_state enemy ((State.get_blocked player) = 1);
         (player,enemy)
       )
     | View -> (
+        Printer.print_clear 50;
         Printer.print_formatted_lst p_house 
           ["The following spells can be cast: \n"];
         Printer.list_cards player;
         (player, enemy)
       )
     | Instruction  -> (
+        Printer.print_clear 50;
         Printer.print_formatted_lst p_house 
           ["Rules are simple:";
            "- You have a deck and spell cards that attack the opponent or heal you";
@@ -124,6 +128,7 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
         (player, enemy)
       )
     | Describe lst -> (
+        Printer.print_clear 50;
         let sp_name = String.concat " " lst in (
           try (
             (*Note to self: the str->spell->str is to make the exception happen
@@ -136,6 +141,7 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
         (player,enemy)
       )
     | Draw -> (
+        Printer.print_clear 50;
         let can_get = List.length (State.to_list_hand player) < 5 in
         if can_get then (
           let rec get_cards hand =
@@ -158,6 +164,7 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
         )
       )
     | Help -> (
+        Printer.print_clear 50;
         Printer.print_formatted_lst p_house [
           "Possible Commands:";
           "- Cast [card name] -> casts the card";
@@ -172,6 +179,7 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
         (player,enemy)
       )
     | Cast lst -> (
+        Printer.print_clear 50;
         let sp_name = String.concat " " lst in (
           try (
             let spell = Hogwarts.search_spells hogwarts sp_name in
