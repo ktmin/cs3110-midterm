@@ -52,8 +52,8 @@ module MakeAI (V:Mainview) : AI = struct
       then Some (find_best_long_effect_spell filtered_hand (List.hd filtered_hand))
       else Some (find_best_spell filtered_hand (List.hd filtered_hand) f op)
 
-  (** [has_attack hand player ai] is the cast on [player] dependant on whether if 
-      an attack spell is in the [hand] of the [ai]. *)
+  (** [has_attack hand player ai] is the cast on [player] dependant on whether 
+      if an attack spell is in the [hand] of the [ai]. *)
   let has_attack ai_hand pl_state ai_state =
     let spell = hand_search ai_hand "attack" Hogwarts.spell_damage (>) in 
     match spell with 
