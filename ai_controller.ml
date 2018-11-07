@@ -23,9 +23,9 @@ module MakeAI (V:Mainview) : AI = struct
       then find_best_spell t h f op
       else find_best_spell t cmp f op
 
-  (** [find_best_long_effect_spell lst cmp] is a version of [find_best_spell] but 
-      specifically for finding the best long_effect spell in [lst] by using spell 
-      [cmp] for comparison. *)
+  (** [find_best_long_effect_spell lst cmp] is a version of [find_best_spell] 
+      but specifically for finding the best long_effect spell in [lst] by using 
+      spell [cmp] for comparison. *)
   let rec find_best_long_effect_spell lst cmp = 
     match lst with 
     | [] -> cmp
@@ -49,7 +49,8 @@ module MakeAI (V:Mainview) : AI = struct
     match filtered_hand with 
     | [] -> None
     | h::t -> if spell_type = "persistent" 
-      then Some (find_best_long_effect_spell filtered_hand (List.hd filtered_hand))
+      then Some 
+          (find_best_long_effect_spell filtered_hand (List.hd filtered_hand))
       else Some (find_best_spell filtered_hand (List.hd filtered_hand) f op)
 
   (** [has_attack hand player ai] is the cast on [player] dependant on whether 
@@ -76,7 +77,8 @@ module MakeAI (V:Mainview) : AI = struct
   (** [has_long_effect hand player ai] is the cast on [player] dependant on 
       whether if a long_effect spell is in the [hand] of the [ai]. *)
   let has_long_effect ai_hand pl_state ai_state =
-    let spell = hand_search ai_hand "persistent" Hogwarts.spell_long_effect (>) in 
+    let spell = hand_search ai_hand "persistent" Hogwarts.spell_long_effect (>) 
+    in 
     match spell with 
     | None -> has_block ai_hand pl_state ai_state
     | Some persistent_spell -> Printer.print_cast ai_state persistent_spell; 
@@ -105,7 +107,7 @@ module MakeAI (V:Mainview) : AI = struct
       [pl_state] dependant on its current health. *)
   let is_full_health ai_state pl_state = 
     let ai_hand = State.get_hand ai_state in 
-    if State.get_hp ai_state = State.get_full_hp ai_state 
+    if (State.get_hp ai_state) >= ((State.get_full_hp ai_state) * (1/2))
     then has_attack ai_hand pl_state ai_state
     else has_healing ai_hand pl_state ai_state "attack"
 
