@@ -294,6 +294,7 @@ module Make : Mainview = struct
       {{: View.View.html#VALprint_state} View.View.print_state}. *)
   let print_state (caster:State.t) (blocking:bool) : unit =
     let house = get_house (State.get_house caster) in
+    print_string "\n";
     ANSITerminal.(print_string [house]
                     ("\n"^(State.get_name caster)^"'s health: ");
                   print_string [magenta] 
@@ -328,7 +329,7 @@ module Make : Mainview = struct
           ANSITerminal.(print_string [magenta] 
                           ((Hogwarts.spell_name h ^ 
                             "\n\nEnter: Describe spell_name to see spell 
-    description."))))
+    description.\n"))))
       | h::t -> (
           ANSITerminal.(print_string [magenta] 
                           ((Hogwarts.spell_name h) ^ ", "));
