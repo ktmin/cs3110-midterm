@@ -1,4 +1,5 @@
 module type Mainview = sig
+  val print_clear : int -> unit
   val print_state : State.t -> bool -> unit
   val list_cards : State.t -> unit
   val print_enemy : Hogwarts.character_info -> State.t -> unit

@@ -4,6 +4,9 @@
 (**The [Mainview] component keeps all methods that are to be output to the 
    screen*)
 module type Mainview = sig
+  (** [print_clear len] prints out [len] number of newlines on screen. *)
+  val print_clear : int -> unit
+
   (** [print_state caster blocking] prints all of the status info on the 
       [caster] in their house style. [blocking] is if the caster has an active
       blocking spell. *)
