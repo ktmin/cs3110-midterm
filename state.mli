@@ -145,7 +145,7 @@ val required_wins: t -> int
     have been secured. *)
 val level_up: t -> t
 
-(** [get_rpolong_tupes t] gets all prolonged effects of input caster*)
+(** [get_prolong_tupes t] gets all prolonged effects of input caster*)
 val get_prolong_tupes: t -> (int*int) list
 
 (** [update_dazed st] is a helper for update for if dazed 

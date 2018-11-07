@@ -125,7 +125,9 @@ module MakeAI (V:Mainview) : AI = struct
   (** [is_dazed ai pl] determines if [ai] is dazed. If not, makes decision based 
       on possibility of ending game. *) 
   let is_dazed ai_state pl_state = 
-    if (State.get_dazed ai_state) > 0 then (ai_state, pl_state) 
+    if (State.get_dazed ai_state) > 0 
+    then let updated_enemy = 
+           State.update_dazed ai_state in (updated_enemy, pl_state) 
     else is_game_ending ai_state pl_state
 
   let rec enemy_decision enemy player = 
