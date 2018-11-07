@@ -156,6 +156,12 @@ let get_files (_:unit) : (string*string)=
 let rec init_game (_:unit) =
   View.print_title ();
   View.print_formatted_lst "" ["\nInput Quit at any point to exit game"];
+  View.print_formatted_lst "" 
+    ["\nRules are simple:";
+     "- You have a deck and spell cards that attack the opponent or heal you";
+     "- Each turn you can just cast or draw and cast";
+     "- You play against an AI that takes its turn after you";
+     "- Winner is the person who makes the other reach 0 or less health"];
   let files = get_files () in
   try (
     let hogwarts = Menu.play_init (fst files) (snd files) in
