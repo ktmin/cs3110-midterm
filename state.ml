@@ -241,10 +241,14 @@ let update spell st1 st2 =
               else (update_helper_health st2 spell)))
 
 let hand_after_cast spell st =
-  let new_hand = List.filter (fun x -> spell <>
-                                       x) st.hand in {
-    st with hand = new_hand
-  }
+  let rec after_cast spell hand = 
+    match hand with 
+    | [] -> []
+    | h :: t -> if h = spell then
+        t else h :: (after_cast spell t)  
+  in  
+  let new_hand = after_cast spell st.hand in
+  {st with hand = new_hand}
 
 
 (** [update_prolong_damage Hogwarts.spell_info t]
