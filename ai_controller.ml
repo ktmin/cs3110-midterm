@@ -52,13 +52,15 @@ module MakeAI (V:Mainview) : AI = struct
       then Some (find_best_long_effect_spell filtered_hand (List.hd filtered_hand))
       else Some (find_best_spell filtered_hand (List.hd filtered_hand) f op)
 
-  (** [has_attack hand player ai] is the cast on [player] dependant on whether if 
-      an attack spell is in the [hand] of the [ai]. *)
+  (** [has_attack hand player ai] is the cast on [player] dependant on whether 
+      if an attack spell is in the [hand] of the [ai]. *)
   let has_attack ai_hand pl_state ai_state =
     let spell = hand_search ai_hand "attack" Hogwarts.spell_damage (>) in 
     match spell with 
-    | None -> execute_action (List.hd ai_hand) ai_state pl_state
-    | Some attack_spell -> execute_action attack_spell ai_state pl_state
+    | None -> Printer.print_cast ai_state (List.hd ai_hand); 
+      execute_action (List.hd ai_hand) ai_state pl_state
+    | Some attack_spell -> Printer.print_cast ai_state attack_spell; 
+      execute_action attack_spell ai_state pl_state
 
   (** [has_block hand player ai] is the cast on [player] dependant on whether if 
       a blocking spell is in the [hand] of the [ai]. *)
@@ -66,8 +68,10 @@ module MakeAI (V:Mainview) : AI = struct
     let filtered_hand = 
       List.filter (fun x -> Hogwarts.spell_type x = "blocking") ai_hand in
     match filtered_hand with 
-    | [] -> execute_action (List.hd ai_hand) ai_state pl_state
-    | h::t -> execute_action (List.hd filtered_hand) ai_state pl_state
+    | [] -> Printer.print_cast ai_state (List.hd ai_hand); 
+      execute_action (List.hd ai_hand) ai_state pl_state
+    | h::t -> Printer.print_cast ai_state (List.hd filtered_hand); 
+      execute_action (List.hd filtered_hand) ai_state pl_state
 
   (** [has_long_effect hand player ai] is the cast on [player] dependant on 
       whether if a long_effect spell is in the [hand] of the [ai]. *)
@@ -75,7 +79,8 @@ module MakeAI (V:Mainview) : AI = struct
     let spell = hand_search ai_hand "persistent" Hogwarts.spell_long_effect (>) in 
     match spell with 
     | None -> has_block ai_hand pl_state ai_state
-    | Some persistent_spell -> execute_action persistent_spell ai_state pl_state
+    | Some persistent_spell -> Printer.print_cast ai_state persistent_spell; 
+      execute_action persistent_spell ai_state pl_state
 
   (** [has_daze hand player ai] is the cast on [player] dependant on whether if 
       a daze spell is in the [hand] of the [ai]. *)
@@ -83,7 +88,8 @@ module MakeAI (V:Mainview) : AI = struct
     let spell = hand_search ai_hand "stunning" Hogwarts.spell_daze (>) in 
     match spell with 
     | None -> has_long_effect ai_hand pl_state ai_state
-    | Some daze_spell -> execute_action daze_spell ai_state pl_state
+    | Some daze_spell -> Printer.print_cast ai_state daze_spell; 
+      execute_action daze_spell ai_state pl_state
 
   (** [has_healing hand player ai] is the cast on [player] dependant on whether 
       a healing spell is in the [hand] of the [ai]. *)
@@ -92,7 +98,8 @@ module MakeAI (V:Mainview) : AI = struct
     match spell with 
     | None -> if condition = "attack" then has_attack ai_hand pl_state ai_state
       else has_daze ai_hand pl_state ai_state
-    | Some healing_spell -> execute_action healing_spell ai_state pl_state
+    | Some healing_spell -> Printer.print_cast ai_state healing_spell; 
+      execute_action healing_spell ai_state pl_state
 
   (** [is_full_health ai_state pl_state] is the cast of the [ai_state] on 
       [pl_state] dependant on its current health. *)
@@ -111,8 +118,15 @@ module MakeAI (V:Mainview) : AI = struct
     | None -> has_healing ai_hand ai_state pl_state ""
     | Some spell -> 
       if (Hogwarts.spell_damage spell >= State.get_hp pl_state)
-      then execute_action spell ai_state pl_state 
+      then (Printer.print_cast ai_state spell; 
+            execute_action spell ai_state pl_state) 
       else has_healing ai_hand pl_state ai_state ""
+
+  (** [is_dazed ai pl] determines if [ai] is dazed. If not, makes decision based 
+      on possibility of ending game. *) 
+  let is_dazed ai_state pl_state = 
+    if (State.get_dazed ai_state) > 0 then (ai_state, pl_state) 
+    else is_game_ending ai_state pl_state
 
   let rec enemy_decision enemy player = 
     if (State.get_hp enemy) <= 0 then (enemy,player)
@@ -123,7 +137,7 @@ module MakeAI (V:Mainview) : AI = struct
         (
           if State.get_blocked enemy > 0 
           then is_full_health enemy player
-          else is_game_ending enemy player
+          else is_dazed enemy player
         )
     )
 end

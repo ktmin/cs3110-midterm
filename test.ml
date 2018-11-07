@@ -89,10 +89,10 @@ let obliviate =
 
 
 let init_pl  =
-  init_player spells_characters_json "Bryan"
+  init_player spells_characters_json "Bryan" "Slytherin"
 
 let init_en = 
-  init_enemy spells_characters_json "Cho Chang"
+  init_enemy spells_characters_json "Cho Chang" "Slytherin"
 
 
 let state_tests =
