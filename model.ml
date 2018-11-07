@@ -138,11 +138,19 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
     | Draw -> (
         let can_get = List.length (State.to_list_hand player) < 5 in
         if can_get then (
-          let new_hand = State.draw player in
-          let new_card =  List.hd(State.to_list_hand new_hand) in (
-            Printer.print_formatted_lst p_house 
-              [("You drew "^(Hogwarts.spell_name new_card))];
-            (new_hand,enemy))
+          let rec get_cards hand =
+            let new_hand = State.draw hand in
+            let new_card =  List.hd(State.to_list_hand new_hand) in (
+              Printer.print_formatted_lst p_house 
+                [("You drew "^(Hogwarts.spell_name new_card))];
+              if List.length (State.to_list_hand new_hand) < 5 
+              then
+                get_cards new_hand
+              else
+                new_hand) in 
+          let full_hand = get_cards player in
+          Printer.list_cards full_hand;
+          (full_hand, enemy)
         ) else (
           Printer.print_formatted_lst p_house ["You already have 5 spells...";
                                                "Don't get greedy"];
@@ -167,23 +175,29 @@ module MakeGame (V:Mainview) (A:AI) : GameModel = struct
         let sp_name = String.concat " " lst in (
           try (
             let spell = Hogwarts.search_spells hogwarts sp_name in
-            let updated = cast_spell spell player enemy in 
-            let enemy_updated = (
-              if(Hogwarts.spell_target spell) = "self" 
-              then 
-                enemy
-              else 
-                (snd updated)
-            ) in let rec enemy_batter enemy player = 
-                   let en,pl = Enemy_Logic.enemy_decision enemy player in (
-                     if (State.get_dazed pl) > 0 then (
-                       Printer.print_formatted_lst (State.get_house player)
-                         ["\nYou are dazed and cannot attack"];
-                       enemy_batter en (State.update_dazed pl)
-                     ) else (
-                       (pl,en)
-                     )
-                   ) in enemy_batter enemy_updated (fst updated)
+            if(List.mem (spell) (State.to_list_hand player)) then (
+              let updated = cast_spell spell player enemy in 
+              let enemy_updated = (
+                if(Hogwarts.spell_target spell) = "self" 
+                then 
+                  enemy
+                else 
+                  (snd updated)
+              ) in let rec enemy_batter enemy player = 
+                     let en,pl = Enemy_Logic.enemy_decision enemy player in (
+                       if (State.get_dazed pl) > 0 then (
+                         Printer.print_formatted_lst (State.get_house player)
+                           ["\nYou are dazed and cannot attack"];
+                         enemy_batter en (State.update_dazed pl)
+                       ) else (
+                         (pl,en)
+                       )
+                     ) in enemy_batter enemy_updated (fst updated))
+            else (
+              Printer.print_formatted_lst 
+                p_house ["Nice try but you don't have that spell"];
+              (player, enemy)
+            )
           ) with Hogwarts.UnknownSpell sp_name -> (
               Printer.print_formatted_lst p_house 
                 [(sp_name ^ " incorrectly spelled. Try again\n")];
