@@ -162,6 +162,9 @@ let spell_level spell =
 let character_level character = 
   character.character_level
 
+let spell_type spell = 
+  spell.spell_type
+
 let spell_daze spell = 
   spell.daze
 

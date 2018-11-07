@@ -94,6 +94,9 @@ val spell_level: spell_info -> int
 (** [character_level c] is the character level for character [c] *)
 val character_level: character_info -> int
 
+(** [spell_type s] is the spell type of [s]. *)
+val spell_type: spell_info -> string
+
 (** [spell_daze s] is the dazing effect of spell [s]. *)
 val spell_daze : spell_info -> int
 
