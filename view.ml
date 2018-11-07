@@ -191,23 +191,104 @@ module Make : Mainview = struct
           run_through house t
         ) in run_through house lst
 
+  (*===Start ASCII Card Methods===*)
+  (** [chop width lst] chops a list's strings into one string until no more
+      can be done, then returns the same list with the new string at the head.*)
+  let chop (width:int) (lst:string list) : string list =
+    let start = "" in
+    let rec append (lst:string list) (str:string) : string list =
+      match lst with
+      | [] -> [str]
+      | h::t -> (
+          let appended = str^" "^h in
+          if String.length appended > width then
+            (str::lst)
+          else
+            append t appended
+        ) in append lst start
+
+  (** [partition_list width lst] partitions a list in such a way that all strings
+      in returned list are less than or equal to [width] characters.*)
+  let partition_list (width:int) (lst:string list) : string list =
+    let acc = [] in
+    let rec partition acc lst = 
+      match lst with
+      | [] -> acc
+      | _::_ -> (
+          match chop width lst with
+          | [] -> acc
+          | h::t -> partition (acc@[h]) t
+        ) in partition acc lst
+
+  (** [get_lines width] generates [width] amount of dashes for ascii card.*)
+  let get_lines ?pattern:(pattern="-") (width:int) : string =
+    let start_str = "" in
+    let rec run width str =
+      if width <= 0 then str
+      else run (width-1) (str^pattern)
+    in run width start_str
+
+  (** [get_centered_text width input] returns a string of set [width] with
+      [input] at its center. *)
+  let get_centered_text (width:int) (input:string) : string =
+    let len = String.length input in
+    let buffer = (width-len)/2 in
+    let buffers = get_lines ~pattern:(" ") buffer in
+    buffers^input^buffers
+
+  (** [pad width s] returns a string that is padded to be exactly [width] size.
+  *)
+  let rec pad (width:int) (s:string) : string = (
+    if String.length s < width then
+      pad width (s^" ")
+    else
+      s
+  )
+
+  (*This is at the bottom to utilize print_formatted_lst*)
+  (** Prints ascii card. For more details go to 
+      {{: View.View.html#VALprint_card} 
+      View.View.print_card}. *)
+  let print_card (house:string) (width:int) (header:string) (body:string list) : 
+    unit =
+    let rim, header = (get_lines width), (get_centered_text width header) in
+    let top, bottom, mid = ("."^rim^"."), ("'"^rim^"'"), 
+                           (get_lines ~pattern:("=") width) in
+    let body_lst = partition_list width body in
+    let width_adjust = List.map (pad width) body_lst in
+    let final_lst = [header;mid]@width_adjust in
+    let mapped = List.map (fun s -> "|"^s^"|") final_lst in
+
+    print_formatted_lst house (top::(mapped@[bottom]))
+  (*===End ASCII Card Methods===*)
+
   (*===Start State Dependant Methods===*)
   (*TODO: ASCII character card*)
   let print_enemy (enemy:Hogwarts.character_info) (enemy_state:State.t) 
     : unit =
-    let house = get_house (State.get_house enemy_state) in
-    ANSITerminal.(print_string [ANSITerminal.Bold; house] 
-                    (Hogwarts.character_name enemy);
-                  print_string [house] 
-                    ("\n-=-=-=-=-\n"^
-                     (Hogwarts.character_description enemy)^"\n-=-=-=-=-\n");
-                  print_string [house] 
-                    ("Level: "^(string_of_int (State.get_level enemy_state)));
-                  print_string [house] 
-                    ("\nStarting Health: "^
-                     (string_of_int (State.get_hp enemy_state)));
-                  print_string [house] 
-                    ("\nHouse: "^(Hogwarts.character_house enemy)))
+    let name = Hogwarts.character_name enemy in
+    let len = (String.length name)+14 in
+    let lvl = "Level: "^(string_of_int (State.get_level enemy_state)) in
+    let health = "Starting Health: "^
+                 (string_of_int (State.get_hp enemy_state)) in
+    let house = "House: "^(Hogwarts.character_house enemy) in
+    let break = get_lines ~pattern:(" ") (len-1) in
+    let desc = Str.split (Str.regexp " ")
+        (Hogwarts.character_description enemy) in
+    print_card (Hogwarts.character_house enemy) len name 
+      ([house; health; lvl; break]@desc)
+  (* ANSITerminal.(print_string [ANSITerminal.Bold; house] 
+                  (Hogwarts.character_name enemy);
+                print_string [house] 
+                  ("\n-=-=-=-=-\n"^
+                   (Hogwarts.character_description enemy)^"\n-=-=-=-=-\n");
+                print_string [house] 
+                  ("Level: "^(string_of_int (State.get_level enemy_state)));
+                print_string [house] 
+                  ("\nStarting Health: "^
+                   (string_of_int (State.get_hp enemy_state)));
+                print_string [house] 
+                  ("\nHouse: "^(Hogwarts.character_house enemy))) *)
 
   (** Prints state of caster. For more details go to 
       {{: View.View.html#VALprint_state} View.View.print_state}. *)
@@ -295,76 +376,6 @@ module Make : Mainview = struct
     )
 
   (*===End State Dependant Methods===*)
-  (*===Start ASCII Card Methods===*)
-  (** [chop width lst] chops a list's strings into one string until no more
-      can be done, then returns the same list with the new string at the head.*)
-  let chop (width:int) (lst:string list) : string list =
-    let start = "" in
-    let rec append (lst:string list) (str:string) : string list =
-      match lst with
-      | [] -> [str]
-      | h::t -> (
-          let appended = str^" "^h in
-          if String.length appended > width then
-            (str::lst)
-          else
-            append t appended
-        ) in append lst start
-
-  (** [partition_list width lst] partitions a list in such a way that all strings
-      in returned list are less than or equal to [width] characters.*)
-  let partition_list (width:int) (lst:string list) : string list =
-    let acc = [] in
-    let rec partition acc lst = 
-      match lst with
-      | [] -> acc
-      | _::_ -> (
-          match chop width lst with
-          | [] -> acc
-          | h::t -> partition (acc@[h]) t
-        ) in partition acc lst
-
-  (** [get_lines width] generates [width] amount of dashes for ascii card.*)
-  let get_lines ?pattern:(pattern="-") (width:int) : string =
-    let start_str = "" in
-    let rec run width str =
-      if width <= 0 then str
-      else run (width-1) (str^pattern)
-    in run width start_str
-
-  (** [get_centered_text width input] returns a string of set [width] with
-      [input] at its center. *)
-  let get_centered_text (width:int) (input:string) : string =
-    let len = String.length input in
-    let buffer = (width-len)/2 in
-    let buffers = get_lines ~pattern:(" ") buffer in
-    buffers^input^buffers
-
-  (** [pad width s] returns a string that is padded to be exactly [width] size.
-  *)
-  let rec pad (width:int) (s:string) : string = (
-    if String.length s < width then
-      pad width (s^" ")
-    else
-      s
-  )
-
-  (*This is at the bottom to utilize print_formatted_lst*)
-  (** Prints ascii card. For more details go to 
-      {{: View.View.html#VALprint_card} 
-      View.View.print_card}. *)
-  let print_card (house:string) (width:int) (header:string) (body:string list) : 
-    unit =
-    let rim, header = (get_lines width), (get_centered_text width header) in
-    let top, bottom, mid = ("."^rim^"."), ("'"^rim^"'"), 
-                           (get_lines ~pattern:("=") width) in
-    let body_lst = partition_list width body in
-    let width_adjust = List.map (pad width) body_lst in
-    let final_lst = [header;mid]@width_adjust in
-    let mapped = List.map (fun s -> "|"^s^"|") final_lst in
-
-    print_formatted_lst house (top::(mapped@[bottom]))
-  (*===End ASCII Card Methods===*)
 
   (*TODO: ASCII spell card*)
   (** Prints details of spell. For more details go to 
