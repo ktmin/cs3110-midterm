@@ -307,10 +307,13 @@ module Make : Mainview = struct
     );
     let effects = State.get_prolong_tupes caster in
     if List.length effects > 0 then (
-      let out_arr = List.map (fun (d,t) ->  
-          (string_of_int d)^": "^(string_of_int t)) effects in
+      let out_arr = List.map (fun (d,t) ->  let notifier = (
+          if d > 0 then "Damage: " else "Healing: "
+        ) in
+          notifier^(string_of_int d)^" Turns Left: "^(string_of_int t)) 
+          effects in
       print_formatted_lst (State.get_house caster) 
-        ("\nEffect Damage: Turns Left"::out_arr)
+        ("\nLong Effects"::out_arr)
     );
     if blocking then
       ANSITerminal.(print_string [house;ANSITerminal.Bold] "\nIs blocking\n") 
