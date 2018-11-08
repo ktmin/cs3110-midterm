@@ -77,8 +77,8 @@ module MakeAI (V:Mainview) : AI = struct
   (** [has_long_effect hand ai player] is the cast on [player] dependant on 
       whether if a long_effect spell is in the [hand] of the [ai]. *)
   let has_long_effect enemy_hand enemy player =
-    let spell = hand_search enemy_hand "persistent" Hogwarts.spell_long_effect (>) 
-    in 
+    let spell = 
+      hand_search enemy_hand "persistent" Hogwarts.spell_long_effect (>) in 
     match spell with 
     | None -> has_block enemy_hand enemy player
     | Some persistent_spell -> Printer.print_cast enemy persistent_spell; 
@@ -115,7 +115,8 @@ module MakeAI (V:Mainview) : AI = struct
       away against [player]. *)
   let is_game_ending enemy player = 
     let enemy_hand = State.get_hand enemy in 
-    let best_spell = hand_search enemy_hand "attack" Hogwarts.spell_damage (>) in 
+    let best_spell = hand_search enemy_hand "attack" Hogwarts.spell_damage (>) 
+    in 
     match best_spell with 
     | None -> has_healing enemy_hand enemy player ""
     | Some spell -> 

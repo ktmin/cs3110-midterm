@@ -1,5 +1,5 @@
 open Yojson.Basic 
-(* open Hogwarts *)
+
 type t = {
   name : string;
   house : string;

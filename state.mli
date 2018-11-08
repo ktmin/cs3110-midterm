@@ -11,7 +11,7 @@
     state. *)
 type t
 
-(** [get_name t] is the house of [t] *)
+(** [get_house t] is the house of [t] *)
 val get_house : t -> string
 
 (** [get_name t] is the name of 
