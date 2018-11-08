@@ -201,11 +201,14 @@ module Make : Mainview = struct
       match lst with
       | [] -> [str]
       | h::t -> (
-          let appended = str^" "^h in
-          if String.length appended > width then
-            (str::lst)
-          else
-            append t appended
+          if String.length h >= width then (h::lst)
+          else (
+            let appended = str^" "^h in
+            if String.length appended > width then
+              (str::lst)
+            else
+              append t appended
+          )
         ) in append lst start
 
   (** [partition_list width lst] partitions a list in such a way that all strings
@@ -246,7 +249,6 @@ module Make : Mainview = struct
       s
   )
 
-  (*This is at the bottom to utilize print_formatted_lst*)
   (** Prints ascii card. For more details go to 
       {{: View.View.html#VALprint_card} 
       View.View.print_card}. *)

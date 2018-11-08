@@ -70,41 +70,49 @@ let rec battle (skip_states:bool) (hogwarts:Hogwarts.t)
     battle, and keeps track of player inputs for choosing opponent. Will keep
     recurring until a player either dies in battle or manually quits.*)
 let rec play_game (hogwarts:Hogwarts.t) (player:State.t) : unit =
-  let p_house = State.get_house player in (
-    View.print_formatted_lst p_house 
-      [("Hey, "^(State.get_name player)); 
-       ("Current Level: "^(string_of_int (State.get_level player)))];
-    View.print_house p_house;
-    View.print_enemy_lst hogwarts player;
-    View.print_cmd_input p_house "Enter enemy choice";
+  let defeated_len = List.length (State.get_defeated_enemies player) in 
+  let enemy_len = List.length (Hogwarts.get_characters hogwarts) in
+  if defeated_len = enemy_len then
+    View.print_formatted_lst (State.get_house player) 
+      ["\nA winner is you!";
+       "You have wasted enough time to defeat all enemies";
+       "Now go. Shoo. You have homework to do."]
+  else
+    let p_house = State.get_house player in (
+      View.print_formatted_lst p_house 
+        [("Hey, "^(State.get_name player)); 
+         ("Current Level: "^(string_of_int (State.get_level player)))];
+      View.print_house p_house;
+      View.print_enemy_lst hogwarts player;
+      View.print_cmd_input p_house "Enter enemy choice";
 
-    match Menu.choose_opponent hogwarts (parse_input ()) with
-    | None -> (
-        View.print_formatted_lst p_house 
-          ["That wasn't on the list...";
-           "10/10 for effort, -5/7 for execution. Try again"];
-        play_game hogwarts player
-      )
-    | Some enemy -> (
-        View.print_clear 50;
-        View.print_enemy enemy (State.init_enemy_with_level_deck hogwarts 
-                                  (Hogwarts.character_name enemy) 
-                                  (Hogwarts.character_house enemy));
-        View.print_cmd_input p_house "Enter Yes to confirm enemy";
-        let yes_no = String.uppercase_ascii (parse_input ()) in
-        let confirm = Menu.affirmation (yes_no = "Y" || yes_no = "YES") 
-            hogwarts enemy in
-        View.print_clear 50;
-        match confirm with
-        | None -> play_game hogwarts player
-        | Some enemy_state -> (
-            View.print_formatted_lst p_house 
-              [("You are battling with "^(Hogwarts.character_name enemy))];
-            let new_state = battle false hogwarts player enemy_state in
-            play_game hogwarts new_state
-          )
-      )
-  )
+      match Menu.choose_opponent hogwarts (parse_input ()) with
+      | None -> (
+          View.print_formatted_lst p_house 
+            ["That wasn't on the list...";
+             "10/10 for effort, -5/7 for execution. Try again"];
+          play_game hogwarts player
+        )
+      | Some enemy -> (
+          View.print_clear 50;
+          View.print_enemy enemy (State.init_enemy_with_level_deck hogwarts 
+                                    (Hogwarts.character_name enemy) 
+                                    (Hogwarts.character_house enemy));
+          View.print_cmd_input p_house "Enter Yes to confirm enemy";
+          let yes_no = String.uppercase_ascii (parse_input ()) in
+          let confirm = Menu.affirmation (yes_no = "Y" || yes_no = "YES") 
+              hogwarts enemy in
+          View.print_clear 50;
+          match confirm with
+          | None -> play_game hogwarts player
+          | Some enemy_state -> (
+              View.print_formatted_lst p_house 
+                [("You are battling with "^(Hogwarts.character_name enemy))];
+              let new_state = battle false hogwarts player enemy_state in
+              play_game hogwarts new_state
+            )
+        )
+    )
 
 (** [get_name] returns the name of a person from terminal input.
     The predicate is that the name must be alphabetical (with spaces allowed) 
