@@ -34,7 +34,11 @@
 </div>
 <hr width="100%">
 
-<pre><span id="MODULETYPEAI"><span class="keyword">module type</span> <a href="Ai_controller.AI.html">AI</a></span> = <code class="code">sig</code> <a href="Ai_controller.AI.html">..</a> <code class="code">end</code></pre>
+<pre><span id="MODULETYPEAI"><span class="keyword">module type</span> <a href="Ai_controller.AI.html">AI</a></span> = <code class="code">sig</code> <a href="Ai_controller.AI.html">..</a> <code class="code">end</code></pre><div class="info">
+<p><code class="code">AI</code> is the signature for the AI</p>
+
+</div>
+
 <pre><span id="MODULEMakeAI"><span class="keyword">module</span> <a href="Ai_controller.MakeAI.html">MakeAI</a></span>: <div class="sig_block"><code class="code">functor (</code><code class="code">V</code><code class="code"> : </code><code class="type"><a href="View.Mainview.html">View.Mainview</a></code><code class="code">) -&gt; </code><code class="code">sig</code> <a href="Ai_controller.MakeAI.html">..</a> <code class="code">end</code></div></pre><div class="info">
 <p><code class="code">MakeAI V</code> uses <code class="code">View.View</code> as a printer in a game scenario and contains
     all ai logic to be used.</p>

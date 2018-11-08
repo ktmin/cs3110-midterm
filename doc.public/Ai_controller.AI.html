@@ -25,7 +25,18 @@
 &nbsp;</div>
 <h1>Module type <a href="type_Ai_controller.AI.html">Ai_controller.AI</a></h1>
 
-<pre><span id="MODULETYPEAI"><span class="keyword">module type</span> AI</span> = <code class="code">sig</code> <a href="Ai_controller.AI.html">..</a> <code class="code">end</code></pre><hr width="100%">
+<pre><span id="MODULETYPEAI"><span class="keyword">module type</span> AI</span> = <code class="code">sig</code> <a href="Ai_controller.AI.html">..</a> <code class="code">end</code></pre><div class="info modtype top">
+<div class="info-desc">
+<p><code class="code">AI</code> is the signature for the AI</p>
+</div>
+</div>
+<hr width="100%">
 
 <pre><span id="MODULEPrinter"><span class="keyword">module</span> <a href="Ai_controller.AI.Printer.html">Printer</a></span>: <code class="type"><a href="View.Mainview.html">View.Mainview</a></code><code class="type"> </code></pre>
-<pre><span id="VALenemy_decision"><span class="keyword">val</span> enemy_decision</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre></body></html>
+<pre><span id="VALenemy_decision"><span class="keyword">val</span> enemy_decision</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">enemy_decision ai_state pl_state</code> is the new state of <code class="code">pl_state</code> after the 
+      ai makes a decision based on <code class="code">ai_state</code>.</p>
+</div>
+</div>
+</body></html>

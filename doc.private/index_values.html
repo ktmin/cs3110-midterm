@@ -222,7 +222,12 @@
 <tr><td><a href="Ai_controller.MakeAI.html#VALenemy_decision">enemy_decision</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td></td></tr>
 <tr><td><a href="Ai_controller.AI.html#VALenemy_decision">enemy_decision</a> [<a href="Ai_controller.AI.html">Ai_controller.AI</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">enemy_decision ai_state pl_state</code> is the new state of <code class="code">pl_state</code> after the 
+      ai makes a decision based on <code class="code">ai_state</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="View.Make.html#VALeven_odd">even_odd</a> [<a href="View.Make.html">View.Make</a>]</td>
 <td><div class="info">
 <p><code class="code">even_odd even odd num</code> returns a list of styles based on if the <code class="code">num</code> is 
@@ -232,7 +237,7 @@
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALexecute_action">execute_action</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">execute_action spell pl_st ai_st</code> is the cast of <code class="code">spell</code> from <code class="code">ai_st</code> on 
+<p><code class="code">execute_action spell ai_st pl_st</code> is the cast of <code class="code">spell</code> from <code class="code">ai_st</code> on 
         <code class="code">pl_st</code>.</p>
 
 </div>
@@ -247,7 +252,7 @@
 <tr><td align="left"><div>F</div></td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALfind_best_long_effect_spell">find_best_long_effect_spell</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">find_best_long_effect_spell lst cmp</code> is a version of <code class="code">find_best_spell</code> 
+<p><code class="code">find_best_long_effect_spell lst cmp</code> is a version of <code class="code">find_best_spell</code>, 
       but specifically for finding the best long_effect spell in <code class="code">lst</code> by using 
       spell <code class="code">cmp</code> for comparison.</p>
 
@@ -255,8 +260,8 @@
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALfind_best_spell">find_best_spell</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">find_best_spell lst cmp</code> returns the best spell in <code class="code">lst</code> by 
-      comparing the result of <code class="code">f</code> using <code class="code">op</code>.</p>
+<p><code class="code">find_best_spell lst cmp f op</code> returns the best spell in <code class="code">lst</code> by 
+      comparing the result of function <code class="code">f</code> using operation <code class="code">op</code>.</p>
 
 </div>
 </td></tr>
@@ -437,28 +442,28 @@
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALhand_search">hand_search</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">hand_search hand spell_type</code> searches <code class="code">hand</code> for best spell that matches 
-      the <code class="code">spell_type</code> being taken into consideration.</p>
+<p><code class="code">hand_search hand spell_type f op</code> searches <code class="code">hand</code> for best spell that 
+      matches the <code class="code">spell_type</code> being taken into consideration.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALhas_attack">has_attack</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">has_attack hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
-      if an attack spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+<p><code class="code">has_attack hand ai player</code> is the cast on <code class="code">player</code> dependant on whether
+      an attack spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALhas_block">has_block</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">has_block hand ai player</code> is the cast on <code class="code">player</code> dependant on whether if 
+<p><code class="code">has_block hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
       a blocking spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALhas_daze">has_daze</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">has_daze hand ai player</code> is the cast on <code class="code">player</code> dependant on whether if 
+<p><code class="code">has_daze hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
       a daze spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
 
 </div>
@@ -473,7 +478,7 @@
 <tr><td><a href="Ai_controller.MakeAI.html#VALhas_long_effect">has_long_effect</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
 <p><code class="code">has_long_effect hand ai player</code> is the cast on <code class="code">player</code> dependant on 
-      whether if a long_effect spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+      whether a long_effect spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
 
 </div>
 </td></tr>
@@ -542,8 +547,8 @@
 </td></tr>
 <tr><td><a href="Ai_controller.MakeAI.html#VALis_full_health">is_full_health</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
 <td><div class="info">
-<p><code class="code">is_full_health enemy player</code> is the cast of the <code class="code">enemy</code> on 
-      <code class="code">player</code> dependant on its current health.</p>
+<p><code class="code">is_full_health enemy player</code> is the cast of the <code class="code">enemy</code> on <code class="code">player</code> 
+      dependant on its current health.</p>
 
 </div>
 </td></tr>
