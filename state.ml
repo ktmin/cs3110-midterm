@@ -48,10 +48,12 @@ let get_defeated_enemies st =
 let add_defeated_enemy st enemy hogwarts = 
   let defeated_enemy = (Hogwarts.search_characters hogwarts enemy) in 
   let prev_defeated = get_defeated_enemies st in 
-  let defeated = (Hogwarts.character_name defeated_enemy)::prev_defeated in
-  {
-    st with defeated_enemies = defeated
-  }
+  if List.mem (Hogwarts.character_name defeated_enemy) prev_defeated then st
+  else
+    let defeated = (Hogwarts.character_name defeated_enemy)::prev_defeated in
+    {
+      st with defeated_enemies = defeated
+    }
 
 let rec get_prolong_damage (st:t) =
   let rec get_damage effects =  
