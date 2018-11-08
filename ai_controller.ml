@@ -9,13 +9,13 @@ module MakeAI (V:Mainview) : AI = struct
 
   module Printer = V 
 
-  (** [execute_action spell pl_st ai_st] is the cast of [spell] from [ai_st] on 
+  (** [execute_action spell ai_st pl_st] is the cast of [spell] from [ai_st] on 
         [pl_st]. *)
   let execute_action spell ai_st pl_st =
     State.cast spell ai_st pl_st
 
-  (** [find_best_spell lst cmp] returns the best spell in [lst] by 
-      comparing the result of [f] using [op]. *)
+  (** [find_best_spell lst cmp f op] returns the best spell in [lst] by 
+      comparing the result of function [f] using operation [op]. *)
   let rec find_best_spell lst cmp f op = 
     match lst with 
     | [] -> cmp
@@ -23,7 +23,7 @@ module MakeAI (V:Mainview) : AI = struct
       then find_best_spell t h f op
       else find_best_spell t cmp f op
 
-  (** [find_best_long_effect_spell lst cmp] is a version of [find_best_spell] 
+  (** [find_best_long_effect_spell lst cmp] is a version of [find_best_spell], 
       but specifically for finding the best long_effect spell in [lst] by using 
       spell [cmp] for comparison. *)
   let rec find_best_long_effect_spell lst cmp = 
@@ -41,8 +41,9 @@ module MakeAI (V:Mainview) : AI = struct
       else find_best_long_effect_spell t cmp
 
 
-  (** [hand_search hand spell_type] searches [hand] for best spell that matches 
-      the [spell_type] being taken into consideration. *)
+  (** [hand_search hand spell_type f op] searches [hand] for best spell that 
+      matches the [spell_type] being taken into consideration. Makes use of 
+      find_best_spell to search for the best spell. *)
   let rec hand_search hand spell_type f op = 
     let filtered_hand = 
       List.filter (fun x -> Hogwarts.spell_type x = spell_type) hand in
@@ -53,84 +54,85 @@ module MakeAI (V:Mainview) : AI = struct
           (find_best_long_effect_spell filtered_hand (List.hd filtered_hand))
       else Some (find_best_spell filtered_hand (List.hd filtered_hand) f op)
 
-  (** [has_attack hand player ai] is the cast on [player] dependant on whether 
-      if an attack spell is in the [hand] of the [ai]. *)
-  let has_attack ai_hand pl_state ai_state =
-    let spell = hand_search ai_hand "attack" Hogwarts.spell_damage (>) in 
+  (** [has_attack hand ai player] is the cast on [player] dependant on whether
+      an attack spell is in the [hand] of the [ai]. *)
+  let has_attack enemy_hand enemy player =
+    let spell = hand_search enemy_hand "attack" Hogwarts.spell_damage (>) in 
     match spell with 
-    | None -> Printer.print_cast ai_state (List.hd ai_hand); 
-      execute_action (List.hd ai_hand) ai_state pl_state
-    | Some attack_spell -> Printer.print_cast ai_state attack_spell; 
-      execute_action attack_spell ai_state pl_state
+    | None -> Printer.print_cast enemy (List.hd enemy_hand); 
+      execute_action (List.hd enemy_hand) enemy player
+    | Some attack_spell -> Printer.print_cast enemy attack_spell; 
+      execute_action attack_spell enemy player
 
-  (** [has_block hand player ai] is the cast on [player] dependant on whether if 
+  (** [has_block hand ai player] is the cast on [player] dependant on whether 
       a blocking spell is in the [hand] of the [ai]. *)
-  let has_block ai_hand pl_state ai_state =
+  let has_block enemy_hand enemy player =
     let filtered_hand = 
-      List.filter (fun x -> Hogwarts.spell_type x = "blocking") ai_hand in
+      List.filter (fun x -> Hogwarts.spell_type x = "blocking") enemy_hand in
     match filtered_hand with 
-    | [] -> Printer.print_cast ai_state (List.hd ai_hand); 
-      execute_action (List.hd ai_hand) ai_state pl_state
-    | h::t -> Printer.print_cast ai_state (List.hd filtered_hand); 
-      execute_action (List.hd filtered_hand) ai_state pl_state
+    | [] -> Printer.print_cast enemy (List.hd enemy_hand); 
+      execute_action (List.hd enemy_hand) enemy player
+    | h::t -> Printer.print_cast enemy (List.hd filtered_hand); 
+      execute_action (List.hd filtered_hand) enemy player
 
-  (** [has_long_effect hand player ai] is the cast on [player] dependant on 
-      whether if a long_effect spell is in the [hand] of the [ai]. *)
-  let has_long_effect ai_hand pl_state ai_state =
-    let spell = hand_search ai_hand "persistent" Hogwarts.spell_long_effect (>) 
-    in 
+  (** [has_long_effect hand ai player] is the cast on [player] dependant on 
+      whether a long_effect spell is in the [hand] of the [ai]. *)
+  let has_long_effect enemy_hand enemy player =
+    let spell = 
+      hand_search enemy_hand "persistent" Hogwarts.spell_long_effect (>) in 
     match spell with 
-    | None -> has_block ai_hand pl_state ai_state
-    | Some persistent_spell -> Printer.print_cast ai_state persistent_spell; 
-      execute_action persistent_spell ai_state pl_state
+    | None -> has_block enemy_hand enemy player
+    | Some persistent_spell -> Printer.print_cast enemy persistent_spell; 
+      execute_action persistent_spell enemy player
 
-  (** [has_daze hand player ai] is the cast on [player] dependant on whether if 
+  (** [has_daze hand ai player] is the cast on [player] dependant on whether 
       a daze spell is in the [hand] of the [ai]. *)
-  let has_daze ai_hand pl_state ai_state =
-    let spell = hand_search ai_hand "stunning" Hogwarts.spell_daze (>) in 
+  let has_daze enemy_hand enemy player =
+    let spell = hand_search enemy_hand "stunning" Hogwarts.spell_daze (>) in 
     match spell with 
-    | None -> has_long_effect ai_hand pl_state ai_state
-    | Some daze_spell -> Printer.print_cast ai_state daze_spell; 
-      execute_action daze_spell ai_state pl_state
+    | None -> has_long_effect enemy_hand enemy player
+    | Some daze_spell -> Printer.print_cast enemy daze_spell; 
+      execute_action daze_spell enemy player
 
-  (** [has_healing hand player ai] is the cast on [player] dependant on whether 
+  (** [has_healing hand ai player] is the cast on [player] dependant on whether 
       a healing spell is in the [hand] of the [ai]. *)
-  let has_healing ai_hand pl_state ai_state condition =
-    let spell = hand_search ai_hand "healing" Hogwarts.spell_damage (<) in 
+  let has_healing enemy_hand enemy player condition =
+    let spell = hand_search enemy_hand "healing" Hogwarts.spell_damage (<) in 
     match spell with 
-    | None -> if condition = "attack" then has_attack ai_hand pl_state ai_state
-      else has_daze ai_hand pl_state ai_state
-    | Some healing_spell -> Printer.print_cast ai_state healing_spell; 
-      execute_action healing_spell ai_state pl_state
+    | None -> if condition = "attack" then has_attack enemy_hand enemy player
+      else has_daze enemy_hand enemy player
+    | Some healing_spell -> Printer.print_cast enemy healing_spell; 
+      execute_action healing_spell enemy player
 
-  (** [is_full_health ai_state pl_state] is the cast of the [ai_state] on 
-      [pl_state] dependant on its current health. *)
-  let is_full_health ai_state pl_state = 
-    let ai_hand = State.get_hand ai_state in 
-    if (State.get_hp ai_state) >= ((State.get_full_hp ai_state) * (1/2))
-    then has_attack ai_hand pl_state ai_state
-    else has_healing ai_hand pl_state ai_state "attack"
+  (** [is_full_health enemy player] is the cast of the [enemy] on [player] 
+      dependant on its current health. *)
+  let is_full_health enemy player = 
+    let enemy_hand = State.get_hand enemy in 
+    if (2*(State.get_hp enemy)) > (State.get_full_hp enemy)
+    then has_attack enemy_hand enemy player
+    else has_healing enemy_hand enemy player "attack"
 
-  (** [is_game_ending ai_state pl_state] determines if [ai_state] can win right 
-      away against [pl_state]. *)
-  let is_game_ending ai_state pl_state = 
-    let ai_hand = State.get_hand ai_state in 
-    let best_spell = hand_search ai_hand "attack" Hogwarts.spell_damage (>) in 
+  (** [is_game_ending enemy player] determines if [enemy] can win right 
+      away against [player]. *)
+  let is_game_ending enemy player = 
+    let enemy_hand = State.get_hand enemy in 
+    let best_spell = hand_search enemy_hand "attack" Hogwarts.spell_damage (>) 
+    in 
     match best_spell with 
-    | None -> has_healing ai_hand ai_state pl_state ""
+    | None -> has_healing enemy_hand enemy player ""
     | Some spell -> 
-      if (Hogwarts.spell_damage spell >= State.get_hp pl_state)
-      then (Printer.print_cast ai_state spell; 
-            execute_action spell ai_state pl_state) 
-      else has_healing ai_hand pl_state ai_state ""
+      if (Hogwarts.spell_damage spell >= State.get_hp player)
+      then (Printer.print_cast enemy spell; 
+            execute_action spell enemy player) 
+      else is_full_health enemy player
 
   (** [is_dazed ai pl] determines if [ai] is dazed. If not, makes decision based 
       on possibility of ending game. *) 
-  let is_dazed ai_state pl_state = 
-    if (State.get_dazed ai_state) > 0 
+  let is_dazed enemy player = 
+    if (State.get_dazed enemy) > 0 
     then let updated_enemy = 
-           State.update_dazed ai_state in (updated_enemy, pl_state) 
-    else is_game_ending ai_state pl_state
+           State.update_dazed enemy in (updated_enemy, player) 
+    else is_game_ending enemy player
 
   let rec enemy_decision enemy player = 
     if (State.get_hp enemy) <= 0 then (enemy,player)

@@ -1,4 +1,4 @@
-MODULES=hogwarts command state authors model controller view
+MODULES=hogwarts command state authors model controller view ai_controller
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

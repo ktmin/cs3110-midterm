@@ -1,5 +1,5 @@
 open Yojson.Basic 
-(* open Hogwarts *)
+
 type t = {
   name : string;
   house : string;
@@ -41,7 +41,7 @@ let get_deck (st:t) =
 let get_blocked (st:t) = 
   st.blocked
 
-(** [get_defeated_enemies st] is the list of defeated enemies. *)
+
 let get_defeated_enemies st = 
   st.defeated_enemies
 
@@ -53,8 +53,6 @@ let add_defeated_enemy st enemy hogwarts =
     st with defeated_enemies = defeated
   }
 
-(** returns a list of prolong 
-    damage that will be applied*)
 let rec get_prolong_damage (st:t) =
   let rec get_damage effects =  
     match effects with
@@ -64,8 +62,6 @@ let rec get_prolong_damage (st:t) =
   let prolong = st.prolong_effect in
   get_damage prolong   
 
-(** returns a list of prolong 
-    turns that will be applied*)
 let rec get_prolong_turn (st:t) =
   let rec get_turn turns =  
     match turns with
@@ -185,7 +181,8 @@ let update_dazed st =
     dazed = new_dazed
   }
 
-(** [update_helper_block st prolonged_effect] is a helper for update for if 
+(** [update_helper_block st prolonged_effect]
+     is a helper for update for if 
     block is true. *)
 let update_helper_block st  = 
   if st.dazed > 0 then 
@@ -195,8 +192,8 @@ let update_helper_block st  =
     } else 
     st
 
-(** [update_helper_hand st spell u_health u_dazed prolonged effect] is a helper 
-    for update if hand is being updated. *)
+(** [update_helper_hand st spell u_health u_dazed prolonged effect] 
+    is a helper for update if hand is being updated. *)
 let update_helper_hand st spell u_health u_dazed = 
   let new_hand = drop (snd(Hogwarts.spell_remove spell))
       (st.hand) in 
@@ -206,7 +203,8 @@ let update_helper_hand st spell u_health u_dazed =
    dazed = u_dazed;
   } 
 
-(** [update_helper_deck st spell u_health u_dazed prolonged effect] is a helper 
+(** [update_helper_deck st spell u_health u_dazed prolonged effect]
+     is a helper 
     for update if deck is being updated. *)
 let update_helper_deck st spell u_health u_dazed = 
   let new_deck = drop (snd (Hogwarts.spell_remove spell))
@@ -217,7 +215,8 @@ let update_helper_deck st spell u_health u_dazed =
    dazed = u_dazed;
   } 
 
-(** [update_helper_health st prolonged_effect prolonged_damage spell] is a 
+(** [update_helper_health st prolonged_effect 
+    prolonged_damage spell] is a 
     helper for updating the health of [st]. *)
 let update_helper_health st  spell = 
   let new_dazed = st.dazed + (Hogwarts.spell_daze spell) in 
@@ -241,16 +240,20 @@ let update spell st1 st2 =
               then (update_helper_health st1 spell) 
               else (update_helper_health st2 spell)))
 
-(**updates state after drawing*)
 let hand_after_cast spell st =
-  let new_hand = List.filter (fun x -> spell <>
-                                       x) st.hand in {
-    st with hand = new_hand
-  }
+  let rec after_cast spell hand = 
+    match hand with 
+    | [] -> []
+    | h :: t -> if h = spell then
+        t else h :: (after_cast spell t)  
+  in  
+  let new_hand = after_cast spell st.hand in
+  {st with hand = new_hand}
 
 
-(**everytime one casts a spell prolong_damage is 
-   updated *)
+(** [update_prolong_damage Hogwarts.spell_info t]
+    is state t after prolong damage takes effect 
+    in one turn*)
 let update_prolong_damage spell st =
   let new_prolong_effect = update_prolong spell st in 
   let new_prolong_damage = damage_from_prolong st in 
@@ -259,7 +262,9 @@ let update_prolong_damage spell st =
     hp = st.hp - new_prolong_damage;
   }
 
-
+(** [update_blocked Hogwarts.spell_info t]
+    is state t after blocking spell takes effect 
+    in one turn*)
 let update_blocked spell st = 
   if Hogwarts.spell_block spell = true then 
     let new_block = 1 in   
@@ -267,6 +272,9 @@ let update_blocked spell st =
      blocked = new_block} else
     st 
 
+(** [reset_blocked Hogwarts.spell_info t]
+    resets the blocked field of t to 
+    0*)
 let reset_blocked spell st = 
   {st with 
    blocked = 0} 
@@ -298,27 +306,17 @@ let cast spell st1 st2 : (t*t) =
     (hand_after_cast spell st1, update_prolong_damage spell updated_enemy)
   )
 
-(*Right now it's simplistic but will change for last release*)
+
 let required_wins (player:t) =
   (player.level) * 2
 
 let level_up (player:t) : t =
-  (*Current formula is to just multiply level*2 for needed level up*)
   let req = required_wins player in
   if List.length player.defeated_enemies >= req then
     {player with level = player.level + 1}
   else player
 
 
-
-let update_blocked spell st = 
-  if Hogwarts.spell_block spell = true then 
-    let new_block = 1 in   
-    {st with   
-     blocked = new_block} else
-    st 
-
-(*TODO: remove this*)
 let to_list_hand pl : Hogwarts.spell_info list =
   pl.hand
 

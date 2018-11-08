@@ -15,7 +15,8 @@
 <link title="Authors" rel="Chapter" href="Authors.html">
 <link title="Model" rel="Chapter" href="Model.html">
 <link title="Controller" rel="Chapter" href="Controller.html">
-<link title="View" rel="Chapter" href="View.html"><title>Index of values</title>
+<link title="View" rel="Chapter" href="View.html">
+<link title="Ai_controller" rel="Chapter" href="Ai_controller.html"><title>Index of values</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -25,8 +26,8 @@
 <tr><td align="left"><div>A</div></td></tr>
 <tr><td><a href="State.html#VALadd_defeated_enemy">add_defeated_enemy</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">add_defeated_enemy st enemy hogwarts</code> is an updated state with defeated 
-    enemies.</p>
+<p><code class="code">add_defeated_enemy st enemy hogwarts</code> is an 
+    updated state with defeated enemies.</p>
 
 </div>
 </td></tr>
@@ -54,8 +55,8 @@
 <tr><td align="left"><div>B</div></td></tr>
 <tr><td><a href="Controller.html#VALbattle">battle</a> [<a href="Controller.html">Controller</a>]</td>
 <td><div class="info">
-<p><code class="code">battle hogwarts player enemy</code> runs through the game loop for <code class="code">player</code> and
-    <code class="code">enemy</code> until a win or loss condition is achieved.</p>
+<p><code class="code">battle skip_states hogwarts player enemy</code> runs through the game loop for 
+    <code class="code">player</code> and <code class="code">enemy</code> until a win or loss condition is achieved.</p>
 
 </div>
 </td></tr>
@@ -136,6 +137,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="View.Make.html#VALchop">chop</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p><code class="code">chop width lst</code> chops a list's strings into one string until no more
+      can be done, then returns the same list with the new string at the head.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="View.Make.html#VALclaw">claw</a> [<a href="View.Make.html">View.Make</a>]</td>
 <td><div class="info">
 <p>The ASCII art for ravenclaw.</p>
@@ -181,7 +189,13 @@
 </td></tr>
 <tr><td align="left"><div>D</div></td></tr>
 <tr><td><a href="State.html#VALdamage_from_prolong">damage_from_prolong</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">damage_from_prolong t</code> returns 
+    the overall damage from long term
+    spells in one turn</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Controller.html#VALdefault_condition">default_condition</a> [<a href="Controller.html">Controller</a>]</td>
 <td><div class="info">
 <p><code class="code">default_condition str</code> is the default predicate for input parsing and 
@@ -205,10 +219,26 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALenemy_decision">enemy_decision</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td></td></tr>
+<tr><td><a href="Ai_controller.AI.html#VALenemy_decision">enemy_decision</a> [<a href="Ai_controller.AI.html">Ai_controller.AI</a>]</td>
+<td><div class="info">
+<p><code class="code">enemy_decision ai_state pl_state</code> is the new state of <code class="code">pl_state</code> after the 
+      ai makes a decision based on <code class="code">ai_state</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="View.Make.html#VALeven_odd">even_odd</a> [<a href="View.Make.html">View.Make</a>]</td>
 <td><div class="info">
 <p><code class="code">even_odd even odd num</code> returns a list of styles based on if the <code class="code">num</code> is 
       even or odd</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALexecute_action">execute_action</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">execute_action spell ai_st pl_st</code> is the cast of <code class="code">spell</code> from <code class="code">ai_st</code> on 
+        <code class="code">pl_st</code>.</p>
 
 </div>
 </td></tr>
@@ -220,6 +250,21 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>F</div></td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALfind_best_long_effect_spell">find_best_long_effect_spell</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">find_best_long_effect_spell lst cmp</code> is a version of <code class="code">find_best_spell</code>, 
+      but specifically for finding the best long_effect spell in <code class="code">lst</code> by using 
+      spell <code class="code">cmp</code> for comparison.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALfind_best_spell">find_best_spell</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">find_best_spell lst cmp f op</code> returns the best spell in <code class="code">lst</code> by 
+      comparing the result of function <code class="code">f</code> using operation <code class="code">op</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Hogwarts.html#VALfrom_json">from_json</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
 <td><div class="info">
 <p><code class="code">from_json j1 j2 </code> is the organized spells that <code class="code">j1</code> represents and the 
@@ -232,6 +277,13 @@
 <td><div class="info">
 <p><code class="code">get_blocked t</code> is the representation of 
     how many times a player is blocked</p>
+
+</div>
+</td></tr>
+<tr><td><a href="View.Make.html#VALget_centered_text">get_centered_text</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p><code class="code">get_centered_text width input</code> returns a string of set <code class="code">width</code> with
+      <code class="code">input</code> at its center.</p>
 
 </div>
 </td></tr>
@@ -274,6 +326,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="State.html#VALget_full_hp">get_full_hp</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_full_hp</code> is the full hp of player in <code class="code">t</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALget_hand">get_hand</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">get_hand t</code> is the hand of a state <code class="code">t</code></p>
@@ -295,7 +353,7 @@
 </td></tr>
 <tr><td><a href="State.html#VALget_house">get_house</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">get_name t</code> is the house of <code class="code">t</code></p>
+<p><code class="code">get_house t</code> is the house of <code class="code">t</code></p>
 
 </div>
 </td></tr>
@@ -323,6 +381,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="View.Make.html#VALget_lines">get_lines</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p><code class="code">get_lines width</code> generates <code class="code">width</code> amount of dashes for ascii card.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Controller.html#VALget_name">get_name</a> [<a href="Controller.html">Controller</a>]</td>
 <td><div class="info">
 <p><code class="code">get_name</code> returns the name of a person from terminal input.</p>
@@ -338,21 +402,21 @@
 </td></tr>
 <tr><td><a href="State.html#VALget_prolong_damage">get_prolong_damage</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>returns a list of prolong 
-    damage that will be applied</p>
+<p><code class="code">get_prolong_damage t</code> is the list of
+    prolong damage that will be applied</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALget_prolong_tupes">get_prolong_tupes</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">get_rpolong_tupes t</code> gets all prolonged effects of input caster</p>
+<p><code class="code">get_prolong_tupes t</code> gets all prolonged effects of input caster</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALget_prolong_turn">get_prolong_turn</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>returns a list of prolong 
-    turns that will be applied</p>
+<p><code class="code">get_prolong_turn t</code> is the list of turns
+    of prolonged damage</p>
 
 </div>
 </td></tr>
@@ -371,7 +435,50 @@
 <tr><td align="left"><div>H</div></td></tr>
 <tr><td><a href="State.html#VALhand_after_cast">hand_after_cast</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>updates state after drawing</p>
+<p><code class="code">hand_after_cast t</code> updates state <code class="code">t</code>
+    after state<code class="code">t</code> casts a spell</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALhand_search">hand_search</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">hand_search hand spell_type f op</code> searches <code class="code">hand</code> for best spell that 
+      matches the <code class="code">spell_type</code> being taken into consideration.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALhas_attack">has_attack</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">has_attack hand ai player</code> is the cast on <code class="code">player</code> dependant on whether
+      an attack spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALhas_block">has_block</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">has_block hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
+      a blocking spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALhas_daze">has_daze</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">has_daze hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
+      a daze spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALhas_healing">has_healing</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">has_healing hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
+      a healing spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALhas_long_effect">has_long_effect</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">has_long_effect hand ai player</code> is the cast on <code class="code">player</code> dependant on 
+      whether a long_effect spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
 
 </div>
 </td></tr>
@@ -392,7 +499,8 @@
 </td></tr>
 <tr><td><a href="State.html#VALinit_enemy_with_level_deck">init_enemy_with_level_deck</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">init_enemy_with_level_deck Hogwarts.t name</code> is an enemy initialized with a 
+<p><code class="code">init_enemy_with_level_deck Hogwarts.t name</code> 
+    is an enemy initialized with a 
     leveled deck.</p>
 
 </div>
@@ -412,7 +520,8 @@
 </td></tr>
 <tr><td><a href="State.html#VALinit_player_with_level_deck">init_player_with_level_deck</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">init_player_with_level_deck Hogwarts.t name</code> is a player initialized with a 
+<p><code class="code">init_player_with_level_deck Hogwarts.t name</code> 
+    is a player initialized with a 
     leveled deck.</p>
 
 </div>
@@ -427,6 +536,26 @@
 <td><div class="info">
 <p><code class="code">inverse_colour house</code> takes in a house and returns the inverse of the 
       usual.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALis_dazed">is_dazed</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">is_dazed ai pl</code> determines if <code class="code">ai</code> is dazed.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALis_full_health">is_full_health</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">is_full_health enemy player</code> is the cast of the <code class="code">enemy</code> on <code class="code">player</code> 
+      dependant on its current health.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Ai_controller.MakeAI.html#VALis_game_ending">is_game_ending</a> [<a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a>]</td>
+<td><div class="info">
+<p><code class="code">is_game_ending enemy player</code> determines if <code class="code">enemy</code> can win right 
+      away against <code class="code">player</code>.</p>
 
 </div>
 </td></tr>
@@ -464,6 +593,12 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>P</div></td></tr>
+<tr><td><a href="View.Make.html#VALpad">pad</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p><code class="code">pad width s</code> returns a string that is padded to be exactly <code class="code">width</code> size.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Command.html#VALparse">parse</a> [<a href="Command.html">Command</a>]</td>
 <td><div class="info">
 <p><code class="code">parse string</code> prases a string and outputs its corresponding
@@ -483,6 +618,13 @@
 <td><div class="info">
 <p>returns command from a list 
     representation of line command</p>
+
+</div>
+</td></tr>
+<tr><td><a href="View.Make.html#VALpartition_list">partition_list</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p><code class="code">partition_list width lst</code> partitions a list in such a way that all strings
+      in returned list are less than or equal to <code class="code">width</code> characters.</p>
 
 </div>
 </td></tr>
@@ -520,6 +662,19 @@
 
 </div>
 </td></tr>
+<tr><td><a href="View.Make.html#VALprint_card">print_card</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p>Prints ascii card.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="View.Mainview.html#VALprint_card">print_card</a> [<a href="View.Mainview.html">View.Mainview</a>]</td>
+<td><div class="info">
+<p><code class="code">print_card house width header body</code> prints an ASCII card of size <code class="code">width</code> 
+      with a centered <code class="code">header</code> and body filling up the main part.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="View.Make.html#VALprint_cast">print_cast</a> [<a href="View.Make.html">View.Make</a>]</td>
 <td><div class="info">
 <p>Prints cast of caster.</p>
@@ -534,6 +689,12 @@
 </div>
 </td></tr>
 <tr><td><a href="View.Make.html#VALprint_clear">print_clear</a> [<a href="View.Make.html">View.Make</a>]</td>
+<td><div class="info">
+<p><code class="code">print_clear len</code> prints out <code class="code">len</code> number of newlines on screen.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="View.Mainview.html#VALprint_clear">print_clear</a> [<a href="View.Mainview.html">View.Mainview</a>]</td>
 <td><div class="info">
 <p><code class="code">print_clear len</code> prints out <code class="code">len</code> number of newlines on screen.</p>
 
@@ -634,7 +795,7 @@
 </td></tr>
 <tr><td><a href="View.Mainview.html#VALprint_state">print_state</a> [<a href="View.Mainview.html">View.Mainview</a>]</td>
 <td><div class="info">
-<p><code class="code">print_state caster</code> prints all of the status info on the 
+<p><code class="code">print_state caster blocking</code> prints all of the status info on the 
       <code class="code">caster</code> in their house style.</p>
 
 </div>
@@ -673,8 +834,9 @@
 </td></tr>
 <tr><td><a href="State.html#VALrefresh_deck">refresh_deck</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">refresh_deck Hogwarts.t t</code> refreshes the deck
-   of a state <code class="code">t</code></p>
+<p><code class="code">refresh_deck hogwarts.t</code> is refills
+    the deck when it's empty according
+    to the level of player</p>
 
 </div>
 </td></tr>
@@ -686,7 +848,13 @@
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALreset_blocked">reset_blocked</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">reset_blocked Hogwarts.spell_info t</code>
+    resets the blocked field of t to 
+    0</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Model.GameModel.html#VALrun_cmd">run_cmd</a> [<a href="Model.GameModel.html">Model.GameModel</a>]</td>
 <td><div class="info">
 <p><code class="code">run_cmd hogwarts cmd player enemy</code> runs a given command and returns
@@ -795,6 +963,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hogwarts.html#VALspell_type">spell_type</a> [<a href="Hogwarts.html">Hogwarts</a>]</td>
+<td><div class="info">
+<p><code class="code">spell_type s</code> is the spell type of <code class="code">s</code>.</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>T</div></td></tr>
 <tr><td><a href="State.html#VALto_list_hand">to_list_hand</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
@@ -812,7 +986,13 @@
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALupdate_blocked">update_blocked</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">update_blocked Hogwarts.spell_info t</code>
+    is state t after blocking spell takes effect 
+    in one turn</p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALupdate_caster">update_caster</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">update_caster t</code> updates the 
@@ -836,28 +1016,31 @@
 </td></tr>
 <tr><td><a href="State.html#VALupdate_helper_block">update_helper_block</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">update_helper_block st prolonged_effect</code> is a helper for update for if 
+<p><code class="code">update_helper_block st prolonged_effect</code>
+     is a helper for update for if 
     block is true.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALupdate_helper_deck">update_helper_deck</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">update_helper_deck st spell u_health u_dazed prolonged effect</code> is a helper 
+<p><code class="code">update_helper_deck st spell u_health u_dazed prolonged effect</code>
+     is a helper 
     for update if deck is being updated.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALupdate_helper_hand">update_helper_hand</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">update_helper_hand st spell u_health u_dazed prolonged effect</code> is a helper 
-    for update if hand is being updated.</p>
+<p><code class="code">update_helper_hand st spell u_health u_dazed prolonged effect</code> 
+    is a helper for update if hand is being updated.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALupdate_helper_health">update_helper_health</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">update_helper_health st prolonged_effect prolonged_damage spell</code> is a 
+<p><code class="code">update_helper_health st prolonged_effect 
+    prolonged_damage spell</code> is a 
     helper for updating the health of <code class="code">st</code>.</p>
 
 </div>
@@ -871,8 +1054,9 @@
 </td></tr>
 <tr><td><a href="State.html#VALupdate_prolong_damage">update_prolong_damage</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p>everytime one casts a spell prolong_damage is 
-   updated</p>
+<p><code class="code">update_prolong_damage Hogwarts.spell_info t</code>
+    is state t after prolong damage takes effect 
+    in one turn</p>
 
 </div>
 </td></tr>

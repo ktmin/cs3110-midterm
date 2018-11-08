@@ -5,6 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
+<link rel="next" href="Model.GameModel.Enemy_Logic.html">
 <link rel="Up" href="Model.GameModel.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -17,24 +18,33 @@
 <link title="Authors" rel="Chapter" href="Authors.html">
 <link title="Model" rel="Chapter" href="Model.html">
 <link title="Controller" rel="Chapter" href="Controller.html">
-<link title="View" rel="Chapter" href="View.html"><title>Model.GameModel.Printer</title>
+<link title="View" rel="Chapter" href="View.html">
+<link title="Ai_controller" rel="Chapter" href="Ai_controller.html"><title>Model.GameModel.Printer</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="Model.GameModel.html" title="Model.GameModel">Up</a>
-&nbsp;</div>
+&nbsp;<a class="post" href="Model.GameModel.Enemy_Logic.html" title="Model.GameModel.Enemy_Logic">Next</a>
+</div>
 <h1>Module <a href="type_Model.GameModel.Printer.html">Model.GameModel.Printer</a></h1>
 
 <pre><span id="MODULEPrinter"><span class="keyword">module</span> Printer</span>: <code class="type"><a href="View.Mainview.html">View.Mainview</a></code><code class="type"> </code></pre><div class="info module top">
 <div class="info-desc">
-<p>The main instance of <code class="code">Mainview</code> used to print out all game actions</p>
+<p>The main instance of <code class="code">Mainview</code> used to print out all game actions.</p>
 </div>
 </div>
 <hr width="100%">
 
-<pre><span id="VALprint_state"><span class="keyword">val</span> print_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_clear"><span class="keyword">val</span> print_clear</span> : <code class="type">int -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">print_state caster</code> prints all of the status info on the 
-      <code class="code">caster</code> in their house style.</p>
+<p><code class="code">print_clear len</code> prints out <code class="code">len</code> number of newlines on screen.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_state"><span class="keyword">val</span> print_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> bool -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_state caster blocking</code> prints all of the status info on the 
+      <code class="code">caster</code> in their house style. <code class="code">blocking</code> is if the caster has an active
+      blocking spell.</p>
 </div>
 </div>
 
@@ -106,6 +116,14 @@
 <div class="info-desc">
 <p><code class="code">print_house house</code> prints a house in ASCII art (or nothing if house does
       not match presets.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_card"><span class="keyword">val</span> print_card</span> : <code class="type">string -> int -> string -> string list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_card house width header body</code> prints an ASCII card of size <code class="code">width</code> 
+      with a centered <code class="code">header</code> and body filling up the main part. This is in 
+      colour of <code class="code">house</code>.</p>
 </div>
 </div>
 </body></html>

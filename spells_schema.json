@@ -1,0 +1,140 @@
+{
+  "type": "object",
+  "properties": {
+    "spells": {
+      "items": {
+        "required": [
+          "name",
+          "damage",
+          "target",
+          "description",
+          "level",
+          "type",
+          "daze",
+          "block",
+          "remove",
+          "long-effect"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "",
+            "examples": [
+              "Avada Kedavra"
+            ]
+          },
+          "damage": {
+            "type": "integer",
+            "default": 0,
+            "examples": [
+              100,
+              50
+            ]
+          },
+          "target": {
+            "type": "string",
+            "default": "enemy",
+            "examples": [
+              "self",
+              "enemy"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "default": "",
+            "examples": [
+              "also known as the Killing Curse, kills a person instantaneously and without injury"
+            ]
+          },
+          "level": {
+            "type": "integer",
+            "default": 1,
+            "examples": [
+              5
+            ]
+          },
+          "type": {
+            "type": "string",
+            "default": "attack",
+            "examples": [
+              "MUST BE ONE OF THE FOLLOWING:",
+              "attack",
+              "healing",
+              "blocking",
+              "stunning",
+              "persistent"
+            ]
+          },
+          "daze": {
+            "type": "integer",
+            "default": 0,
+            "examples": [
+              1
+            ]
+          },
+          "block": {
+            "type": "boolean",
+            "default": false,
+            "examples": [
+              false,
+              true
+            ]
+          },
+          "remove": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "loc",
+                "count"
+              ],
+              "properties": {
+                "loc": {
+                  "type": "string",
+                  "default": "hand",
+                  "examples": [
+                    "hand",
+                    "deck"
+                  ]
+                },
+                "count": {
+                  "type": "integer",
+                  "default": 0,
+                  "examples": [
+                    1
+                  ]
+                }
+              }
+            }
+          },
+          "long-effect": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "damage",
+                "turns"
+              ],
+              "properties": {
+                "damage": {
+                  "type": "integer",
+                  "default": 0,
+                  "examples": [
+                    5
+                  ]
+                },
+                "turns": {
+                  "type": "integer",
+                  "default": 0,
+                  "examples": [
+                    2
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
