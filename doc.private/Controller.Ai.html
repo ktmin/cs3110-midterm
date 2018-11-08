@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Controller.View.html">
+<link rel="next" href="Controller.Game.html">
+<link rel="Up" href="Controller.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Hogwarts" rel="Chapter" href="Hogwarts.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Model" rel="Chapter" href="Model.html">
+<link title="Controller" rel="Chapter" href="Controller.html">
+<link title="View" rel="Chapter" href="View.html">
+<link title="Ai_controller" rel="Chapter" href="Ai_controller.html"><title>Controller.Ai</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Controller.View.html" title="Controller.View">Previous</a>
+&nbsp;<a class="up" href="Controller.html" title="Controller">Up</a>
+&nbsp;<a class="post" href="Controller.Game.html" title="Controller.Game">Next</a>
+</div>
+<h1>Module <a href="type_Controller.Ai.html">Controller.Ai</a></h1>
+
+<pre><span id="MODULEAi"><span class="keyword">module</span> Ai</span>: <code class="type"><a href="Ai_controller.MakeAI.html">Ai_controller.MakeAI</a></code><code class="code">(</code><code class="type"><a href="Controller.View.html">View</a></code><code class="code">)</code></pre><div class="info module top">
+<div class="info-desc">
+<p>The AI Logic in use of the games.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="MODULEPrinter"><span class="keyword">module</span> <a href="Ai_controller.MakeAI.Printer.html">Printer</a></span>: <code class="type">V</code></pre>
+<pre><span id="VALexecute_action"><span class="keyword">val</span> execute_action</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">execute_action spell pl_st ai_st</code> is the cast of <code class="code">spell</code> from <code class="code">ai_st</code> on 
+        <code class="code">pl_st</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALfind_best_spell"><span class="keyword">val</span> find_best_spell</span> : <code class="type">'a list -> 'a -> ('a -> 'b) -> ('b -> 'b -> bool) -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_best_spell lst cmp</code> returns the best spell in <code class="code">lst</code> by 
+      comparing the result of <code class="code">f</code> using <code class="code">op</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALfind_best_long_effect_spell"><span class="keyword">val</span> find_best_long_effect_spell</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_best_long_effect_spell lst cmp</code> is a version of <code class="code">find_best_spell</code> 
+      but specifically for finding the best long_effect spell in <code class="code">lst</code> by using 
+      spell <code class="code">cmp</code> for comparison.</p>
+</div>
+</div>
+
+<pre><span id="VALhand_search"><span class="keyword">val</span> hand_search</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -><br>       string -><br>       (<a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> -> 'a) -><br>       ('a -> 'a -> bool) -> <a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">hand_search hand spell_type</code> searches <code class="code">hand</code> for best spell that matches 
+      the <code class="code">spell_type</code> being taken into consideration.</p>
+</div>
+</div>
+
+<pre><span id="VALhas_attack"><span class="keyword">val</span> has_attack</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">has_attack hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
+      if an attack spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALhas_block"><span class="keyword">val</span> has_block</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">has_block hand ai player</code> is the cast on <code class="code">player</code> dependant on whether if 
+      a blocking spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALhas_long_effect"><span class="keyword">val</span> has_long_effect</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">has_long_effect hand ai player</code> is the cast on <code class="code">player</code> dependant on 
+      whether if a long_effect spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALhas_daze"><span class="keyword">val</span> has_daze</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">has_daze hand ai player</code> is the cast on <code class="code">player</code> dependant on whether if 
+      a daze spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALhas_healing"><span class="keyword">val</span> has_healing</span> : <code class="type"><a href="Hogwarts.html#TYPEspell_info">Hogwarts.spell_info</a> list -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> string -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">has_healing hand ai player</code> is the cast on <code class="code">player</code> dependant on whether 
+      a healing spell is in the <code class="code">hand</code> of the <code class="code">ai</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALis_full_health"><span class="keyword">val</span> is_full_health</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_full_health enemy player</code> is the cast of the <code class="code">enemy</code> on 
+      <code class="code">player</code> dependant on its current health.</p>
+</div>
+</div>
+
+<pre><span id="VALis_game_ending"><span class="keyword">val</span> is_game_ending</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_game_ending enemy player</code> determines if <code class="code">enemy</code> can win right 
+      away against <code class="code">player</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALis_dazed"><span class="keyword">val</span> is_dazed</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_dazed ai pl</code> determines if <code class="code">ai</code> is dazed. If not, makes decision based 
+      on possibility of ending game.</p>
+</div>
+</div>
+
+<pre><span id="VALenemy_decision"><span class="keyword">val</span> enemy_decision</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> -> <a href="State.html#TYPEt">State.t</a> * <a href="State.html#TYPEt">State.t</a></code></pre></body></html>
