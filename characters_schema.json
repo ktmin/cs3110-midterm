@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "required": [
+    "characters"
+  ],
+  "properties": {
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "house",
+          "level",
+          "description",
+          "hp"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "",
+            "examples": [
+              "Cho Chang"
+            ]
+          },
+          "house": {
+            "type": "string",
+            "default": "",
+            "examples": [
+              "Ravenclaw",
+              "Gryffindor",
+              "Hufflepuff",
+              "Slytherin"
+            ]
+          },
+          "level": {
+            "type": "integer",
+            "default": 1,
+            "examples": [
+              2
+            ]
+          },
+          "description": {
+            "type": "string",
+            "default": "",
+            "examples": [
+              "Cho is the Seeker for the Ravenclaw Quidditch team. She is also a part of Dumbledore's Army."
+            ]
+          },
+          "hp": {
+            "type": "integer",
+            "default": 30,
+            "examples": [
+              50
+            ]
+          }
+        }
+      }
+    }
+  }
+}
