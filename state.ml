@@ -308,13 +308,12 @@ let cast spell st1 st2 : (t*t) =
     (hand_after_cast spell st1, update_prolong_damage spell updated_enemy)
   )
 
-
 let required_wins (player:t) =
-  (player.level) * 2
+  ((player.level) * 2) + ((player.level) * 2)
 
-let level_up (player:t) : t =
+let level_up ?force:(force=false) (player:t) : t =
   let req = required_wins player in
-  if List.length player.defeated_enemies >= req then
+  if List.length player.defeated_enemies >= req || force then
     {player with level = player.level + 1}
   else player
 

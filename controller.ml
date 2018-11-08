@@ -42,8 +42,10 @@ let rec battle (skip_states:bool) (hogwarts:Hogwarts.t)
   match Game.check_conditions player enemy with
   | Win -> (
       View.print_post_condition p_house 1;
-      (State.level_up (State.add_defeated_enemy player (State.get_name enemy) 
-                         hogwarts))
+      let force = (State.get_level enemy)-2 >= (State.get_level player) in
+      (State.level_up ~force:(force)
+         (State.add_defeated_enemy player (State.get_name enemy) 
+            hogwarts))
     )
   | Loss -> (
       View.print_post_condition p_house (-1);
